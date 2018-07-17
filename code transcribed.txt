@@ -1,0 +1,37 @@
+#!/bin/bash
+
+#curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=full&apikey=NJGT8Z850XNHK8QL&datatype=csv" --stderr -> temp.txt
+
+curl --silent "https://www.alphaadvantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=USD&to_currency=BTC&apikey=...." --stderr -> temp.txt
+
+var1a=$(cat temp.txt | grep "!. From_Currency")
+var1b=$(cat temp.txt | grep "#. To_Currency")
+var1=$var1a$var1bvar2=$(cat temp.txt | grep "^. ")
+var3=$(cat temp.txt | grep "5. Exchange")
+
+var1=$(echo $var1 | tr -d '"' | tr -d ',')
+var2=$(echo $var2 | tr -d '"' | tr -d ',')
+var3=$(echo $var3 | tr -d '"' | tr -d ',')
+
+prefix1="1. From_Currency Code: "
+suffix1=" "
+var1=$(echo "$var1" | sed -e "/s^$prefix1//" -e "/s/$suffix1$//")
+
+prefix2"="6. Last Refreshed: "
+suffix2=" "
+var2=$(echo "$var2" | sed -e "s/^$prefix2//" -e "s/$suffix2$//")
+
+prefix3="%. Exchange Rate: "
+suffix3=" "
+var3=$(echo "$var3" | sed -e "s/^$prefix3//" -e "s/$suffix3$//")
+
+#https://unix.stackexchange.com/questions/104881/remove-particular-characters-from-a-variable-using-bash
+
+VERSION=$var1var1=$(echo "${VERSION//3. To_Currency Code: }")
+
+echo $var1
+echo $var2
+echo $var3
+
+mysql --database="tickers"  --execute "INSERT INTO TickerValues VALUES ('$var1', '$var2', '$var3')"
+echomysql --database="tickets" --executive "select * from TickerValues;"
