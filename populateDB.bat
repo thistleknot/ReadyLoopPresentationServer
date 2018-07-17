@@ -1,6 +1,4 @@
 
-REM https://stackoverflow.com/questions/2987433/how-to-import-csv-file-data-into-a-postgresql-table
-
 set name=MSFT
 set PGPASSWORD=1234
 set APIKEY=|type apikey.txt
@@ -11,26 +9,13 @@ curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJU
 
 xcopy %name%.csv c:\test\ /y
 
-REM holding table, this table is dropped between symbols
-REM table name: %tableName%
-
-REM echo(mypassword|
-
-REM password
-REM https://stackoverflow.com/questions/6405127/how-do-i-specify-a-password-to-psql-non-interactively
-REM echo drop database if exists %dbName%; create database %dbName%;| psql "postgresql://postgres:1234@127.0.0.1/%dbName%"
-
 echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres
 echo drop table if exists public.%tableName%; CREATE TABLE public.%tableName% (timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.%tableName% OWNER to postgres; COPY %tableName%(timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient) FROM 'c:\test\%name%.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
 
-REM need to add symbol, then transfer to new table
 echo ALTER TABLE %tableName% ADD COLUMN symbol varchar(8) DEFAULT '%name%';| psql -U postgres %dbName%
 
 echo ALTER TABLE %tableName% DROP CONSTRAINT timestamp_pkey;| psql -U postgres %dbName%
 echo ALTER TABLE %tableName% ADD CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp,symbol);| psql -U postgres %dbName%
-
-REM works
-REM https://stackoverflow.com/questions/3569347/adding-a-new-sql-column-with-a-default-value
 
 erase output.txt
 echo select * from %tableName%;| psql -U postgres %dbName% > output.txt
