@@ -1,4 +1,3 @@
-
 set name=MSFT
 set PGPASSWORD=1234
 set APIKEY=|type apikey.txt
@@ -44,7 +43,5 @@ echo ALTER TABLE %tableName% ADD COLUMN symbol varchar(8) DEFAULT '%name%';| psq
 echo ALTER TABLE %tableName% DROP CONSTRAINT timestamp_pkey;| psql -U postgres %dbName%
 echo ALTER TABLE %tableName% ADD CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp,symbol);| psql -U postgres %dbName%
 
-erase output.txt
-echo select * from %tableName%;| psql -U postgres %dbName% > output.txt
-notepad output.txt
-
+echo select * from %tableName%;| psql -U postgres %dbName%
+echo select * from nSymbols;| psql -U postgres nasdaqsymbols
