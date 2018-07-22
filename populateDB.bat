@@ -26,9 +26,9 @@ REM erase nasdaqlisted.txt
 REM erase removedPipes.txt
 
 REM add symbol
-awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%name% MSFT.csv > test.txt
+awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%name% %name%.csv > %name%wSymbol.csv
 
-xcopy test.txt c:\test /y
+xcopy %name%wSymbol.csv c:\test /y
 
 echo drop database if exists nasdaqSymbols; create database nasdaqsymbols;| psql -U postgres
 
@@ -53,7 +53,7 @@ echo drop table if exists public.%tableName%; | psql -U postgres %dbName%
 
 REM CREATE TABLE public.%tableName% (timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.%tableName% OWNER to postgres; COPY %tableName%(timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient) FROM 'c:\test\%name%.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
 
-echo CREATE TABLE public.%tableName% (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.%tableName% OWNER to postgres; COPY %tableName%(symbol,timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient) FROM 'c:\test\test.txt' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+echo CREATE TABLE public.%tableName% (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.%tableName% OWNER to postgres; COPY %tableName%(symbol,timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient) FROM 'c:\test\%name%wSymbol.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
 
 REM echo ALTER TABLE %tableName% ADD COLUMN symbol varchar(8) DEFAULT '%name%';| psql -U postgres %dbName%
 
