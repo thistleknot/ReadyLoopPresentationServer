@@ -28,6 +28,8 @@ REM erase removedPipes.txt
 REM add symbol
 awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%name% MSFT.csv > test.txt
 
+xcopy test.txt c:\test /y
+
 echo drop database if exists nasdaqSymbols; create database nasdaqsymbols;| psql -U postgres
 
 echo drop table if exists public.nSymbols;| psql -U postgres nasdaqsymbols
