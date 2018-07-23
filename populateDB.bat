@@ -35,9 +35,7 @@ echo ALTER TABLE public.nSymbols OWNER to postgres;| psql -U postgres nasdaqsymb
 
 echo COPY nSymbols(symbol,securityName,MarketCategory,testIssue,financialStatus,roundLotSize,ETF,nextShares) FROM 'c:\test\nasdaqSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres nasdaqsymbols
 
-
 more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
-
 
 REM specific symbol
 REM curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=full&apikey=%APIKEY%&datatype=csv" --stderr -> %name%.csv
@@ -52,14 +50,30 @@ echo CREATE TABLE public.%tableName% (symbol varchar(8), timestamp date, open re
 
 REM echo COPY %tableName%(symbol,timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient) FROM 'c:\test\%name%wSymbol.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
 
+REM try: "INSERT INTO load VALUES ('07/17/2018 23:55:00','EDT','WEST',61752,1893.7) ON CONFLICT (time_stamp, time_zone, ptid) DO NOTHING;"
+REM ON CONFLICT ^(timestamp, symbol^) DO NOTHING FROM 'c:\test\%awSymbols.csv' DELIMITER ',' CSV HEADER;|psql -U postgres somedb	
+REM try: https://stackoverflow.com/questions/13947327/to-ignore-duplicate-keys-during-copy-from-in-postgresql
+
 REM prints each entry
 for /F "delims=;" %a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
-	curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%a&apikey=%APIKEY%&datatype=csv" --stderr -> c:\test\%a.csv;
-	awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%a c:\test\%a.csv > c:\test\%awSymbols.csv
-	echo COPY ur_table^(symbol,timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient^) FROM 'c:\test\%awSymbols.csv' DELIMITER ',' CSV HEADER;|psql -U postgres somedb	
-	sleep 15;
+	if not exist "c:\test\%a.csv" curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%a&apikey=%APIKEY%&datatype=csv" --stderr -> c:\test\%a.csv;
+	if not exist "c:\test\%awSymbols.csv" awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%a c:\test\%a.csv > c:\test\%awSymbols.csv
 	
+	echo drop table public.temp_table;| psql -U postgres somedb
+	echo create table temp_table as table ur_table;|psql -U postgres somedb
+
+	REM echo CREATE TABLE public.temp_table (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT temp_timestamp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.temp_table OWNER to postgres; | psql -U postgres somedb
+
+	REM echo copy temp_table(symbol,timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient) from 'c:\test\AABAwSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres somedb
+	
+	echo copy temp_table from 'c:\test\%awSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres somedb
+	
+	echo insert into ur_table select distinct * from public.temp_table ON CONFLICT DO NOTHING;| psql -U postgres somedb
+	
+	echo drop table public.temp_table;| psql -U postgres somedb
+
 )
+
 
 echo COPY %tableName%^(symbol,timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient^) FROM 'c:\test\%awSymbol.csv' DELIMITER ';' CSV HEADER;^| psql -U postgres %dbName%	
 
