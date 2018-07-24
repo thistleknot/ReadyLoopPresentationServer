@@ -1,6 +1,11 @@
-set name=MSFT
-set PGPASSWORD=1234
+set PGPASSWORD=|type psqlPW.txt
+REM findstr /R /N "^" apikey.txt| find /C ":" > lines.txt
+REM sed -i "$d" lines.txt
+REM set lines=|type lines.txt
+set numKeys=2
 set APIKEY=|type apikey.txt
+set APIKEY2=|type apikey2.txt
+
 set dbName=somedb
 set tableName=ur_table
 set pipe=|printf '\174'
@@ -23,8 +28,6 @@ REM erase removedPipes.txt
 
 REM add symbol
 
-xcopy %name%.csv c:\test\ /y
-
 echo drop database if exists nasdaqSymbols; create database nasdaqsymbols;| psql -U postgres
 
 echo drop table if exists public.nSymbols;| psql -U postgres nasdaqsymbols
@@ -37,30 +40,26 @@ echo COPY nSymbols(symbol,securityName,MarketCategory,testIssue,financialStatus,
 
 more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
 
-REM specific symbol
-REM curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&outputsize=full&apikey=%APIKEY%&datatype=csv" --stderr -> %name%.csv
-REM awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%name% c:\test\%name%.csv > c:\test\%name%wSymbol.csv
-
-REM for /F "tokens=*" %%A in (c:\test\nasdaqSymbols.csv) do [echo %%A] %%A
-
 REM rebuild scripts
 	REM echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres
 	REM echo drop table if exists public.%tableName%; | psql -U postgres %dbName%
-	REM echo CREATE TABLE public.%tableName% (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.%tableName% OWNER to postgres; | psql -U postgres %dbName%
 
-REM echo COPY %tableName%(symbol,timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient) FROM 'c:\test\%name%wSymbol.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
-
-REM try: "INSERT INTO load VALUES ('07/17/2018 23:55:00','EDT','WEST',61752,1893.7) ON CONFLICT (time_stamp, time_zone, ptid) DO NOTHING;"
-REM ON CONFLICT ^(timestamp, symbol^) DO NOTHING FROM 'c:\test\%awSymbols.csv' DELIMITER ',' CSV HEADER;|psql -U postgres somedb	
-REM try: https://stackoverflow.com/questions/13947327/to-ignore-duplicate-keys-during-copy-from-in-postgresql
+echo CREATE TABLE IF NOT EXISTS public.%tableName% (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.%tableName% OWNER to postgres; | psql -U postgres %dbName%
 
 REM doesn't work in for loop
 echo CREATE TABLE temp_table (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT temp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE temp_table OWNER to postgres; | psql -U postgres %dbName%
 
+rem set counter=1
+
 REM prints each entry
 for /F "delims=;" %a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	REM if not exist "c:\test\%a.csv" curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%a&outputsize=full&apikey=%APIKEY%&datatype=csv" --stderr -> c:\test\%a.csv;
+
 	curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%a&outputsize=full&apikey=%APIKEY%&datatype=csv" --stderr -> c:\test\%a.csv;
+	
+	
+	REM curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%a&outputsize=full&apikey=%APIKEY%&datatype=csv" --stderr -> c:\test\%a.csv;
+	
 	REM if not exist "c:\test\%awSymbols.csv" set waitFlag=true
 	REM if exist "c:\test\%awSymbols.csv" set waitFlag=false
 	REM if not exist "c:\test\%awSymbols.csv" awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%a c:\test\%a.csv > c:\test\%awSymbols.csv
@@ -80,19 +79,20 @@ for /F "delims=;" %a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	
 	echo drop table temp_table2;| psql -U postgres somedb
 	
+	rem set/a counter2=%counter%+1
+	REM set/a counter=counter2
 	
 	REM if %waitFlag% equ true Sleep '11';
 	timeout 12
-
+	
 )
-REM echo drop table temp_table;| psql -U postgres somedb
 
+REM echo drop table temp_table;| psql -U postgres somedb
 
 echo COPY %tableName%^(symbol,timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient^) FROM 'c:\test\%awSymbol.csv' DELIMITER ';' CSV HEADER;^| psql -U postgres %dbName%	
 
 echo COPY %tableName%(symbol,timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient) FROM 'c:\test\%awSymbol.csv' DELIMITER ',' CSV HEADER;^| psql -U postgres %dbName%	
 	
-
 echo ALTER TABLE %tableName% DROP CONSTRAINT timestamp_pkey;| psql -U postgres %dbName%
 echo ALTER TABLE %tableName% ADD CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp,symbol);| psql -U postgres %dbName%
 
