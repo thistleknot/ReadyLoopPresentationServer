@@ -11,42 +11,34 @@ set tableName=ur_table
 set pipe=|printf '\174'
 
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt" --stderr -> nasdaqlisted.txt
-curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt" --stderr -> otherlisted.txt
 
 REM remove last line
-sed -i "$d" nasdaqlisted.txt
-sed -i "$d" otherlisted.txt
 
-REM ^^essential for | , escape character stuff
+sed -i "$d" nasdaqlisted.txt
+
+REM ^^essential for |
 sed 's/^^/"/;s/|/;/g;s/$/"/' nasdaqlisted.txt > removedPipes.txt
-sed 's/^^/"/;s/|/;/g;s/$/"/' otherlisted.txt > removedPipes2.txt
 
 REM remove quotes
 sed 's/^^/"/;s/"//g;s/$//' removedPipes.txt > c:\test\nasdaqSymbols.csv
-sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbols.csv
+REM sed 's/^^/"/;s/"//g;s/$//' nasdaqlisted.txt > c:\test\nasdaqSymbols.txt
 
-REM rebuild scripts
-echo drop database if exists nasdaqsymbols; create database nasdaqsymbols;| psql -U postgres
-REM no need for separate db's
-REM echo drop database if exists othersymbols; create database othersymbols;| psql -U postgres
+REM erase nasdaqlisted.txt
+REM erase removedPipes.txt
+
+REM add symbol
+
+echo drop database if exists nasdaqSymbols; create database nasdaqsymbols;| psql -U postgres
 
 echo drop table if exists public.nSymbols;| psql -U postgres nasdaqsymbols
-echo drop table if exists public.oSymbols;| psql -U postgres nasdaqsymbols
 
 echo CREATE TABLE nSymbols (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbols_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres nasdaqsymbols
 
-echo CREATE TABLE oSymbols (symbol varchar(8), securityName varchar(256), Exchange varchar(16),CQSSymbol varchar(16),ETF varchar(8),roundLotSize varchar(4),testIssue varchar(4), nasdaqSymbol varchar(8),CONSTRAINT osymbols_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres nasdaqsymbols
-
 echo ALTER TABLE public.nSymbols OWNER to postgres;| psql -U postgres nasdaqsymbols
-
-echo ALTER TABLE public.oSymbols OWNER to postgres;| psql -U postgres nasdaqsymbols
 
 echo COPY nSymbols(symbol,securityName,MarketCategory,testIssue,financialStatus,roundLotSize,ETF,nextShares) FROM 'c:\test\nasdaqSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres nasdaqsymbols
 
-echo COPY oSymbols(symbol,securityName,Exchange,CQSSymbol,ETF,roundLotSize,testIssue,nasdaqSymbol) FROM 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres nasdaqsymbols
-
 more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
-more +1 c:\test\nasdaqSymbols.csv > c:\test\otherSymbolsNoHeader.csv
 
 REM rebuild scripts
 	REM echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres
@@ -54,7 +46,7 @@ REM rebuild scripts
 
 echo CREATE TABLE IF NOT EXISTS public.%tableName% (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.%tableName% OWNER to postgres; | psql -U postgres %dbName%
 
-REM doesn't work in for loop, temp table holds symbol data before on distinct merge is performed over master table
+REM doesn't work in for loop
 echo CREATE TABLE temp_table (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT temp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE temp_table OWNER to postgres; | psql -U postgres %dbName%
 
 rem set counter=1
