@@ -57,6 +57,8 @@ REM try: https://stackoverflow.com/questions/13947327/to-ignore-duplicate-keys-d
 REM prints each entry
 for /F "delims=;" %a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	if not exist "c:\test\%a.csv" curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%a&outputsize=full&apikey=%APIKEY%&datatype=csv" --stderr -> c:\test\%a.csv;
+	if not exist "c:\test\%awSymbols.csv" set waitFlag='True' 
+	if exist "c:\test\%awSymbols.csv" set waitFlag='False'
 	if not exist "c:\test\%awSymbols.csv" awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%a c:\test\%a.csv > c:\test\%awSymbols.csv
 	
 	echo drop table public.temp_table;| psql -U postgres somedb
@@ -72,7 +74,7 @@ for /F "delims=;" %a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	
 	echo drop table public.temp_table;| psql -U postgres somedb
 	
-	sleep '15'
+	if "%waitFlag%"=='True' (Sleep '11');
 
 )
 
