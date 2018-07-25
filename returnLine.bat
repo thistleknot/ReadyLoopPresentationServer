@@ -1,5 +1,6 @@
 echo off
-set "file=apiKey.txt"
+set line=%1
+set "file=%2"
 set /A i=0
 
 for /F "usebackq delims=" %%a in ("%file%") do (
