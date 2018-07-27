@@ -1,9 +1,20 @@
-set /A i=0
-echo off
-for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
+SETLOCAL ENABLEDELAYEDEXPANSION
+SET count=1
+FOR /f "tokens=*" %%G IN ('type c:\test\nasdaqSymbolsNoHeader.csv') DO (
 
-set /A i+=1
-call set n=%%i%%
+REM call :s_do_sums "%%G"'
+call :s_do_sums "%%G"' > test.txt
+type test.txt
 
+REM doesn't work
+set e=|type test.txt
+REM echo %e% > test2.txt
+echo !e!
+type test2.txt
 )
-call echo %n%
+GOTO :eof
+
+:s_do_sums
+ echo %count%
+ set /a count+=1
+ GOTO :eof
