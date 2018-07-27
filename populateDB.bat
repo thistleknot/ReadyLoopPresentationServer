@@ -2,9 +2,11 @@ set PGPASSWORD=|type psqlPW.txt
 REM findstr /R /N "^" apikey.txt| find /C ":" > lines.txt
 REM sed -i "$d" lines.txt
 REM set lines=|type lines.txt
-set numKeys=2
-set APIKEY=|type apikey.txt
-set APIKEY2=|type apikey2.txt
+REM Thank you: https://stackoverflow.com/questions/6359820/how-to-set-commands-output-as-a-variable-in-a-batch-file
+FOR /F "tokens=*" %a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%a
+FOR /F "tokens=*" %a in ('returnLine.bat %numKeys%') do SET APIKEY=%a
+rem set numKeys=|returnNumLines.bat apiKey.txt
+REM set APIKEY=|type apikey.txt
 
 set dbName=somedb
 set tableName=ur_table
@@ -77,6 +79,7 @@ for /F "delims=;" %a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	
 	echo drop table temp_table2;| psql -U postgres somedb
 	
+	Rem copy blank table, only used for it's metadata
 	echo create table temp_table2 as table temp_table;|psql -U postgres somedb
 
 	REM echo CREATE TABLE public.temp_table (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT temp_timestamp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.temp_table OWNER to postgres; | psql -U postgres somedb
@@ -95,6 +98,7 @@ for /F "delims=;" %a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	REM if %waitFlag% equ true Sleep '11';
 	timeout 12
 	
+	REM Counter
 	set /A i+=1
 	call set n=%%i%%
 	
