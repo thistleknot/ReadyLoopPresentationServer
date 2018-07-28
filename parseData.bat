@@ -36,22 +36,17 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 				echo %%a
 				
 				FOR /F "tokens=*" %%c in ('returnLine.bat !newCounter! apiKey.txt') do SET APIKEY=%%c
-				REM SET /A test=%RANDOM% * 20 / 32768 + 1
+				SET /A test=%RANDOM% * 20 / 32768 + 1
 				
-				FOR /F "tokens=*" %%b in ('returnLine.bat !newCounter! proxyList.txt') do SET PROXY=%%b
+				FOR /F "tokens=*" %%b in ('returnLine.bat !RANDOM! proxyList.txt') do SET PROXY=%%b
 				echo !newCounter!
 				echo !PROXY!
 				echo %%a
 				echo !APIKEY!
 				start call download.bat !PROXY! %%a !APIKEY!
-				set /A newCounter+=1
-				
-
+				set /A newCounter+=1				
 				)
-				timeout /t 13
-				
-
-			
+				timeout /t 13				
 	)
 	
 	if !counter! == %numKeys% call echo	

@@ -1,5 +1,1 @@
-AMD;Advanced Micro Devices, Inc. - Common Stock;S;N;N;100;N;N
-AMDA;Amedica Corporation - Common Stock;S;N;N;100;N;N
-AMED;Amedisys Inc - Common Stock;Q;N;N;100;N;N
-AMEH;Apollo Medical Holdings, Inc. - Common Stock;S;N;N;100;N;N
-AMGN;Amgen Inc. - Common Stock;Q;N;N;100;N;N
+ZYNE;Zynerba Pharmaceuticals, Inc. - Common Stock;G;N;N;100;N;N

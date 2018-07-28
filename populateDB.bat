@@ -33,20 +33,37 @@ echo drop table if exists public.oSymbols;| psql -U postgres %dbName%
 REM rebuild scripts
 	echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres
 	echo drop table if exists public.%tableName%; | psql -U postgres %dbName%
-
+	
 REM symbol tables
 	echo CREATE TABLE nSymbols (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbols_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
 
 	echo CREATE TABLE oSymbols (symbol varchar(8), securityName varchar(256), Exchange varchar(16),CQSSymbol varchar(16),ETF varchar(8),roundLotSize varchar(4),testIssue varchar(4), nasdaqSymbol varchar(8),CONSTRAINT osymbols_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
-
+	
 	echo ALTER TABLE public.nSymbols OWNER to postgres;| psql -U postgres %dbName%
 
 	echo ALTER TABLE public.oSymbols OWNER to postgres;| psql -U postgres %dbName%
 
 	echo COPY nSymbols(symbol,securityName,MarketCategory,testIssue,financialStatus,roundLotSize,ETF,nextShares) FROM 'c:\test\nasdaqSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
 
-	echo COPY oSymbols(symbol,securityName,Exchange,CQSSymbol,ETF,roundLotSize,testIssue,nasdaqSymbol) FROM 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
+	echo COPY oSymbols(symbol,securityName,Exchange,CQSSymbol,ETF,roundLotSize,testIssue,nasdaqSymbol) FROM 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%	
 
+	REM calendar
+	
+			echo CREATE TABLE public.custom_calendarTemplate(date date NOT NULL,y bigint,m bigint,d bigint, dow character varying(3) COLLATE pg_catalog."default", trading smallint, CONSTRAINT custom_calendarTemplate_pkey PRIMARY KEY (date)) WITH (OIDS = FALSE) TABLESPACE pg_default; ALTER TABLE public.custom_calendarTemplate OWNER to postgres;| psql -U postgres %dbName%	
+		
+			echo drop table temp_table2;| psql -U postgres %dbName%	
+				
+			echo create table temp_table2 as table  public.custom_calendarTemplate;|psql -U postgres %dbName%	
+				
+			REM manually created file	
+			xcopy tradingDays.csv c:\test\ /y
+				
+			echo copy temp_table2 from 'c:\test\tradingDays.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%	
+				
+			echo insert into public.custom_calendar select distinct * from temp_table2 ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
+				
+			echo drop table temp_table2;| psql -U postgres %dbName%	
+		
 REM required for parsedata.bat
 	more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
 	more +1 c:\test\nasdaqSymbols.csv > c:\test\otherSymbolsNoHeader.csv
