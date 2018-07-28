@@ -48,7 +48,7 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 				
 
 				)
-				timeout /t 12
+				timeout /t 13
 				
 
 			

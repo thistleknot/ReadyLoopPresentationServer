@@ -1,3 +1,5 @@
-ABEOW;Abeona Therapeutics Inc. - Warrant;S;N;N;100;N;N
-ABIL;Ability Inc. - Ordinary Shares;S;N;D;100;N;N
-ABIO;ARCA biopharma, Inc. - Common Stock;S;N;D;100;N;N
+AMD;Advanced Micro Devices, Inc. - Common Stock;S;N;N;100;N;N
+AMDA;Amedica Corporation - Common Stock;S;N;N;100;N;N
+AMED;Amedisys Inc - Common Stock;Q;N;N;100;N;N
+AMEH;Apollo Medical Holdings, Inc. - Common Stock;S;N;N;100;N;N
+AMGN;Amgen Inc. - Common Stock;Q;N;N;100;N;N
