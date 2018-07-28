@@ -1,3 +1,3 @@
-INSY;Insys Therapeutics, Inc. - Common Stock;G;N;N;100;N;N
-INTC;Intel Corporation - Common Stock;Q;N;N;100;N;N
-INTG;The Intergroup Corporation - Common Stock;S;N;N;100;N;N
+INSE;Inspired Entertainment, Inc. - Common Stock;S;N;N;100;N;N
+INSG;Inseego Corp. - Common Stock;Q;N;N;100;N;N
+INSM;Insmed, Inc. - Common Stock;Q;N;N;100;N;N
