@@ -1,3 +1,3 @@
-576 hundredths of a second
+80 hundredths of a second
 HH:MM:ss.hs
-00:00:05.76
+00:00:00.80

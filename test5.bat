@@ -24,27 +24,26 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 	
 	REM list is ready
 	if !counter! == %numKeys% ( 
-		FOR /L %%i IN (1,1,%numKeys%) DO (	
-			
-			REM for /F "delims=;" %%a in (!temporary!) do (echo %%a)
-			REM echo !temporary!
-			echo "outer loop: " %%i
-			
-			set /A innerCounter=1
-			
-			for /F "delims=;" %%a in (list.txt) do (
-				@echo off
-				FOR /F "tokens=*" %%b in ('returnLine.bat !innerCounter! apiKey.txt') do SET APIKEY=%%b
-				FOR /F "tokens=*" %%b in ('returnLine.bat !innerCounter! proxyList.txt') do SET PROXY=%%b
-				
+	
+			echo !APIKEY!
+			echo !PROXY!
+			echo %%a
+
+			set t1=!TIME!
+			echo !t1!				
 					
-				REM start curl -X !PROXY! -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%%a&outputsize=full&apikey=!APIKEY!&datatype=csv" -o c:\test\%%a.csv;
+			for /F "delims=;" %%a in (list.txt) do (
 				echo %%a
-				echo "inner counter" !innerCounter!
-				set /A innerCounter+=1
 				
+				FOR /F "tokens=*" %%c in ('returnLine.bat !counter! apiKey.txt') do SET APIKEY=%%c
+				FOR /F "tokens=*" %%b in ('returnLine.bat !counter! proxyList.txt') do SET PROXY=%%b
+				
+				start call download.bat !PROXY! %%a !APIKEY!
+
 				)
-		) 
+			set t2=!TIME!
+			echo !t2!	
+			
 	)
 	
 	if !counter! == %numKeys% call echo	
