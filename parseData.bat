@@ -50,7 +50,7 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	
 	echo !noZerosSeconds!
 	
-	set /a noZeroSecondsMinus4=4-!noZerosSeconds!
+	set /a noZeroSecondsMinus12=12-!noZerosSeconds!
 	
 	awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%%a c:\test\%%a.csv > c:\test\%%awSymbols.csv
 	
@@ -69,7 +69,7 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 
  	if !noZerosSeconds! GTR 12 (timeout /t 0)
 	
-	if !noZerosSeconds! LSS 12 (timeout /t !noZeroSecondsMinus4!)
+	if !noZerosSeconds! LSS 12 (timeout /t !noZeroSecondsMinus12!)
 	
 )
 
