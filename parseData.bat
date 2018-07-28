@@ -42,9 +42,11 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 				echo !APIKEY!
 				start call download.bat !PROXY! %%a !APIKEY!
 				set /A newCounter+=1
+				
 
 				)
-				timeout /t 6
+				timeout /t 12
+				
 
 			
 	)
