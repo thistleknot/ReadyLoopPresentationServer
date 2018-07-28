@@ -18,8 +18,33 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	FOR /F "tokens=*" %%b in ('returnLine.bat !count! proxyList.txt') do SET PROXY=%%b
 	echo !APIKEY!
 	echo !PROXY!
+
+	set t1=!TIME!
+	echo !t1!
+
+	curl -x !PROXY! -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%%a&apikey=!APIKEY!&datatype=csv" -o c:\test\%%a.csv;
+
+	set t2=!TIME!
+	echo !t2!
 	
-	curl -x !PROXY! -o c:\test\%%a.csv -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&apikey=NJGT8Z850XNHK8QL&datatype=csv"
+	call tdiff.cmd !t1! !t2! > timeDiff.txt
+	
+	FOR /F "tokens=*" %%b in ('returnLine.bat 3 timeDiff.txt') do SET timeDiff=%%b
+	
+	echo !timeDiff!
+
+	set startcsec=!timeDiff:~9,2!
+	set startsecs=!timeDiff:~6,2!
+	
+	echo !startsecs!
+	
+	set /a seconds=!startsecs!
+	
+	SET noZerosSeconds=!seconds:0=!
+	
+	echo !noZerosSeconds!
+	
+	set /a noZeroSecondsMinus4=4-!noZerosSeconds!
 	
 	awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%%a c:\test\%%a.csv > c:\test\%%awSymbols.csv
 	
@@ -35,8 +60,10 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 
 	if !count! == %numKeys% (set /a count = 0)
 	if not !count! == %numKeys% set /a count += 1
+
+ 	if !noZerosSeconds! GTR 4 (timeout /t 0)
 	
-	timeout /t 4
+	if !noZerosSeconds! LSS 4 (timeout /t !noZeroSecondsMinus4!)
 	
 )
 

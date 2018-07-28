@@ -1,0 +1,3 @@
+46 hundredths of a second
+HH:MM:ss.hs
+00:00:00.46
