@@ -1,3 +1,3 @@
-INTL;INTL FCStone Inc. - Common Stock;Q;N;N;100;N;N
-INTU;Intuit Inc. - Common Stock;Q;N;N;100;N;N
-INTX;Intersections, Inc. - Common Stock;G;N;N;100;N;N
+AABA;Altaba Inc. - Common Stock;Q;N;N;100;N;N
+AAL;American Airlines Group, Inc. - Common Stock;Q;N;N;100;N;N
+AAME;Atlantic American Corporation - Common Stock;G;N;N;100;N;N

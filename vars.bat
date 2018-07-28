@@ -5,6 +5,7 @@ FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
 FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
 set waitPeriod=12
 echo %waitPeriod%
+set PGPASSWORD=|type psqlPW.txt
 
 set dbName=readyloop
 set tableName=dadjclose
