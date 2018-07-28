@@ -2,7 +2,6 @@ REM set PGPASSWPRD=1234
 setlocal enableextensions enabledelayedexpansion
 FOR /F "tokens=*" %%a in ('numLines2.bat apiKey.txt') do SET numKeys=%%a
 FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
-
 FOR /F "tokens=*" %%a in ('numLines2.bat c:^\test^\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
 
 set dbName=readyloop
@@ -27,7 +26,9 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	set t1=!TIME!
 	echo !t1!
 
-	curl -x !PROXY! -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%%a&outputsize=full&apikey=!APIKEY!&datatype=csv" -o c:\test\%%a.csv;
+	REM curl -x !PROXY! -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%%a&outputsize=full&apikey=!APIKEY!&datatype=csv" -o c:\test\%%a.csv;
+	
+	curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%%a&outputsize=full&apikey=!APIKEY!&datatype=csv" -o c:\test\%%a.csv;
 
 	set t2=!TIME!
 	echo !t2!
@@ -66,9 +67,9 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	if !count! == %numKeys% (set /a count = 0)
 	if not !count! == %numKeys% set /a count += 1
 
- 	if !noZerosSeconds! GTR 4 (timeout /t 0)
+ 	if !noZerosSeconds! GTR 12 (timeout /t 0)
 	
-	if !noZerosSeconds! LSS 4 (timeout /t !noZeroSecondsMinus4!)
+	if !noZerosSeconds! LSS 12 (timeout /t !noZeroSecondsMinus4!)
 	
 )
 
