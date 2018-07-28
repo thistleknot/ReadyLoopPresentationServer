@@ -12,20 +12,17 @@ REM SETLOCAL ENABLEDELAYEDEXPANSION
 FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numLines=%%a
 REM echo %numKeys%
 
-set /A arch=1
+set /A counter=1
 FOR /L %%i IN (1,1,%numLines%) DO (
 
-	REM if(!arch! == 1) (returnLine.bat %%i c:\test\nasdaqSymbolsNoHeader.csv > list.txt)
-	REM if(!arch! not == 1) (returnLine.bat %%i c:\test\nasdaqSymbolsNoHeader.csv >> list.txt)
+	if !counter! == 1 (returnLine.bat %%i c:\test\nasdaqSymbolsNoHeader.csv > list.txt)
+	if !counter! gtr 1 (returnLine.bat %%i c:\test\nasdaqSymbolsNoHeader.csv >> list.txt)
 
 	REM ECHO %%i
 	
-	REM if (!arch! == !numKeys!) (set /a a=1)
-	REM if (!arch! not == !numKeys!) (set /a a+=1)
-	echo !arch!
-	set /a arch+=1
-	
-	if !arch! gtr 100 (echo ">100")
-	if !arch! lss 100 (echo "<100")
+	if !counter! == !numKeys! (set /a a=1)
+	if !counter! lss !numKeys! (set /a a+=1)
+	echo !counter!
+	set /a counter+=1
   
 )	
