@@ -48,11 +48,5 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 	set /A counter+=1
 		
 	@echo on
-	
-timeout /t 1
-				
-	
-	
-		
   
 )	
