@@ -6,4 +6,3 @@ FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv'
 
 set dbName=readyloop
 set tableName=dadjclose
-exit

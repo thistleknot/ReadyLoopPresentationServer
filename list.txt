@@ -1,4 +1,3 @@
-ABAC;Renmin Tianli Group, Inc. - Common Shares;S;N;N;100;N;N
-ABAX;ABAXIS, Inc. - Common Stock;Q;N;N;100;N;N
-ABCB;Ameris Bancorp - Common Stock;Q;N;N;100;N;N
-Terminate batch job (Y/N)? 
+ACIW;ACI Worldwide, Inc. - Common Stock;Q;N;N;100;N;N
+ACLS;Axcelis Technologies, Inc. - Common Stock;Q;N;N;100;N;N
+ACMR;ACM Research, Inc. - Class A Common Stock;G;N;N;100;N;N
