@@ -1,11 +1,4 @@
-REM set PGPASSWPRD=1234
-setlocal enableextensions enabledelayedexpansion
-FOR /F "tokens=*" %%a in ('numLines2.bat apiKey.txt') do SET numKeys=%%a
-FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
-FOR /F "tokens=*" %%a in ('numLines2.bat c:^\test^\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
-
-set dbName=readyloop
-set tableName=dadjclose
+call vars.bat
 
 set /a count = 1
 

@@ -1,7 +1,5 @@
 @echo off
-wc -l %1 > temp.txt
-cut -d ' ' -f 1 < temp.txt
-erase temp.txt
+setlocal enableextensions enabledelayedexpansion
+find /c /v "" %1 > temp.txt
+awk '{ print $NF }' temp.txt
 @echo on
-
-

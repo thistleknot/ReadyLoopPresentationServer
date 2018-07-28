@@ -1,15 +1,4 @@
-set PGPASSWORD=1234
-REM findstr /R /N "^" apikey.txt| find /C ":" > lines.txt
-REM sed -i "$d" lines.txt
-REM set lines=|type lines.txt
-REM Thank you: https://stackoverflow.com/questions/6359820/how-to-set-commands-output-as-a-variable-in-a-batch-file
-FOR /F "tokens=*" %a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%a
-FOR /F "tokens=*" %a in ('returnLine.bat %numKeys%') do SET APIKEY=%a
-rem set numKeys=|returnNumLines.bat apiKey.txt
-REM set APIKEY=|type apikey.txt
-
-set dbName=readyloop
-set tableName=dadjclose
+call vars.bat
 
 REM download symbols
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt" --stderr -> nasdaqlisted.txt
