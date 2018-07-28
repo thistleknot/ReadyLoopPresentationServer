@@ -108,7 +108,7 @@ REM symbol tables
 		
 			echo create view filtered as SELECT * FROM returnsNasdaq WHERE symbol NOT IN  (SELECT DISTINCT symbol FROM exclusions_2013_2017);| psql -U postgres %dbName%		
 		
-			echo select symbol, AVG(NULLIF(ret,0)) as average from filtered group by symbol order by average desc;| psql -U postgres %dbName%		
+			echo select symbol, AVG(NULLIF(ret,0)) as average from filtered group by symbol order by average desc;| psql -U postgres %dbName%					
 					
 REM required for parsedata.bat
 	more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv

@@ -27,6 +27,15 @@ Create Materialized View returnsNasdaq2 AS
 			select * from custom_calendar order by date asc;
 			
 			select * from v_eod_indices_2013_2017 where adjusted_close='0'
-			
-select symbol, AVG(NULLIF(ret,0)) as average from returnsNasdaq group by symbol order by average desc; 
-			
+
+		SELECT symbol, 'More than 1% missing' as reason
+		INTO exclusions_2013_2017
+		FROM dadjclose
+		GROUP BY symbol
+		HAVING count(*)::real/(SELECT COUNT(*) FROM custom_calendar WHERE trading=1 AND date BETWEEN '2012-12-31' AND '2018-07-28')::real<0.99;					
+		
+		INSERT INTO exclusions_2013_2017 SELECT DISTINCT symbol, 'Return higher than 100%' as reason FROM returnsNasdaq WHERE ret>1.0;
+		
+		create view filtered as SELECT * FROM returnsNasdaq WHERE symbol NOT IN  (SELECT DISTINCT symbol FROM exclusions_2013_2017);
+		
+		select symbol, AVG(NULLIF(ret,0)) as average from filtered group by symbol order by average desc; 
