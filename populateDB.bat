@@ -55,7 +55,8 @@ REM symbol tables
 				
 			echo create table temp_table2 as table  public.custom_calendarTemplate;|psql -U postgres %dbName%	
 				
-			REM manually created file	
+			REM manually created file
+			REM atm based on nasdaq holidays as found here: http://markets.on.nytimes.com/research/markets/holidays/holidays.asp?display=all
 			xcopy tradingDays.csv c:\test\ /y
 				
 			echo copy temp_table2 from 'c:\test\tradingDays.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%	
