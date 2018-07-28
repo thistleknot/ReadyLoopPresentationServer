@@ -1,11 +1,7 @@
-echo off
-set "file=%1"
-set /A i=0
+@echo off
+wc -l %1 > temp.txt
+cut -d ' ' -f 1 < temp.txt
+erase temp.txt
+@echo on
 
-for /F "usebackq delims=" %%a in ("%file%") do (
-set /A i+=1
-REM call set array[%%i%%]=%%a
-call set n=%%i%%
-)
 
-call echo %n%
