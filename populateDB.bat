@@ -64,6 +64,27 @@ REM symbol tables
 			echo insert into public.custom_calendar select distinct * from temp_table2 ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
 				
 			echo drop table temp_table2;| psql -U postgres %dbName%	
+			
+			REM add EOM and Trading Day
+			
+			echo ALTER TABLE public.custom_calendar ADD COLUMN eom smallint;| psql -U postgres %dbName%	
+
+			echo ALTER TABLE public.custom_calendar ADD COLUMN prev_trading_day date;| psql -U postgres %dbName%	
+			
+			REM EOM Flag
+			echo UPDATE custom_calendar SET eom = EOMI.endofm FROM (SELECT CC.date,CASE WHEN EOM.y IS NULL THEN 0 ELSE 1 END endofm FROM custom_calendar CC LEFT JOIN (SELECT y,m,MAX(d) lastd FROM custom_calendar WHERE trading=1 GROUP by y,m) EOM ON CC.y=EOM.y AND CC.m=EOM.m AND CC.d=EOM.lastd) EOMI WHERE custom_calendar.date = EOMI.date;| psql -U postgres %dbName%
+			
+			set lessThan=|printf '\74'
+			REM Prior Trading Day
+			REM has to be ran manually!
+			
+			echo UPDATE custom_calendar SET prev_trading_day = PTD.ptd FROM (SELECT date, (SELECT MAX(CC.date) FROM custom_calendar CC WHERE CC.trading=1 AND CC.date^<custom_calendar.date) ptd FROM custom_calendar) PTD WHERE custom_calendar.date = PTD.date; > command.txt
+
+			REM OMG it works
+			set command=returnLine 1 command.txt
+			%command%|psql -U postgres %dbName%
+			
+	
 		
 REM required for parsedata.bat
 	more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
