@@ -1,0 +1,1 @@
+start curl -X %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%%a&outputsize=full&apikey=%2&datatype=csv" -o c:\test\%3.csv;
