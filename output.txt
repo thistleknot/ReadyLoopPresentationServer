@@ -1,0 +1,22 @@
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>vars.bat
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>setlocal enableextensions enabledelayedexpansion 
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>FOR /F "tokens=*" %a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%a 
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>SET numKeys=3 
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>FOR /F "tokens=*" %a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%a 
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>SET PGPASSWORD=C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>sed '1q;d' psqlPW.txt  
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>SET PGPASSWORD=1234 
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>FOR /F "tokens=*" %a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%a 
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>SET numNasdaqSymbols=3366 
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>set dbName=readyloop 
+
+C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>set tableName=dadjclose 
