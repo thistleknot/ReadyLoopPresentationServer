@@ -83,8 +83,11 @@ REM symbol tables
 			REM OMG it works
 			set command=returnLine 1 command.txt
 			%command%|psql -U postgres %dbName%
+			erase command.txt
 			
-	
+			REM command is formatted correctly, but it chokes on a division by 0.  I assume this is because I didn't create a view with dates to ensure I always had a prior day trading.
+			
+			REM	echo Create Materialized View returnsNasdaq AS SELECT EOD.symbol,EOD.timestamp,EOD.adjusted_close/PREV_EOD.adjusted_close-1.0 AS ret FROM dadjclose EOD INNER JOIN custom_calendar CC ON EOD.timestamp=CC.date INNER JOIN dadjclose PREV_EOD ON PREV_EOD.symbol=EOD.symbol AND PREV_EOD.timestamp=CC.prev_trading_day;REFRESH MATERIALIZED VIEW returnsNasdaq WITH DATA;; | psql -U postgres %dbName%			
 		
 REM required for parsedata.bat
 	more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
