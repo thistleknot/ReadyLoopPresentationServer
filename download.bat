@@ -12,11 +12,12 @@ echo drop table temp_table%2;| psql -U postgres %dbName%
 
 echo create table temp_table%2 as table temp_table;|psql -U postgres %dbName%
 
-echo copy temp_table%2 from 'c:\test\%%awSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+echo copy temp_table%2 from 'c:\test\%2wSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
 
 echo insert into %tableName% select distinct * from temp_table%2 ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
 
 echo drop table temp_table%2;| psql -U postgres %dbName%
 	
 timeout /t 4
+
 exit

@@ -1,3 +1,3 @@
-AAWW;Atlas Air Worldwide Holdings - Common Stock;Q;N;N;100;N;N
-AAXJ;iShares MSCI All Country Asia ex Japan Index Fund;G;N;N;100;Y;N
-AAXN;Axon Enterprise, Inc. - Common Stock;Q;N;N;100;N;N
+ABEOW;Abeona Therapeutics Inc. - Warrant;S;N;N;100;N;N
+ABIL;Ability Inc. - Ordinary Shares;S;N;D;100;N;N
+ABIO;ARCA biopharma, Inc. - Common Stock;S;N;D;100;N;N
