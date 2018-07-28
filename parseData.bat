@@ -1,7 +1,6 @@
 REM set PGPASSWPRD=1234
 setlocal enableextensions enabledelayedexpansion
 FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
-REM FOR /F "tokens=*" %%a in ('returnLine.bat %numKeys% apiKey.txt') do SET APIKEY=%%a
 FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
 
 set dbName=somedb
@@ -16,9 +15,12 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	REM key counter
 	echo !count!
 	FOR /F "tokens=*" %%b in ('returnLine.bat !count! apiKey.txt') do SET APIKEY=%%b
+	FOR /F "tokens=*" %%b in ('returnLine.bat !count! proxyList.txt') do SET PROXY=%%b
+	echo !APIKEY!
+	echo !PROXY!
 	
-	curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%%a&apikey=!APIKEY!&datatype=csv" --stderr -> c:\test\%%a.csv;
-
+	curl -x !PROXY! -o c:\test\%%a.csv -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=MSFT&apikey=NJGT8Z850XNHK8QL&datatype=csv"
+	
 	awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%%a c:\test\%%a.csv > c:\test\%%awSymbols.csv
 	
 	echo drop table temp_table2;| psql -U postgres somedb
@@ -34,7 +36,7 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	if !count! == %numKeys% (set /a count = 0)
 	if not !count! == %numKeys% set /a count += 1
 	
-	timeout /t 6
+	timeout /t 4
 	
 )
 
