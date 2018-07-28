@@ -16,7 +16,7 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	REM key counter
 	echo !count!
 	FOR /F "tokens=*" %%b in ('returnLine.bat !count! apiKey.txt') do SET APIKEY=%%b
-
+	
 	curl --silent "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%%a&apikey=!APIKEY!&datatype=csv" --stderr -> c:\test\%%a.csv;
 
 	awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%%a c:\test\%%a.csv > c:\test\%%awSymbols.csv
@@ -34,7 +34,7 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	if !count! == %numKeys% (set /a count = 0)
 	if not !count! == %numKeys% set /a count += 1
 	
-	timeout /t 4
+	timeout /t 6
 	
 )
 
