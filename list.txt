@@ -1,3 +1,1 @@
-
-C:\Users\user\Documents\alphaAdvantageApi\alphaAdvantagePostGRESQL>sed '1q;d' c:\test\nasdaqSymbolsNoHeader.csv 
-AABA;Altaba Inc. - Common Stock;Q;N;N;100;N;N
+ABEOW;Abeona Therapeutics Inc. - Warrant;S;N;N;100;N;N

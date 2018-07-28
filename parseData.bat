@@ -20,6 +20,8 @@ for /F "delims=;" %%a in (c:\test\nasdaqSymbolsNoHeader.csv) do (
 	set t1=!TIME!
 	echo !t1!
 
+	REM query to see where left off (select distinct symbol from dadjclose order by symbol;)
+	
 	REM curl -x !PROXY! -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%%a&outputsize=full&apikey=!APIKEY!&datatype=csv" -o c:\test\%%a.csv;
 	
 	curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%%a&outputsize=full&apikey=!APIKEY!&datatype=csv" -o c:\test\%%a.csv;
