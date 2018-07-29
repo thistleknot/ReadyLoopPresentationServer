@@ -19,11 +19,11 @@ for /f "delims=" %%x in ('cat epochNow.txt') do set "end=%%x"
 
 echo %begin%
 echo %end%
-
+		
 set task="%gnuUtilpath%wget.exe"
 for /f "delims=" %%x in ('getCrumb.bat') do set "crumb=%%x"
 echo %crumb%
 
 REM works
-curl -s --cookie cookie.txt  "https://query1.finance.yahoo.com/v7/finance/download/%%5ESP500TR?period1=0978336000&period2=1532888283&interval=1d&events=history&crumb=%crumb%"
+curl -s --cookie cookie.txt  "https://query1.finance.yahoo.com/v7/finance/download/%%5ESP500TR?period1=0%begin%&period2=%end%&interval=1d&events=history&crumb=%crumb%"
 
