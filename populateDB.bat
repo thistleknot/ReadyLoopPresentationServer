@@ -1,4 +1,4 @@
-REM vars.bat
+vars.bat
 setlocal enableextensions enabledelayedexpansion
 
 REM %1 = drop flag, assume 0 (not 1)
@@ -38,6 +38,28 @@ dlsp500.bat > SP500.csv
 REM rebuild scripts
 	if %1==1 (echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres; echo drop table if exists public.%tableName%; | psql -U postgres %dbName%)
 	
+REM indice tables
+
+-- DROP TABLE public.eod_indices;
+
+	echo CREATE TABLE if not exists eod_indices_Template( symbol character varying(16) COLLATE pg_catalog."default" NOT NULL, date date NOT NULL, open real, high real, low real, close real, adj_close real, volume double precision, CONSTRAINT eod_indicesTemplate_pkey PRIMARY KEY (symbol, date)) WITH (OIDS = FALSE) TABLESPACE pg_default; ALTER TABLE public.eod_indices OWNER to postgres;| psql -U postgres %dbName%
+	
+		echo CREATE TABLE if not exists eod_indices as select * from eod_indices_Template;| psql -U postgres %dbName%
+		
+		echo CREATE TABLE if not exists eod_indicesTemp as select * from eod_indices_Template;| psql -U postgres %dbName%
+	
+		REM for now we're just going to copy from a static file, but the intent is to go through a set of files and download each index from yahoo similar to how I download symbols from alphaadvantage.  I suppose I'll have to do something similar for FRED data.  A bunch of mini subtasks that download their own lists/structures of data (for example, I still only have nasdaq imported atm).
+		
+		xcopy sp500.csv c:\test\ /y
+		
+		awk '{print F,$1,$2,$3,$4,$5,$6,$7}' FS=, OFS=, F=SP500TR c:\test\sp500.csv > c:\test\sp500wSymbols.csv
+  
+		echo copy eod_indicesTemp from 'c:\test\sp500wSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+		
+		echo insert into eod_indices select distinct * from eod_indicesTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
+		
+		echo ALTER TABLE nSymbols OWNER to postgres;| psql -U postgres %dbName%
+
 REM symbol tables
 
 	echo create table nSymbolsTemplate (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
@@ -51,9 +73,7 @@ REM symbol tables
 		echo insert into nSymbols select distinct * from nSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
 		
 		echo ALTER TABLE nSymbols OWNER to postgres;| psql -U postgres %dbName%
-		
-		REM echo COPY nSymbols(symbol,securityName,MarketCategory,testIssue,financialStatus,roundLotSize,ETF,nextShares) FROM 'c:\test\nasdaqSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
-		
+
 	echo CREATE TABLE if not exists oSymbolsTemplate (symbol varchar(8), securityName varchar(256), Exchange varchar(16),CQSSymbol varchar(16),ETF varchar(8),roundLotSize varchar(4),testIssue varchar(4), nasdaqSymbol varchar(8),CONSTRAINT osymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
 	
 		echo CREATE TABLE if not exists oSymbols as select * from oSymbolsTemplate;| psql -U postgres %dbName%
@@ -65,9 +85,7 @@ REM symbol tables
 		echo insert into oSymbols select distinct * from oSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
 		
 		echo ALTER TABLE oSymbols OWNER to postgres;| psql -U postgres %dbName%
-		
-		REM echo COPY oSymbols(symbol,securityName,Exchange,CQSSymbol,ETF,roundLotSize,testIssue,nasdaqSymbol) FROM 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%	
-		
+
 	REM calendar
 	
 			echo CREATE TABLE public.custom_calendarTemplate(date date NOT NULL,y bigint,m bigint,d bigint, dow character varying(3) COLLATE pg_catalog."default", trading smallint, CONSTRAINT custom_calendarTemplate_pkey PRIMARY KEY (date)) WITH (OIDS = FALSE) TABLESPACE pg_default; ALTER TABLE public.custom_calendarTemplate OWNER to postgres;| psql -U postgres %dbName%	
