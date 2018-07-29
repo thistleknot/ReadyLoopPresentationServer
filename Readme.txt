@@ -40,3 +40,13 @@ proxylist.txt
 	REM acquire proxies from: https://free-proxy-list.net/anonymous-proxy.html#
 	REM format of file ip:port
 
+
+Dependencies
+
+	PopulateDb.bat
+		parsedata.bat
+			download.bat
+		
+
+	dlSP500.bat
+		getCrumb.bat
