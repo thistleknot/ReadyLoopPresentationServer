@@ -20,7 +20,7 @@ Requires
 
 
 Configuration
-	populdateDB.ba
+	populdateDB.bat
 		gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
 
 APIKey.txt
