@@ -13,7 +13,6 @@ set PGPASSWORD=1234
 set dbName=readyloop
 set tableName=dadjclose
 
-
 REM download symbols
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt" --stderr -> nasdaqlisted.txt
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt" --stderr -> otherlisted.txt
@@ -32,6 +31,9 @@ sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbols.csv
 
 echo drop table if exists public.nSymbols;| psql -U postgres %dbName%
 echo drop table if exists public.oSymbols;| psql -U postgres %dbName%
+
+REM download SP500 Index
+dlsp500.bat > SP500.csv
 
 REM rebuild scripts
 	if %1==1 (echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres; echo drop table if exists public.%tableName%; | psql -U postgres %dbName%)
