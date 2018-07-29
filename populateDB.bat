@@ -1,6 +1,8 @@
 REM vars.bat
 setlocal enableextensions enabledelayedexpansion
 
+REM %1 = drop flag, assume 0 (not 1)
+
 FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
 FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
 FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
@@ -31,22 +33,38 @@ echo drop table if exists public.nSymbols;| psql -U postgres %dbName%
 echo drop table if exists public.oSymbols;| psql -U postgres %dbName%
 
 REM rebuild scripts
-	echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres
-	echo drop table if exists public.%tableName%; | psql -U postgres %dbName%
+	if %1==1 (echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres; echo drop table if exists public.%tableName%; | psql -U postgres %dbName%)
 	
 REM symbol tables
-	echo CREATE TABLE nSymbols (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbols_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
 
-	echo CREATE TABLE oSymbols (symbol varchar(8), securityName varchar(256), Exchange varchar(16),CQSSymbol varchar(16),ETF varchar(8),roundLotSize varchar(4),testIssue varchar(4), nasdaqSymbol varchar(8),CONSTRAINT osymbols_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
+	echo create table nSymbolsTemplate (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
 	
-	echo ALTER TABLE public.nSymbols OWNER to postgres;| psql -U postgres %dbName%
+		echo CREATE TABLE if not exists nSymbols as select * from nSymbolsTemplate;| psql -U postgres %dbName%
+	
+		echo CREATE TABLE if not exists nSymbolsTemp as select * from nSymbolsTemplate;| psql -U postgres %dbName%
 
-	echo ALTER TABLE public.oSymbols OWNER to postgres;| psql -U postgres %dbName%
+		echo copy nSymbolsTemp from 'c:\test\nasdaqSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
+		
+		echo insert into nSymbols select distinct * from nSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
+		
+		echo ALTER TABLE nSymbols OWNER to postgres;| psql -U postgres %dbName%
+		
+		REM echo COPY nSymbols(symbol,securityName,MarketCategory,testIssue,financialStatus,roundLotSize,ETF,nextShares) FROM 'c:\test\nasdaqSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
+		
+	echo CREATE TABLE if not exists oSymbolsTemplate (symbol varchar(8), securityName varchar(256), Exchange varchar(16),CQSSymbol varchar(16),ETF varchar(8),roundLotSize varchar(4),testIssue varchar(4), nasdaqSymbol varchar(8),CONSTRAINT osymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
+	
+		echo CREATE TABLE if not exists oSymbols as select * from oSymbolsTemplate;| psql -U postgres %dbName%
+	
+		echo CREATE TABLE if not exists oSymbolsTemp as select * from oSymbolsTemplate;| psql -U postgres %dbName%
 
-	echo COPY nSymbols(symbol,securityName,MarketCategory,testIssue,financialStatus,roundLotSize,ETF,nextShares) FROM 'c:\test\nasdaqSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
-
-	echo COPY oSymbols(symbol,securityName,Exchange,CQSSymbol,ETF,roundLotSize,testIssue,nasdaqSymbol) FROM 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%	
-
+		echo copy nSymbolsTemp from 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
+		
+		echo insert into oSymbols select distinct * from oSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
+		
+		echo ALTER TABLE oSymbols OWNER to postgres;| psql -U postgres %dbName%
+		
+		REM echo COPY oSymbols(symbol,securityName,Exchange,CQSSymbol,ETF,roundLotSize,testIssue,nasdaqSymbol) FROM 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%	
+		
 	REM calendar
 	
 			echo CREATE TABLE public.custom_calendarTemplate(date date NOT NULL,y bigint,m bigint,d bigint, dow character varying(3) COLLATE pg_catalog."default", trading smallint, CONSTRAINT custom_calendarTemplate_pkey PRIMARY KEY (date)) WITH (OIDS = FALSE) TABLESPACE pg_default; ALTER TABLE public.custom_calendarTemplate OWNER to postgres;| psql -U postgres %dbName%	

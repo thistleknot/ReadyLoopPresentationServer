@@ -6,6 +6,7 @@ FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv'
 set waitPeriod=12
 echo %waitPeriod%
 set PGPASSWORD=1234
+set fullFlag=1
 
 set dbName=readyloop
 set tableName=dadjclose

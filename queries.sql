@@ -39,3 +39,49 @@ Create Materialized View returnsNasdaq2 AS
 		create view filtered as SELECT * FROM returnsNasdaq WHERE symbol NOT IN  (SELECT DISTINCT symbol FROM exclusions_2013_2017);
 		
 		select symbol, AVG(NULLIF(ret,0)) as average from filtered group by symbol order by average desc; 
+		
+		-- Daily prices export
+		SELECT PR.* 
+		INTO export_daily_prices_2013_2017
+		FROM custom_calendar CC LEFT JOIN returnsNasdaq PR ON CC.date=PR.timestamp
+		WHERE CC.trading=1;
+
+		COPY export_daily_prices_2013_2017 To 'C:\TEST\export_monthly_prices_2013_2017.csv' With CSV DELIMITER ',';
+
+		-- Monthly (eom) prices export
+
+		SELECT PR.* 
+		INTO export_monthly_prices_2013_2017
+		FROM custom_calendar CC LEFT JOIN returnsNasdaq PR ON CC.date=PR.timestamp
+		WHERE CC.trading=1 AND CC.eom=1;
+
+		COPY export_monthly_prices_2013_2017 To 'C:\TEST\export_monthly_prices_2013_2017.csv' With CSV DELIMITER ',';
+
+		-- Daily returns export
+
+		SELECT PR.* 
+		INTO export_daily_returns_2013_2017
+		FROM custom_calendar CC LEFT JOIN returnsNasdaq PR ON CC.date=PR.timestamp
+		WHERE CC.trading=1;
+
+		COPY export_daily_returns_2013_2017 To 'C:\TEST\export_daily_returns_2013_2017.csv' With CSV DELIMITER ',';			
+		
+--- Create User
+
+CREATE USER readyloop WITH
+	LOGIN
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1
+	PASSWORD 'read123';
+	
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO readyloop;
+
+-- Grant read rights (for future tables and views)
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+   GRANT SELECT ON TABLES TO readyloop;
+   
+	
