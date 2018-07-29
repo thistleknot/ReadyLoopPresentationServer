@@ -13,6 +13,32 @@ set PGPASSWORD=1234
 set dbName=readyloop
 set tableName=dadjclose
 
+REM thank you
+REM https://stackoverflow.com/questions/3454112/is-there-a-way-to-get-epoch-time-using-a-windows-command
+set gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
+
+set epochNow="%gnuUtilpath%date.exe" +%s
+%epochNow% > epochNow.txt
+cat epochNow.txt
+
+REM thank you
+REM https://stackoverflow.com/questions/3454112/is-there-a-way-to-get-epoch-time-using-a-windows-command
+REM current date: gnudate +%s
+
+REM thank you
+REM https://stackoverflow.com/questions/10990949/convert-date-time-string-to-epoch-in-bash
+REM date -d '06/12/2012 07:21:22' +"%s"
+REM date -d '01/01/2000' +"%s"
+
+REM https://www.gnu.org/software/coreutils/manual/html_node/Examples-of-date.html
+REM date --date='1970-01-01 00:02:00 +0000' +%s
+REM 120
+
+set epochThen="%gnuUtilpath%date.exe" -d "01/01/2018" +%s
+%epochThen% > epochThen.txt
+cat epochThen.txt
+
+
 REM download symbols
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt" --stderr -> nasdaqlisted.txt
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt" --stderr -> otherlisted.txt
