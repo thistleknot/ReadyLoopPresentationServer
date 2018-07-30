@@ -118,3 +118,6 @@ Dependencies
 
 		dlSP500.bat
 			getCrumb.bat
+			
+		downloadBonds.bat
+			getCrumb.bat

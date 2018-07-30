@@ -12,8 +12,6 @@ set epochThen="%gnuUtilpath%date.exe" -d "01/01/2001" +%%s
 for /f "delims=" %%x in ('cat epochThen.txt') do set "begin=%%x"
 for /f "delims=" %%x in ('cat epochNow.txt') do set "end=%%x"
 	
-set task="%gnuUtilpath%wget.exe"
-
 set urlbase=https://query1.finance.yahoo.com/v7/finance/download/
 
 set symbol=%%5ESP500TR
