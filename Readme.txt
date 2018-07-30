@@ -52,6 +52,8 @@ potential sources
 		https://query1.finance.yahoo.com/v7/finance/download/HECO?period1=1325404800&period2=1514707200&interval=1d&events=history&crumb=XwK9tui4bLR
 	
 	https://www.programmableweb.com/news/96-stocks-apis-bloomberg-nasdaq-and-etrade/2013/05/22
+	https://www.quantshare.com/sa-620-10-new-ways-to-download-historical-stock-quotes-for-free
+	
 	Quandl
 		Quandl will handle ETF's
 		see: https://blog.quandl.com/api-for-stock-data
@@ -86,6 +88,12 @@ potential sources
 	
 	https://www.quandl.com/data/PE?utm_source=google&utm_medium=organic&utm_campaign=&utm_content=api-for-stock-data
 
+	Possible sources
+		https://www.investing.com/etfs/ishares-inv-g-bond-historical-data
+		can't seem to access file, even using cookies method
+			sample java link: blob:https://www.investing.com/8de41496-fdc2-4a00-b61a-19fd0d843452
+		
+	
 API's	
 	https://www.programmableweb.com/news/96-stocks-apis-bloomberg-nasdaq-and-etrade/2013/05/22
 	Quandl

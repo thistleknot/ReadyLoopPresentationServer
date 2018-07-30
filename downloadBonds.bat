@@ -18,9 +18,14 @@ set task="%gnuUtilpath%wget.exe"
 set urlbase=https://query1.finance.yahoo.com/v7/finance/download/
 
 for /F "delims=," %%a in ('etfSub.bat') do (
+	echo %%a
 	
 	for /f "delims=" %%x in ('getCrumb.bat %%a') do set "crumb=%%x"
-	curl -s --cookie cookie.txt "https://query1.finance.yahoo.com/v7/finance/download/%%a?period1=0%begin%&period2=%end%&interval=1d&events=history&crumb=!crumb!" > "C:\test\ETF-%%a.csv"
+	REM subDownloadBonds.bat
+		
+	call subDownloadBonds.bat %%a %begin% %end% !crumb! > "c:\test\ETF-%%a.csv"
+	
+	
 )
 
 

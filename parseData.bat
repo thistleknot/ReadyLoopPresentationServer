@@ -15,8 +15,6 @@ set tableName=dadjclose
 FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numLines=%%a
 @echo off
 
-echo CREATE TABLE temp_table (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT temp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE temp_table OWNER to postgres; | psql -U postgres %dbName%
-
 set /A counter=1
 FOR /L %%i IN (1,1,%numLines%) DO (
 
@@ -43,7 +41,7 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 				echo !PROXY!
 				echo %%a
 				echo !APIKEY!
-				start call download.bat !PROXY! %%a !APIKEY!
+				start call downloadNasdaq.bat !PROXY! %%a !APIKEY!
 				set /A newCounter+=1				
 				)
 				timeout /t 13				
@@ -58,4 +56,3 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 	@echo on
   
 )	
-echo drop table temp_table;| psql -U postgres %dbName%

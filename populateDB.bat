@@ -11,7 +11,7 @@ echo %waitPeriod%
 set PGPASSWORD=1234
 
 set dbName=readyloop
-set tableName=dadjclose
+set tableName=nasdaq_facts
 
 REM download symbols
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt" --stderr -> nasdaqlisted.txt
@@ -143,7 +143,7 @@ REM symbol tables
 			REM query: select symbol, AVG(NULLIF(ret,0)) as average from returnsNasdaq group by symbol order by average desc; 
 			
 			REM exclusions
-			echo SELECT symbol, 'More than 1% missing' as reason INTO exclusions_2013_2017 FROM dadjclose GROUP BY symbol HAVING count(*)::real/(SELECT COUNT(*) FROM custom_calendar WHERE trading=1 AND date BETWEEN '2012-12-31' AND '2018-07-28')::real^<0.99; > command.txt
+			echo SELECT symbol, 'More than 1% missing' as reason INTO exclusions_2013_2017 FROM %tableName% GROUP BY symbol HAVING count(*)::real/(SELECT COUNT(*) FROM custom_calendar WHERE trading=1 AND date BETWEEN '2012-12-31' AND '2018-07-28')::real^<0.99; > command.txt
 			
 			REM OMG it works
 			set command=returnLine 1 command.txt
@@ -167,8 +167,17 @@ REM required for parsedata.bat
 	more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
 	more +1 c:\test\nasdaqSymbols.csv > c:\test\otherSymbolsNoHeader.csv
 
-REM create fact table	
-	echo CREATE TABLE IF NOT EXISTS public.%tableName% (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT timestamp_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.%tableName% OWNER to postgres; | psql -U postgres %dbName%
+REM create NASDAQ fact table	
+	echo CREATE TABLE IF NOT EXISTS %tableName%_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT nasdaqfacts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE %tableName%_template OWNER to postgres; | psql -U postgres %dbName%
+	
+	echo CREATE TABLE IF NOT EXISTS %tableName% AS select * from %tableName%_template;| psql -U postgres %dbName%
+	
+	
+REM create ETF-Bonds fact table	
+	echo CREATE TABLE IF NOT EXISTS public.etf_bond_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,CONSTRAINT etf_bond_facts_template_key PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.etf_bond_facts_template OWNER to postgres; | psql -U postgres %dbName%
+	
+	echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from public.etf_bond_facts_template;| psql -U postgres %dbName%
+	
 
 REM download data
 	parseData.bat
