@@ -17,7 +17,7 @@ Requires
 
 	Just download all 3, extract each so the extracted subfolders merge into one folder each zip contains eithe additive or the same folder names as coreutils). then you can run date +%2
 	
-	Wget
+	Wget (arguably no longer used)
 	
 		Requires
 		https://astuteinternet.dl.sourceforge.net/project/gnuwin32/wget/1.11.4-1/wget-1.11.4-1-bin.zip
