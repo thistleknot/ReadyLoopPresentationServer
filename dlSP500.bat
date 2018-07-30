@@ -13,8 +13,12 @@ for /f "delims=" %%x in ('cat epochThen.txt') do set "begin=%%x"
 for /f "delims=" %%x in ('cat epochNow.txt') do set "end=%%x"
 	
 set task="%gnuUtilpath%wget.exe"
-for /f "delims=" %%x in ('getCrumb.bat') do set "crumb=%%x"
 
+set urlbase=https://query1.finance.yahoo.com/v7/finance/download/
 
-curl -s --cookie cookie.txt  "https://query1.finance.yahoo.com/v7/finance/download/%%5ESP500TR?period1=0%begin%&period2=%end%&interval=1d&events=history&crumb=%crumb%"
+set symbol=%%5ESP500TR
+for /f "delims=" %%x in ('getCrumb.bat %symbol%') do set "crumb=%%x"
+
+curl -s --cookie cookie.txt  "%urlbase%%symbol%?period1=0%begin%&period2=%end%&interval=1d&events=history&crumb=%crumb%"
+REM echo "%urlbase%%symbol%?period1=0%begin%&period2=%end%&interval=1d&events=history&crumb=%crumb%"
 @echo on

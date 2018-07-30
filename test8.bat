@@ -1,7 +1,3 @@
-setlocal enableextensions enabledelayedexpansion
-
-set etfname=""
-
 FOR /F "tokens=*" %%a in ('type apikey2.txt') do SET key=%%a
 
 for /F "delims=," %%a in ('etfSub.bat') do (

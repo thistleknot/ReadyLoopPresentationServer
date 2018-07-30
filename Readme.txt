@@ -37,19 +37,49 @@ potential sources
 	ETF Historical Prices and ratings (speculative, investment grade)
 		see: https://www.pimco.com/en-us/resources/education/understanding-corporate-bonds/
 		see: https://www.investopedia.com/financial-edge/0612/how-to-invest-in-corporate-bonds.aspx
+		
+	Yahoo
+		S&P500
+		https://finance.yahoo.com/quote/%5ESP500TR/history?period1=1325404800&period2=1514707200&interval=1d&events=history
+		
+		w/crumb
+		"https://query1.finance.yahoo.com/v7/finance/download/%5ESP500TR?period1=0978336000&period2=1532971622&interval=1d&events=history&crumb=7Kqn5pS8WVy"
+		
+		HECO Corporate Bond
+		https://finance.yahoo.com/quote/HECO/history?period1=1325404800&period2=1514707200&interval=1d&filter=history&frequency=1d
+		
+		w/crumb
+		https://query1.finance.yahoo.com/v7/finance/download/HECO?period1=1325404800&period2=1514707200&interval=1d&events=history&crumb=XwK9tui4bLR
 	
 	https://www.programmableweb.com/news/96-stocks-apis-bloomberg-nasdaq-and-etrade/2013/05/22
 	Quandl
 		Quandl will handle ETF's
 		see: https://blog.quandl.com/api-for-stock-data
 		
+		stocks (50 per day)
+		https://blog.quandl.com/api-for-interest-rate-data
+		
 	FRED
 	AlphaAdvantage
 	https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?download=Yes
 	
+	Bond Market in general (Aggregate)
+		https://fred.stlouisfed.org/categories/32348/downloaddata
+		https://www.treasury.gov/resource-center/data-chart-center/digitalstrategy/pages/developer.aspx
+	
 	Not very good
 		http://etfdb.com/etfdb-category/corporate-bonds/
 		https://www.ishares.com/us/products/290144/
+		https://intrinio.com/ (paid)
+			specifically bonds
+			
+		Municipal bonds
+			https://emma.msrb.org/
+			http://www.municipalbonds.com/
+			
+			Resources for bonds: https://learnbonds.com/5810/free-resources-for-bond-investors/#16
+				lacking etf and historical keywords
+			
 		https://www.historicalstockprice.com/history/?a=historical&ticker=LQD&month=07&day=25&year=2018&x=17&y=6
 	
 	https://www.nasdaq.com/symbol/vcsh/historical
