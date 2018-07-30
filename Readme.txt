@@ -47,6 +47,8 @@ Dependencies
 		parsedata.bat
 			download.bat
 		
+		subcurrentdate.bat
+			currentdate.bat
 
-	dlSP500.bat
-		getCrumb.bat
+		dlSP500.bat
+			getCrumb.bat
