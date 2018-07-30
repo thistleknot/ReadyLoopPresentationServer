@@ -63,9 +63,10 @@ DROP TABLE eod_indices;| psql -U postgres %dbName%
 		REM need to create materialized views
 	
 		FOR /F "tokens=*" %%a in ('subcurrentdate.bat') do SET currentdate=%%a
-		
-		rem echo CREATE OR REPLACE VIEW v_eod_indices_2013_2017 AS SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date; > command.txt
-		ECHO SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date ORDER BY DATE ASC; > command.txt
+
+		REM echo drop view v_eod_indices_2013_%currentdate%| psql -U postgres %dbName%	
+		echo CREATE OR REPLACE VIEW 'v_eod_indices_2013_%currentdate%' AS SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date; > command.txt
+		REM ECHO SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date ORDER BY DATE ASC; > command.txt
 		
 		set command=returnLine 1 command.txt
 		%command%|psql -U postgres %dbName%
