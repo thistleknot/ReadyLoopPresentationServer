@@ -40,7 +40,7 @@ REM rebuild scripts
 	
 REM indice tables
 
--- DROP TABLE public.eod_indices;
+DROP TABLE eod_indices;| psql -U postgres %dbName%
 
 	echo CREATE TABLE if not exists eod_indices_Template( symbol character varying(16) COLLATE pg_catalog."default" NOT NULL, date date NOT NULL, open real, high real, low real, close real, adj_close real, volume double precision, CONSTRAINT eod_indicesTemplate_pkey PRIMARY KEY (symbol, date)) WITH (OIDS = FALSE) TABLESPACE pg_default; ALTER TABLE public.eod_indices OWNER to postgres;| psql -U postgres %dbName%
 	
@@ -60,6 +60,18 @@ REM indice tables
 		
 		echo ALTER TABLE nSymbols OWNER to postgres;| psql -U postgres %dbName%
 
+		REM need to create materialized views
+	
+		FOR /F "tokens=*" %%a in ('subcurrentdate.bat') do SET currentdate=%%a
+		
+		rem echo CREATE OR REPLACE VIEW v_eod_indices_2013_2017 AS SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date; > command.txt
+		ECHO SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date ORDER BY DATE ASC; > command.txt
+		
+		set command=returnLine 1 command.txt
+		%command%|psql -U postgres %dbName%
+		erase command.txt		
+		
+		
 REM symbol tables
 
 	echo create table nSymbolsTemplate (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
@@ -112,11 +124,7 @@ REM symbol tables
 			
 			REM EOM Flag
 			echo UPDATE custom_calendar SET eom = EOMI.endofm FROM (SELECT CC.date,CASE WHEN EOM.y IS NULL THEN 0 ELSE 1 END endofm FROM custom_calendar CC LEFT JOIN (SELECT y,m,MAX(d) lastd FROM custom_calendar WHERE trading=1 GROUP by y,m) EOM ON CC.y=EOM.y AND CC.m=EOM.m AND CC.d=EOM.lastd) EOMI WHERE custom_calendar.date = EOMI.date;| psql -U postgres %dbName%
-			
-			set lessThan=|printf '\74'
-			REM Prior Trading Day
-			REM has to be ran manually!
-			
+						
 			echo UPDATE custom_calendar SET prev_trading_day = PTD.ptd FROM (SELECT date, (SELECT MAX(CC.date) FROM custom_calendar CC WHERE CC.trading=1 AND CC.date^<custom_calendar.date) ptd FROM custom_calendar) PTD WHERE custom_calendar.date = PTD.date; > command.txt
 
 			REM OMG it works

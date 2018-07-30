@@ -1,0 +1,1 @@
+currentdate.bat|tail -3|head -1
