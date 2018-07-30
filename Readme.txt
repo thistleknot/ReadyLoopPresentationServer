@@ -25,6 +25,11 @@ Requires
 		http://downloads.sourceforge.net/gnuwin32/wget-1.11.4-1-dep.zip
 
 
+potential sources
+	https://www.programmableweb.com/news/96-stocks-apis-bloomberg-nasdaq-and-etrade/2013/05/22
+	Quandl
+	FRED
+	AlphaAdvantage
 
 Configuration
 	populdateDB.bat
