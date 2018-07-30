@@ -64,8 +64,8 @@ DROP TABLE eod_indices;| psql -U postgres %dbName%
 	
 		FOR /F "tokens=*" %%a in ('subcurrentdate.bat') do SET currentdate=%%a
 
-		REM echo drop view v_eod_indices_2013_%currentdate%| psql -U postgres %dbName%	
-		echo CREATE OR REPLACE VIEW 'v_eod_indices_2013_%currentdate%' AS SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date; > command.txt
+		echo drop view v_eod_indices_date_filtered_indice| psql -U postgres %dbName%	
+		echo CREATE OR REPLACE VIEW v_eod_indices_date_filtered_indice AS SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date order by date asc; > command.txt
 		REM ECHO SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date ORDER BY DATE ASC; > command.txt
 		
 		set command=returnLine 1 command.txt
