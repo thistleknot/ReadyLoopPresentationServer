@@ -17,6 +17,9 @@ REM download symbols
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt" --stderr -> nasdaqlisted.txt
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt" --stderr -> otherlisted.txt
 
+REM evaluates to current list
+curl --silent "https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?download=Yes" --stderr -> ETFList.csv
+
 REM remove last line that is a log
 	sed -i "$d" nasdaqlisted.txt
 	sed -i "$d" otherlisted.txt
