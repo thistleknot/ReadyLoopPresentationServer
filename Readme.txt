@@ -61,6 +61,13 @@ potential sources
 		stocks (50 per day)
 		https://blog.quandl.com/api-for-interest-rate-data
 		
+	Quantpedia
+		tons of api sources as well as csv pubs
+		https://quantpedia.com/Links/HistoricalData
+		
+	Use Quantl (if the script was't broken, might be easier to fix script than recoding an ETL)
+		https://www.quantshare.com/title-95-export-to-csv-the-whole-database-including-symbols
+		
 	FRED
 	AlphaAdvantage
 	https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?download=Yes

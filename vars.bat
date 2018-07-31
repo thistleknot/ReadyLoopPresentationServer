@@ -9,4 +9,4 @@ set PGPASSWORD=1234
 set fullFlag=1
 
 set dbName=readyloop
-set tableName=dadjclose
+set tableName=nasdaq_facts

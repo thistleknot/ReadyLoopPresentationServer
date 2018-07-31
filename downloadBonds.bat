@@ -18,14 +18,31 @@ set task="%gnuUtilpath%wget.exe"
 set urlbase=https://query1.finance.yahoo.com/v7/finance/download/
 
 for /F "delims=," %%a in ('etfSub.bat') do (
+
+	
+	echo !reset!
+	call set reset=1
 	echo %%a
 	
 	for /f "delims=" %%x in ('getCrumb.bat %%a') do set "crumb=%%x"
 	REM subDownloadBonds.bat
+	
+	
+	call subDownloadBonds.bat %%a %begin% %end% !crumb!
+	
+	
+	REM it's not waiting for file to download before doing comparison
+	for /f "delims=" %%z in ('differ.bat c:\test\ETF-%%a.csv c:\test\invalidCookie.txt') do (set "reset=%%z")
+	
+	If !reset! equ 0 (
+		echo %%a %begin% %end% !crumb!
 		
-	call subDownloadBonds.bat %%a %begin% %end% !crumb! > "c:\test\ETF-%%a.csv"
+		)
+	
+	REM timeout /t 1
 	
 	
 )
 
 
+	
