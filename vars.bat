@@ -1,3 +1,4 @@
+@echo off
 setlocal enableextensions enabledelayedexpansion
 
 FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
@@ -10,3 +11,4 @@ set fullFlag=1
 
 set dbName=readyloop
 set tableName=nasdaq_facts
+@echo on

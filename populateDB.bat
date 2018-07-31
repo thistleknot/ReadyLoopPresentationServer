@@ -1,4 +1,17 @@
-vars.bat
+@echo off
+setlocal enableextensions enabledelayedexpansion
+
+FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
+FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
+FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
+set waitPeriod=12
+echo %waitPeriod%
+set PGPASSWORD=1234
+set fullFlag=1
+
+set dbName=readyloop
+set tableName=nasdaq_facts
+@echo on
 setlocal enableextensions enabledelayedexpansion
 
 REM %1 = drop flag, assume 0 (not 1)
@@ -11,7 +24,7 @@ echo %waitPeriod%
 set PGPASSWORD=1234
 
 set dbName=readyloop
-set tableName=nasdaq_facts
+REM set tableName=nasdaq_facts
 
 REM download symbols
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt" --stderr -> nasdaqlisted.txt
@@ -32,21 +45,24 @@ REM remove quotes
 sed 's/^^/"/;s/"//g;s/$//' removedPipes.txt > c:\test\nasdaqSymbols.csv
 sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbols.csv
 
-
 REM download SP500 Index
-REM dlsp500.bat > SP500.csv
+echo "test1"
+set command="dlsp500.bat ^> SP500.csv"
+%command%
 
+echo "test2"
 REM rebuild scripts
-	if %1==1 (
-	echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres; echo drop table if exists public.%tableName%; | psql -U postgres %dbName%
-	echo drop table if exists public.nSymbols;| psql -U postgres %dbName%
-	echo drop table if exists public.oSymbols;| psql -U postgres %dbName%
-	)
+	REM if %1 equ 1 (
+	REM echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres; echo drop table if exists public.%tableName%; | psql -U postgres %dbName%
+	REM echo drop table if exists public.nSymbols;| psql -U postgres %dbName%
+	REM echo drop table if exists public.oSymbols;| psql -U postgres %dbName%
+	REM )
 	
 REM indice tables
 
-DROP TABLE eod_indices;| psql -U postgres %dbName%
-
+echo "test3"
+	echo DROP TABLE eod_indices;| psql -U postgres %dbName%
+echo "test4"
 	echo CREATE TABLE if not exists eod_indices_Template( symbol character varying(16) COLLATE pg_catalog."default" NOT NULL, date date NOT NULL, open real, high real, low real, close real, adj_close real, volume double precision, CONSTRAINT eod_indicesTemplate_pkey PRIMARY KEY (symbol, date)) WITH (OIDS = FALSE) TABLESPACE pg_default; ALTER TABLE public.eod_indices OWNER to postgres;| psql -U postgres %dbName%
 	
 		echo CREATE TABLE if not exists eod_indices as select * from eod_indices_Template;| psql -U postgres %dbName%
@@ -73,9 +89,9 @@ DROP TABLE eod_indices;| psql -U postgres %dbName%
 		REM echo CREATE OR REPLACE VIEW v_eod_indices_date_filtered_indice AS SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date order by date asc; > command.txt
 		REM ECHO SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date ORDER BY DATE ASC; > command.txt
 		
-		set command=returnLine 1 command.txt
-		%command%|psql -U postgres %dbName%
-		erase command.txt		
+		REM set command=returnLine 1 command.txt
+		REM %command%|psql -U postgres %dbName%
+		REM erase command.txt		
 		
 		
 REM symbol tables
@@ -146,7 +162,7 @@ REM symbol tables
 		REM query: select symbol, AVG(NULLIF(ret,0)) as average from returnsNasdaq group by symbol order by average desc; 
 			
 			REM exclusions
-			echo SELECT symbol, 'More than 1% missing' as reason INTO exclusions_2013_2017 FROM %tableName% GROUP BY symbol HAVING count(*)::real/(SELECT COUNT(*) FROM custom_calendar WHERE trading=1 AND date BETWEEN '2012-12-31' AND '2018-07-28')::real^<0.99; > command.txt
+			REM echo SELECT symbol, 'More than 1% missing' as reason INTO exclusions_2013_2017 FROM %tableName% GROUP BY symbol HAVING count(*)::real/(SELECT COUNT(*) FROM custom_calendar WHERE trading=1 AND date BETWEEN '2012-12-31' AND '2018-07-28')::real^<0.99; > command.txt
 			
 			REM OMG it works
 			set command=returnLine 1 command.txt
