@@ -24,11 +24,11 @@ for /F "delims=," %%a in ('etfSub.bat') do (
 	call set reset=1
 	echo %%a
 	
-	for /f "delims=" %%x in ('getCrumb.bat %%a') do set "crumb=%%x"
+	
 	REM subDownloadBonds.bat
 	
 	
-	call subDownloadBonds.bat %%a %begin% %end% !crumb!
+	start call subDownloadBonds.bat %%a %begin% %end% !crumb!
 	
 	
 	REM it's not waiting for file to download before doing comparison

@@ -201,6 +201,10 @@ REM create ETF-Bonds fact table
 
 REM download data
 	parseData.bat
+	
+	downloadBonds.bat
+	
+	insertBonds.bat
 
 REM echo select * from %tableName%;| psql -U postgres %dbName%
 REM echo's all symbols
