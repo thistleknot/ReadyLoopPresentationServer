@@ -207,6 +207,11 @@ REM create NASDAQ fact table
 	echo CREATE TABLE IF NOT EXISTS %tableName%_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT nasdaqfacts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE %tableName%_template OWNER to postgres; | psql -U postgres %dbName%
 	
 	echo CREATE TABLE IF NOT EXISTS %tableName% AS select * from %tableName%_template;| psql -U postgres %dbName%
+
+REM create Bonds fact table		
+	echo CREATE TABLE IF NOT EXISTS bond_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,CONSTRAINT bond_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE bond_facts_template OWNER to postgres; | psql -U postgres %dbName%
+	
+	echo CREATE TABLE IF NOT EXISTS bond_facts AS select * from bond_facts_template;| psql -U postgres %dbName%	
 	
 	
 REM create ETF-Bonds fact table	
