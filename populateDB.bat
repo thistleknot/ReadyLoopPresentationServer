@@ -11,7 +11,6 @@ set fullFlag=1
 
 set dbName=readyloop
 set tableName=nasdaq_facts
-@echo on
 setlocal enableextensions enabledelayedexpansion
 
 REM %1 = drop flag, assume 0 (not 1)
@@ -119,6 +118,23 @@ REM symbol tables
 		echo insert into oSymbols select distinct * from oSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
 		
 		echo ALTER TABLE oSymbols OWNER to postgres;| psql -U postgres %dbName%
+
+	echo CREATE TABLE if not exists bSymbolsTemplate (symbol varchar(8), securityName varchar(256),CONSTRAINT bsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
+	
+		echo CREATE TABLE if not exists bSymbols as select * from bSymbolsTemplate;| psql -U postgres %dbName%
+		
+			echo CREATE TABLE if not exists bSymbolsTemp as select * from bSymbolsTemplate;| psql -U postgres %dbName%
+
+			echo ALTER TABLE bSymbols OWNER to postgres;| psql -U postgres %dbName%				
+
+			etfnamessymbols.bat > ETFNamesSymbols.csv
+			xcopy ETFNamesSymbols.csv C:\test\ /y
+			
+			echo copy bSymbolsTemp from 'c:\test\ETFNamesSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+
+			echo insert into bSymbols select distinct * from bSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
+
+			echo drop table bSymbolsTemp;| psql -U postgres %dbName%		
 
 	REM calendar
 	

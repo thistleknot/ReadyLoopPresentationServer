@@ -17,7 +17,7 @@ set task="%gnuUtilpath%wget.exe"
 
 set urlbase=https://query1.finance.yahoo.com/v7/finance/download/
 
-for /F "delims=," %%a in ('etfSub.bat') do (
+for /F "delims=," %%a in ('etfSymbols.bat') do (
 
 	
 	echo !reset!
