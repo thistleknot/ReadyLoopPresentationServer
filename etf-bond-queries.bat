@@ -1,0 +1,1 @@
+psql -d readyloop -a -U postgres -f etf-bond-queries.sql
