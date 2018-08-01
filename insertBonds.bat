@@ -12,7 +12,7 @@ for /F "delims=," %%a in ('etfnamessymbols.bat') do (
 
 			echo copy bond_facts%%a from 'c:\test\share\etf-%%awSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
 
-			echo insert into bond_facts select distinct * from bond_facts%%a ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
+			echo insert into etf_bond_facts select distinct * from bond_facts%%a ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
 
 			echo drop table bond_facts%%a;| psql -U postgres %dbName%
 	)
