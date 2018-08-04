@@ -1,0 +1,48 @@
+works, matches interest
+	opt_pM<-optimize.portfolio(R=RaM_training,portfolio=pspecM,optimize_method = 'ROI')
+	opt_wM<-opt_pM$weights
+	RpM<-RbM_training
+	RpM$ptf<-RaM_training %*% opt_wM
+	chart.CumReturns(RpM,legend.loc = 'topleft')
+	Return.cumulative(RpM)
+						   SP500TR     ptf
+		Cumulative Return 1.081407 1.10232
+
+		
+		
+		
+Insane return (136)		
+	opt_pM<-optimize.portfolio(R=RaM_training,portfolio=pspecM,optimize_method = 'ROI')
+	opt_wM<-opt_pM$weights
+	opt_wM[1:20]=.075
+	opt_wM[21:40]=-.025
+	RpM<-RbM_training
+	RpM$ptf<-RaM_training %*% opt_wM
+	chart.CumReturns(RpM,legend.loc = 'topleft')
+	Return.cumulative(RpM)
+					   SP500TR      ptf
+	Cumulative Return 1.081407 168.7317
+	
+#to change to RbM_training, opt_pM can't be set to RbM_testing or RbM_training
+	opt_pM<-optimize.portfolio(R=RaM_training,portfolio=pspecM,optimize_method = 'ROI')
+	#I think the trick is here in the weights, so I assumed it was based on optimization.
+	opt_wM<-opt_pM$weights
+	#simple hack of maximizing avg ret18urns
+	opt_wM[1:20]=.075
+	opt_wM[21:40]=-.025
+	
+	RpM<-RbM_training
+	RpM$ptf<-RaM_training %*% opt_wM
+	chart.CumReturns(RpM,legend.loc = 'topleft')
+	Return.cumulative(RpM)
+
+
+#18% future	
+	opt_pM<-optimize.portfolio(R=RaM_training,portfolio=pspecM,optimize_method = 'ROI')
+	opt_wM<-opt_pM$weights
+	RpM<-RbM_testing
+	RpM$ptf<-RaM_testing %*% opt_wM
+	chart.CumReturns(RpM,legend.loc = 'topleft')
+	Return.cumulative(RpM)
+						SP500TR       ptf
+	Cumulative Return -0.01841827 0.1897562
