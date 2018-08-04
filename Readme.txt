@@ -34,6 +34,10 @@ Areas to look into
 		
 potential sources
 
+	Calendar
+		great list of holidays for scraping!
+		http://www.market-holidays.com/
+
 	ETF Historical Prices and ratings (speculative, investment grade)
 		see: https://www.pimco.com/en-us/resources/education/understanding-corporate-bonds/
 		see: https://www.investopedia.com/financial-edge/0612/how-to-invest-in-corporate-bonds.aspx

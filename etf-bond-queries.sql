@@ -1,3 +1,7 @@
+
+--update calendar
+	update custom_calendar set trading=0 where date='2013-03-29'
+
 --select all symbols within last year.	
 	create or replace view three_month_view AS
 	select * from etf_bond_facts

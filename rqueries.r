@@ -16,3 +16,6 @@ RpM<-RbM_testing
 RpM$ptf<-RaM_testing %*% opt_wM
 chart.CumReturns(RpM,legend.loc = 'topleft')
 Return.cumulative(RpM)
+
+#r queries
+testing<-eod[which(eod$date=='2013-03-30'),,]
