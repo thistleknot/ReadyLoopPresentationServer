@@ -36,7 +36,8 @@ potential sources
 
 	Calendar
 		great list of holidays for scraping!
-		http://www.market-holidays.com/
+			http://www.market-holidays.com/
+			https://www.timeanddate.com/holidays/us/2013
 
 	ETF Historical Prices and ratings (speculative, investment grade)
 		see: https://www.pimco.com/en-us/resources/education/understanding-corporate-bonds/
