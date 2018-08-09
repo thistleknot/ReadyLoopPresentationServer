@@ -1,4 +1,3 @@
-@echo off
 setlocal enableextensions enabledelayedexpansion
 
 FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
@@ -31,6 +30,9 @@ curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt" --std
 
 REM evaluates to current list
 curl --silent "https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?download=Yes" --stderr -> ETFList.csv
+
+	call etfnamessymbols.bat
+	xcopy ETFNamesSymbols.csv C:\test\ /y
 
 REM remove last line that is a log
 	sed -i "$d" nasdaqlisted.txt
@@ -95,7 +97,7 @@ echo "test4"
 		
 REM symbol tables
 
-	echo create table nSymbolsTemplate (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
+	echo create table if not exists nSymbolsTemplate (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
 	
 		echo CREATE TABLE if not exists nSymbols as select * from nSymbolsTemplate;| psql -U postgres %dbName%
 	
@@ -126,9 +128,6 @@ REM symbol tables
 			echo CREATE TABLE if not exists bSymbolsTemp as select * from bSymbolsTemplate;| psql -U postgres %dbName%
 
 			echo ALTER TABLE bSymbols OWNER to postgres;| psql -U postgres %dbName%				
-
-			etfnamessymbols.bat > ETFNamesSymbols.csv
-			xcopy ETFNamesSymbols.csv C:\test\ /y
 			
 			echo copy bSymbolsTemp from 'c:\test\ETFNamesSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
 
