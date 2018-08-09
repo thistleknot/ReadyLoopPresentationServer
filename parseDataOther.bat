@@ -4,13 +4,12 @@ setlocal enableextensions enabledelayedexpansion
 FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
 FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
 FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
+FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\otherSymbolsNoHeader.csv') do SET numOtherSymbols=%%a
 set waitPeriod=12
 echo %waitPeriod%
 set PGPASSWORD=1234
 set fullFlag=1
 
-set dbName=readyloop
-set tableName=nasdaq_facts
 @echo on
 
 setlocal enableextensions enabledelayedexpansion
@@ -19,12 +18,9 @@ FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
 echo %numKeys%
 
 FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
-FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
+FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\otherSymbolsNoHeader.csv') do SET numOtherSymbols=%%a
 
-set dbName=readyloop
-set tableName=dadjclose
-
-FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numLines=%%a
+FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\otherSymbolsNoHeader.csv') do SET numLines=%%a
 @echo off
 
 set /A counter=1
@@ -35,8 +31,8 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 	echo "counter: " !counter!
 
 	REM queue's up a certain # before downloading
-	if !counter! == 1 call returnLine.bat %%i 'c:\test\nasdaqSymbolsNoHeader.csv' > list.txt
-	if !counter! gtr 1 call returnLine.bat %%i 'c:\test\nasdaqSymbolsNoHeader.csv' >> list.txt
+	if !counter! == 1 call returnLine.bat %%i 'c:\test\otherSymbolsNoHeader.csv' > list.txt
+	if !counter! gtr 1 call returnLine.bat %%i 'c:\test\otherSymbolsNoHeader.csv' >> list.txt
 	
 	REM list is ready
 	if !counter! == %numKeys% ( 
@@ -48,17 +44,14 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 				echo %%a
 				
 				FOR /F "tokens=*" %%c in ('returnLine.bat !newCounter! apiKey.txt') do SET APIKEY=%%c
+				SET /A test=%RANDOM% * 20 / 32768 + 1
 				
-				SET /A test=%RANDOM% * 20 / 32768 + 1				
-				REM for now not using random
 				FOR /F "tokens=*" %%b in ('returnLine.bat %%newCounter%% proxyList.txt') do SET PROXY=%%b
-
-				echo %test%
 				echo !newCounter!
 				echo !PROXY!
 				echo %%a
 				echo !APIKEY!
-				start call downloadAlpha.bat !PROXY! %%a !APIKEY!
+				start call downloadAlphaOther.bat !PROXY! %%a !APIKEY!
 				set /A newCounter+=1				
 				)
 				timeout /t 13				

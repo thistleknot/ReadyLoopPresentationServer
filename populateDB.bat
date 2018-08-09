@@ -202,27 +202,34 @@ REM required for parsedata.bat
 	more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
 	more +1 c:\test\nasdaqSymbols.csv > c:\test\otherSymbolsNoHeader.csv
 
-REM create NASDAQ fact table	
-	echo CREATE TABLE IF NOT EXISTS %tableName%_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT nasdaqfacts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE %tableName%_template OWNER to postgres; | psql -U postgres %dbName%
+REM create NASDAQ & Other (DOW and NYSE) fact tables
+	echo CREATE TABLE IF NOT EXISTS nasdaq_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT nasdaq_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE nasdaq_facts_template OWNER to postgres; | psql -U postgres %dbName%
 	
-	echo CREATE TABLE IF NOT EXISTS %tableName% AS select * from %tableName%_template;| psql -U postgres %dbName%
+	echo CREATE TABLE IF NOT EXISTS nasdaq_facts AS select * from nasdaq_facts_template;| psql -U postgres %dbName%
+	
+	echo CREATE TABLE IF NOT EXISTS other_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT other_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE other_facts_template OWNER to postgres; | psql -U postgres %dbName%
+	
+	echo CREATE TABLE IF NOT EXISTS other_facts AS select * from other_facts_template;| psql -U postgres %dbName%
 
 REM create Bonds fact table		
 	echo CREATE TABLE IF NOT EXISTS bond_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,CONSTRAINT bond_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE bond_facts_template OWNER to postgres; | psql -U postgres %dbName%
 	
 	echo CREATE TABLE IF NOT EXISTS bond_facts AS select * from bond_facts_template;| psql -U postgres %dbName%	
 	
-	
 REM create ETF-Bonds fact table	
 	echo CREATE TABLE IF NOT EXISTS public.etf_bond_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,CONSTRAINT etf_bond_facts_template_key PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.etf_bond_facts_template OWNER to postgres; | psql -U postgres %dbName%
 	
 	echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from public.etf_bond_facts_template;| psql -U postgres %dbName%
 	
-
 REM download data
 	start parseData.bat
 	
 	start downloadBonds.bat
+	
+	start parseDataOther.bat
+	
+	
+	
 	
 	rem insertBonds.bat
 
