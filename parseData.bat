@@ -1,10 +1,22 @@
-call vars.bat
+@echo off
+setlocal enableextensions enabledelayedexpansion
+
+FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
+FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
+FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
+set waitPeriod=12
+echo %waitPeriod%
+set PGPASSWORD=1234
+set fullFlag=1
+
+set dbName=readyloop
+set tableName=nasdaq_facts
+@echo on
 
 setlocal enableextensions enabledelayedexpansion
 
 FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
 echo %numKeys%
-
 
 FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
 FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
@@ -22,6 +34,7 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 	
 	echo "counter: " !counter!
 
+	REM queue's up a certain # before downloading
 	if !counter! == 1 call returnLine.bat %%i 'c:\test\nasdaqSymbolsNoHeader.csv' > list.txt
 	if !counter! gtr 1 call returnLine.bat %%i 'c:\test\nasdaqSymbolsNoHeader.csv' >> list.txt
 	
@@ -30,13 +43,14 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 	
 		set /A newCounter=1
 	
+			REM %%a is symbol
 			for /F "delims=;" %%a in (list.txt) do (
 				echo %%a
 				
 				FOR /F "tokens=*" %%c in ('returnLine.bat !newCounter! apiKey.txt') do SET APIKEY=%%c
 				SET /A test=%RANDOM% * 20 / 32768 + 1
 				
-				FOR /F "tokens=*" %%b in ('returnLine.bat !RANDOM! proxyList.txt') do SET PROXY=%%b
+				FOR /F "tokens=*" %%b in ('returnLine.bat %test% proxyList.txt') do SET PROXY=%%b
 				echo !newCounter!
 				echo !PROXY!
 				echo %%a
