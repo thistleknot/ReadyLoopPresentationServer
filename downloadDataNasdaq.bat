@@ -61,7 +61,7 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 				start call downloadAlphaNasdaq.bat !PROXY! %%a !APIKEY!
 				set /A newCounter+=1				
 				)
-				timeout /t 13				
+				timeout /t 55
 	)
 	
 	if !counter! == %numKeys% call echo	

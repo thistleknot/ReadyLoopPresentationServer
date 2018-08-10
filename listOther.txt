@@ -1,5 +1,5 @@
-AB;AllianceBernstein Holding L.P.  Units;N;AB;N;100;N;AB
-ABB;ABB Ltd Common Stock;N;ABB;N;100;N;ABB
-ABBV;AbbVie Inc. Common Stock;N;ABBV;N;100;N;ABBV
-ABC;AmerisourceBergen Corporation Common Stock;N;ABC;N;100;N;ABC
-ABEV;Ambev S.A. American Depositary Shares (Each representing 1 Common Share);N;ABEV;N;100;N;ABEV
+DCT;DCT Industrial Trust Inc Common Stock;N;DCT;N;100;N;DCT
+ECNS;iShares MSCI China Small-Cap ETF;P;ECNS;Y;100;N;ECNS
+SMHD;ETRACS Monthly Pay 2xLeveraged US Small Cap High Dividend ETN due February 6, 2045;P;SMHD;N;100;N;SMHD
+FCOR;Fidelity Corporate Bond ETF;P;FCOR;Y;100;N;FCOR
+UBS;UBS Group AG Registered Ordinary Shares;N;UBS;N;100;N;UBS
