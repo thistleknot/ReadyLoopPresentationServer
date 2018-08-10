@@ -24,8 +24,12 @@ echo %2
 REM Key
 echo %3
 
-if %fullFlag%==1 (curl -X %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
-if NOT %fullFlag%==1 (curl -X %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
+REM if %fullFlag%==1 (curl -insecure -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
+REM if NOT %fullFlag%==1 (curl -insecure -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
+
+if %fullFlag%==1 (curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
+if NOT %fullFlag%==1 (curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
+
 
 REM adds symbol to front of columns
 REM awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%2 c:\test\share\other\O-%2.csv > c:\test\share\other\O-%2wSymbols.csv
