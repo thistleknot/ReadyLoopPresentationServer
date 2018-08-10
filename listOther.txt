@@ -1,5 +1,1 @@
-DCT;DCT Industrial Trust Inc Common Stock;N;DCT;N;100;N;DCT
-ECNS;iShares MSCI China Small-Cap ETF;P;ECNS;Y;100;N;ECNS
-SMHD;ETRACS Monthly Pay 2xLeveraged US Small Cap High Dividend ETN due February 6, 2045;P;SMHD;N;100;N;SMHD
-FCOR;Fidelity Corporate Bond ETF;P;FCOR;Y;100;N;FCOR
-UBS;UBS Group AG Registered Ordinary Shares;N;UBS;N;100;N;UBS
+FSTA;Fidelity MSCI COnsumer Staples Index ETF;P;FSTA;Y;100;N;FSTA

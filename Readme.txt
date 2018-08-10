@@ -125,6 +125,8 @@ proxylist.txt
 	REM acquire [US] proxies from: https://free-proxy-list.net/anonymous-proxy.html#
 	REM format of file ip:port
 
+Add readylooppresentationserver to path	
+	
 Dependencies
 
 	PopulateDb.bat 
