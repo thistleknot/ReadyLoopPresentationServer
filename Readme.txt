@@ -75,6 +75,9 @@ potential sources
 		
 		stocks (50 per day)
 		https://blog.quandl.com/api-for-interest-rate-data
+
+	https://www.quantshare.com/sa-636-6-new-ways-to-download-free-intraday-data-for-the-us-stock-market
+	https://www.quantshare.com/sa-620-10-new-ways-to-download-historical-stock-quotes-for-free
 		
 	Quantpedia
 		tons of api sources as well as csv pubs
@@ -140,6 +143,7 @@ Add readylooppresentationserver to path
 Dependencies
 
 	PopulateDb.bat 
+		
 		DownloadDataNasdaq.bat (Nasdaq)
 			downloadAlphaNasdaq.bat 
 			
@@ -156,13 +160,16 @@ Dependencies
 		dlSP500.bat
 			getCrumb.bat
 			
-		downloadBonds.bat (ETF Bond Markets)
-			subdownloadBonds.bat
-				getCrumb.bat
+		etfnamessymbols.bat
+			generates: etfnamessymbols.txt
+		
+			downloadBonds.bat (ETF Bond Markets)
+				subdownloadBonds.bat
+					getCrumb.bat
 				
-		insertBonds.bat
-			etfNamesSymbols.bat
-			etfNamesSymbols2.bat
+			insertBonds.bat
+				etfNamesSymbols.bat
+				etfNamesSymbols2.bat
 			
 		insertNasdaq.bat
 			nasdaqSymbols.bat

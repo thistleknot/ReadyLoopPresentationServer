@@ -23,15 +23,18 @@ REM %1 = drop flag, assume 0 (not 1)
 set dbName=readyloop
 REM set tableName=nasdaq_facts
 
-REM download symbols
+REM download NASDAQ & Other (DOW and NYSE)
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt" --stderr -> nasdaqlisted.txt
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt" --stderr -> otherlisted.txt
 
-REM evaluates to current list
+REM ETF Bonds
 curl --silent "https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?download=Yes" --stderr -> ETFList.csv
 
+	REM symbol list, nothing else.
 	call etfnamessymbols.bat
+	REM just symbol names with symbol header, should be merged
 	xcopy ETFNamesSymbols.csv C:\test\ /y
+	more +1 c:\test\ETFNamesSymbols.csv > ETFNamesSymbolsNoHeaderwQuotes.csv
 
 REM remove last line that is a log
 	sed -i "$d" nasdaqlisted.txt
@@ -41,13 +44,17 @@ REM ^^essential for | , escape character stuff
 sed 's/^^/"/;s/|/;/g;s/$/"/' nasdaqlisted.txt > removedPipes.txt
 sed 's/^^/"/;s/|/;/g;s/$/"/' otherlisted.txt > removedPipes2.txt
 
-REM remove quotes
+REM remove quotes (had a few errors with ,'s in the descriptions for etflist.csv
 sed 's/^^/"/;s/"//g;s/$//' removedPipes.txt > c:\test\nasdaqSymbolsMaster.csv
 sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbolsMaster.csv
 
-REM required for downloadDataOther.bat and downloadDataNasdaq.bat
+
+REM remove header, required for downloadDataOther.bat and downloadDataNasdaq.bat and insertBonds.bat
 more +1 c:\test\nasdaqSymbolsMaster.csv > c:\test\nasdaqSymbolsNoHeaderFull.csv
 more +1 c:\test\otherSymbolsMaster.csv > c:\test\otherSymbolsNoHeaderFull.csv
+cut -f 1,2 -d , ETFList.csv > c:\test\ETFListwQuotes.csv
+sed 's/^^/"/;s/"//g;s/$//' c:\test\ETFListwQuotes.csv > c:\test\ETFList.csv
+REM xcopy ETFList.csv c:\test\ETFList.csv
 
 randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv > c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv
 randomizeSymbolList.bat c:\test\otherSymbolsNoHeaderFull.csv > c:\test\RNG-otherSymbolsNoHeaderFull.csv
@@ -110,6 +117,8 @@ echo "test4"
 		
 REM symbol tables
 
+	REM Nasdaq
+
 	echo create table if not exists nSymbolsTemplate (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
 	
 		echo CREATE TABLE if not exists nSymbols as select * from nSymbolsTemplate;| psql -U postgres %dbName%
@@ -122,6 +131,7 @@ REM symbol tables
 		
 		echo ALTER TABLE nSymbols OWNER to postgres;| psql -U postgres %dbName%
 
+	REM Other (DOW and NYSE)
 	echo CREATE TABLE if not exists oSymbolsTemplate (symbol varchar(8), securityName varchar(256), Exchange varchar(16),CQSSymbol varchar(16),ETF varchar(8),roundLotSize varchar(4),testIssue varchar(4), nasdaqSymbol varchar(8),CONSTRAINT osymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
 	
 		echo CREATE TABLE if not exists oSymbols as select * from oSymbolsTemplate;| psql -U postgres %dbName%
@@ -134,6 +144,7 @@ REM symbol tables
 		
 		echo ALTER TABLE oSymbols OWNER to postgres;| psql -U postgres %dbName%
 
+	REM Bonds
 	echo CREATE TABLE if not exists bSymbolsTemplate (symbol varchar(8), securityName varchar(256),CONSTRAINT bsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
 	
 		echo CREATE TABLE if not exists bSymbols as select * from bSymbolsTemplate;| psql -U postgres %dbName%
@@ -142,7 +153,7 @@ REM symbol tables
 
 			echo ALTER TABLE bSymbols OWNER to postgres;| psql -U postgres %dbName%				
 			
-			echo copy bSymbolsTemp from 'c:\test\ETFNamesSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+			echo copy bSymbolsTemp from 'c:\test\ETFList.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
 
 			echo insert into bSymbols select distinct * from bSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
 

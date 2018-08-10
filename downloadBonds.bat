@@ -17,21 +17,18 @@ set task="%gnuUtilpath%wget.exe"
 
 set urlbase=https://query1.finance.yahoo.com/v7/finance/download/
 
-etfsymbols.bat
+REM etfsymbols.bat
 
-for /F "delims=," %%a in (etfSymbolsNoQuotesNoHeader.txt) do (
+for /F %%a in ('tail -n +2 c:\test\ETFNamesSymbols.csv') do (
 
 	
 	echo !reset!
 	call set reset=1
 	echo %%a
 	
-	
 	REM subDownloadBonds.bat
 	
-	
 	start call subDownloadBonds.bat %%a %begin% %end% !crumb!
-	
 	
 	REM it's not waiting for file to download before doing comparison
 	REM for /f "delims=" %%z in ('differ.bat c:\test\share\ETF-%%a.csv c:\test\invalidCookie.txt') do (set "reset=%%z")

@@ -6,9 +6,10 @@ set dbName=readyloop
 
 set PGPASSWORD=1234
 
-call etfnamessymbols.bat
+REM this is done in populatedb.
+REM call etfnamessymbols.bat
 
-for /F "delims=," %%a in (ETFNamesSymbols.csv) do (
+for /F %%a in ('c:\test\ETFNamesSymbolsNoHeader.csv') do (
 
 			awk '{print F,$1,$2,$3,$4,$5,$6,$7}' FS=, OFS=, F=%%a c:\test\share\etf-%%a.csv > c:\test\share\etf\etf-%%awSymbols.csv
 	
@@ -25,4 +26,4 @@ for /F "delims=," %%a in (ETFNamesSymbols.csv) do (
 			echo drop table bond_facts%%a;| psql -U postgres %dbName%
 	)
 	
-erase ETFNamesSymbols.txt
+REM erase ETFNamesSymbols.txt
