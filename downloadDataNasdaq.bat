@@ -58,7 +58,7 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 				echo !PROXY!
 				echo %%a
 				echo !APIKEY!
-				start call downloadAlpha.bat !PROXY! %%a !APIKEY!
+				start call downloadAlphaNasdaq.bat !PROXY! %%a !APIKEY!
 				set /A newCounter+=1				
 				)
 				timeout /t 13				

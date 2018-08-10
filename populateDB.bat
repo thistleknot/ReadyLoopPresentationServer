@@ -1,5 +1,11 @@
 setlocal enableextensions enabledelayedexpansion
 
+mkdir c:\test\
+mkdir c:\test\share
+mkdir c:\test\share\nasdaq
+mkdir c:\test\share\other
+mkdir c:\test\share\etf
+
 FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
 FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
 FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
@@ -224,13 +230,10 @@ REM download data
 	
 	downloadBonds.bat
 	
-	parseData.bat
+	downloadDataNasdaq.bat
 	
-	parseDataOther.bat
-	
-	
-	
-	
+	downloadDataOther.bat
+		
 	rem insertBonds.bat
 
 REM echo select * from %tableName%;| psql -U postgres %dbName%

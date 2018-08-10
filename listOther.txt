@@ -1,4 +1,5 @@
-ZWZZT;NASDAQ TEST STOCK;S;Y;N;100;;N,
-ZXYZ.A;Nasdaq Symbology Test Common Stock;Q;Y;N;100;;N,
-ZXZZT;NASDAQ TEST STOCK;G;Y;N;100;;N,
-ZYNE;Zynerba Pharmaceuticals, Inc. - Common Stock;G;N;N;100;N;N
+TGTX;TG Therapeutics, Inc. - Common Stock;S;N;N;100;N;N
+THFF;First Financial Corporation Indiana - Common Stock;Q;N;N;100;N;N
+THRM;Gentherm Inc - Common Stock;Q;N;N;100;N;N
+THST;Truett-Hurst, Inc. - Class A Common Stock;S;N;N;100;N;N
+TIBR;Tiberius Acquisition Corporation - Common Stock;S;N;N;100;N;N

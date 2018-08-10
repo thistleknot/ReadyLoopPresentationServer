@@ -25,11 +25,11 @@ echo %2
 REM Key
 echo %3
 
-if %fullFlag%==1 (curl -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\%2.csv)
-if NOT %fullFlag%==1 (curl -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\%2.csv)
+if %fullFlag%==1 (curl -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\nasdaq\NS-%2.csv)
+if NOT %fullFlag%==1 (curl -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\share\nasdaq\NS-%2.csv)
 
 REM adds symbol to front of columns
-awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%2 c:\test\%2.csv > c:\test\share\%2wSymbols.csv
+REM awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%2 c:\test\%2.csv > c:\test\share\nasdaq\NS-%2wSymbols.csv
 	
 REM echo drop table temp_table%2;| psql -U postgres %dbName%
 

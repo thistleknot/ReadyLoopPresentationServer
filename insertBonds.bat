@@ -10,7 +10,7 @@ call etfnamessymbols.bat
 
 for /F "delims=," %%a in ('etfnamessymbols2.bat') do (
 
-			awk '{print F,$1,$2,$3,$4,$5,$6,$7}' FS=, OFS=, F=%%a c:\test\share\etf-%%a.csv > c:\test\share\etf-%%awSymbols.csv
+			awk '{print F,$1,$2,$3,$4,$5,$6,$7}' FS=, OFS=, F=%%a c:\test\share\etf-%%a.csv > c:\test\share\etf\etf-%%awSymbols.csv
 	
 			echo drop table if exists etf_bond_facts cascade;| psql -U postgres %dbName%
 
@@ -18,7 +18,7 @@ for /F "delims=," %%a in ('etfnamessymbols2.bat') do (
 	
 			echo create table bond_facts%%a as table bond_facts_template;|psql -U postgres %dbName%
 
-			echo copy bond_facts%%a from 'c:\test\share\etf-%%awSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+			echo copy bond_facts%%a from 'c:\test\share\etf\etf-%%awSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
 
 			echo insert into etf_bond_facts select distinct * from bond_facts%%a ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
 

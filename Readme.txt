@@ -128,12 +128,12 @@ proxylist.txt
 Dependencies
 
 	PopulateDb.bat 
-		parsedata.bat (Nasdaq)
-			downloadAlpha.bat 
+		DownloadDataNasdaq.bat (Nasdaq)
+			downloadAlphaNasdaq.bat 
 			
 			 c:\test\nasdaqSymbolsNoHeader.csv
 			
-		parsdataOther.bat (DOW,NYSE)
+		DownloadDataOther.bat (DOW,NYSE)
 			downloadAlphaOther.bat 
 			
 			c:\test\otherSymbolsNoHeader.csv
