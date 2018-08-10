@@ -8,7 +8,7 @@ set PGPASSWORD=1234
 
 call etfnamessymbols.bat
 
-for /F "delims=," %%a in ('etfnamessymbols2.bat') do (
+for /F "delims=," %%a in (ETFNamesSymbols.csv) do (
 
 			awk '{print F,$1,$2,$3,$4,$5,$6,$7}' FS=, OFS=, F=%%a c:\test\share\etf-%%a.csv > c:\test\share\etf\etf-%%awSymbols.csv
 	
@@ -25,3 +25,4 @@ for /F "delims=," %%a in ('etfnamessymbols2.bat') do (
 			echo drop table bond_facts%%a;| psql -U postgres %dbName%
 	)
 	
+erase ETFNamesSymbols.txt

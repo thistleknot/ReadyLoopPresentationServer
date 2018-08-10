@@ -20,13 +20,6 @@ setlocal enableextensions enabledelayedexpansion
 
 REM %1 = drop flag, assume 0 (not 1)
 
-FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
-FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
-FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
-set waitPeriod=12
-echo %waitPeriod%
-set PGPASSWORD=1234
-
 set dbName=readyloop
 REM set tableName=nasdaq_facts
 
@@ -44,11 +37,6 @@ REM remove last line that is a log
 	sed -i "$d" nasdaqlisted.txt
 	sed -i "$d" otherlisted.txt
 	
-REM required for parsedata.bat
-	more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
-	more +1 c:\test\nasdaqSymbols.csv > c:\test\otherSymbolsNoHeader.csv
-	
-
 REM ^^essential for | , escape character stuff
 sed 's/^^/"/;s/|/;/g;s/$/"/' nasdaqlisted.txt > removedPipes.txt
 sed 's/^^/"/;s/|/;/g;s/$/"/' otherlisted.txt > removedPipes2.txt
@@ -56,6 +44,11 @@ sed 's/^^/"/;s/|/;/g;s/$/"/' otherlisted.txt > removedPipes2.txt
 REM remove quotes
 sed 's/^^/"/;s/"//g;s/$//' removedPipes.txt > c:\test\nasdaqSymbols.csv
 sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbols.csv
+
+REM required for downloadDataOther.bat and downloadDataNasdaq.bat
+more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
+more +1 c:\test\otherSymbols.csv > c:\test\otherSymbolsNoHeader.csv
+
 
 REM download SP500 Index
 echo "test1"

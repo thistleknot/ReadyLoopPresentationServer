@@ -17,7 +17,9 @@ set task="%gnuUtilpath%wget.exe"
 
 set urlbase=https://query1.finance.yahoo.com/v7/finance/download/
 
-for /F "delims=," %%a in ('etfSymbols.bat') do (
+etfsymbols.bat
+
+for /F "delims=," %%a in (etfSymbolsNoQuotesNoHeader.txt) do (
 
 	
 	echo !reset!
@@ -43,6 +45,7 @@ for /F "delims=," %%a in ('etfSymbols.bat') do (
 	
 	
 )
+erase etfSymbolsNoQuotesNoHeader.txt
 
 
 	

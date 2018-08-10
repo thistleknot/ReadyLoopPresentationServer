@@ -1,3 +1,5 @@
 @echo off
-tail -n +2 | cut -f 1 -d "," ETFList.csv|sed 's/\"//g'
-@echo on
+cut -f 1 -d "," ETFList.csv > etfSymbolswQuotes.txt
+tail -n +2 etfSymbolswQuotes.txt > etfSymbolswQuotesNoHeader.txt
+sed 's/\"//g' etfSymbolswQuotesNoHeader.txt > etfSymbolsNoQuotesNoHeader.txt
+echo on
