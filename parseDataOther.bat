@@ -31,8 +31,8 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 	echo "counter: " !counter!
 
 	REM queue's up a certain # before downloading
-	if !counter! == 1 call returnLine.bat %%i 'c:\test\otherSymbolsNoHeader.csv' > list.txt
-	if !counter! gtr 1 call returnLine.bat %%i 'c:\test\otherSymbolsNoHeader.csv' >> list.txt
+	if !counter! == 1 call returnLine.bat %%i 'c:\test\otherSymbolsNoHeader.csv' > listOther.txt
+	if !counter! gtr 1 call returnLine.bat %%i 'c:\test\otherSymbolsNoHeader.csv' >> listOther.txt
 	
 	REM list is ready
 	if !counter! == %numKeys% ( 
@@ -40,7 +40,7 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 		set /A newCounter=1
 	
 			REM %%a is symbol
-			for /F "delims=;" %%a in (list.txt) do (
+			for /F "delims=;" %%a in (listOther.txt) do (
 				echo %%a
 				
 				FOR /F "tokens=*" %%c in ('returnLine.bat !newCounter! apiKey.txt') do SET APIKEY=%%c
@@ -66,4 +66,5 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 	@echo on
   
 )	
+listAORemnants.bat
 exit

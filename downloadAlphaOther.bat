@@ -1,5 +1,6 @@
-@echo off
 setlocal enableextensions enabledelayedexpansion
+
+sel fullFlag=1
 
 REM FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
 REM FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
@@ -27,7 +28,7 @@ if %fullFlag%==1 (curl -x %1 -L "https://www.alphavantage.co/query?function=TIME
 if NOT %fullFlag%==1 (curl -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\O-%2.csv)
 
 REM adds symbol to front of columns
-awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%2 c:\test\O-%2.csv > c:\test\O-%2wSymbols.csv
+awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%2 c:\test\share\O-%2.csv > c:\test\share\O-%2wSymbols.csv
 	
 REM echo drop table temp_table%2;| psql -U postgres %dbName%
 

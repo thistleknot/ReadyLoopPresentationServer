@@ -2,10 +2,18 @@ REM Called by PopulateDB.bat after bonds have been downloaded.  Creates tables, 
 
 REM adds symbol to front of columns
 
-for /F "delims=," %%a in ('etfnamessymbols.bat') do (
+set dbName=readyloop
+
+set PGPASSWORD=1234
+
+call etfnamessymbols.bat
+
+for /F "delims=," %%a in ('etfnamessymbols2.bat') do (
 
 			awk '{print F,$1,$2,$3,$4,$5,$6,$7}' FS=, OFS=, F=%%a c:\test\share\etf-%%a.csv > c:\test\share\etf-%%awSymbols.csv
 	
+			echo drop table if exists etf_bond_facts cascade;| psql -U postgres %dbName%
+
 			echo drop table if exists temp_table%%a;| psql -U postgres %dbName%
 	
 			echo create table bond_facts%%a as table bond_facts_template;|psql -U postgres %dbName%

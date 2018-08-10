@@ -1,0 +1,28 @@
+Symbol[] symbols = Symbols.GetSymbols();
+System.Text.StringBuilder text = new System.Text.StringBuilder("");
+for(int i=0;i < symbols.Length;i++)
+{
+Symbol sym = symbols[i];
+text.AppendLine(sym.Name);
+
+}
+
+System.IO.File.WriteAllText(@"c:\symbols.csv", text.ToString());
+
+produces a full list of 8000+ symbols
+
+yet this script
+
+Symbol[] symbols = Symbols.GetSymbols();
+System.Text.StringBuilder text = new System.Text.StringBuilder("");
+for(int i=0;i < symbols.Length;i++)
+{
+Symbol sym = symbols[i];
+HistoricalQuotes quotes = Quotes.GetHistoricalQuotes(sym.Name);
+for(int j=0;j < quotes.Close.Length;j++)
+{
+text.AppendLine(sym.Name + ";" + quotes.Date[j].ToString("dd/MM/yyyy") + ";" + quotes.Close[j]+ ";" + quotes.Open[j] + ";" + quotes.High[j] + ";" + quotes.Low[j] + ";" + quotes.Volume[j]);
+}
+}
+
+System.IO.File.WriteAllText(@"c:\quotes.csv", text.ToString());

@@ -1,0 +1,1 @@
+cat tempNasdaqsymbols.txt

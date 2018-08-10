@@ -32,14 +32,14 @@ for /F "delims=," %%a in ('etfSymbols.bat') do (
 	
 	
 	REM it's not waiting for file to download before doing comparison
-	for /f "delims=" %%z in ('differ.bat c:\test\ETF-%%a.csv c:\test\invalidCookie.txt') do (set "reset=%%z")
+	REM for /f "delims=" %%z in ('differ.bat c:\test\share\ETF-%%a.csv c:\test\invalidCookie.txt') do (set "reset=%%z")
 	
-	If !reset! equ 0 (
-		echo %%a %begin% %end% !crumb!
+	REM If !reset! equ 0 (
+		REM echo %%a %begin% %end% !crumb!
 		
-		)
+		REM )
 	
-	REM timeout /t 1
+	timeout /t 3
 	
 	
 )

@@ -37,6 +37,11 @@ curl --silent "https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?dow
 REM remove last line that is a log
 	sed -i "$d" nasdaqlisted.txt
 	sed -i "$d" otherlisted.txt
+	
+REM required for parsedata.bat
+	more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
+	more +1 c:\test\nasdaqSymbols.csv > c:\test\otherSymbolsNoHeader.csv
+	
 
 REM ^^essential for | , escape character stuff
 sed 's/^^/"/;s/|/;/g;s/$/"/' nasdaqlisted.txt > removedPipes.txt
@@ -198,14 +203,8 @@ REM symbol tables
 			REM NOCREATEROL throws an error
 			echo CREATE USER readyloop WITH LOGIN NOSUPERUSER NOCREATEDB INHERIT NOREPLICATION CONNECTION LIMIT -1 PASSWORD 'read123'; GRANT SELECT ON ALL TABLES IN SCHEMA public TO readyloop; ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readyloop;| psql -U postgres %dbName%	
 					
-REM required for parsedata.bat
-	more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
-	more +1 c:\test\nasdaqSymbols.csv > c:\test\otherSymbolsNoHeader.csv
-
 REM create NASDAQ & Other (DOW and NYSE) fact tables
 	echo CREATE TABLE IF NOT EXISTS nasdaq_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT nasdaq_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE nasdaq_facts_template OWNER to postgres; | psql -U postgres %dbName%
-	
-	echo CREATE TABLE IF NOT EXISTS nasdaq_facts AS select * from nasdaq_facts_template;| psql -U postgres %dbName%
 	
 	echo CREATE TABLE IF NOT EXISTS other_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT other_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE other_facts_template OWNER to postgres; | psql -U postgres %dbName%
 	
@@ -222,11 +221,12 @@ REM create ETF-Bonds fact table
 	echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from public.etf_bond_facts_template;| psql -U postgres %dbName%
 	
 REM download data
-	start parseData.bat
 	
-	start downloadBonds.bat
+	downloadBonds.bat
 	
-	start parseDataOther.bat
+	parseData.bat
+	
+	parseDataOther.bat
 	
 	
 	

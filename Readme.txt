@@ -127,9 +127,16 @@ proxylist.txt
 
 Dependencies
 
-	PopulateDb.bat
-		parsedata.bat
-			downloadNasdaq.bat
+	PopulateDb.bat 
+		parsedata.bat (Nasdaq)
+			downloadAlpha.bat 
+			
+			 c:\test\nasdaqSymbolsNoHeader.csv
+			
+		parsdataOther.bat (DOW,NYSE)
+			downloadAlphaOther.bat 
+			
+			c:\test\otherSymbolsNoHeader.csv
 				
 		subcurrentdate.bat
 			currentdate.bat
@@ -137,7 +144,14 @@ Dependencies
 		dlSP500.bat
 			getCrumb.bat
 			
-		downloadBonds.bat
+		downloadBonds.bat (ETF Bond Markets)
 			subdownloadBonds.bat
 				getCrumb.bat
+				
+		insertBonds.bat
+			etfNamesSymbols.bat
+			etfNamesSymbols2.bat
+			
+		insertNasdaq.bat
+			nasdaqSymbols.bat
 	

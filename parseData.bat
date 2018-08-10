@@ -68,9 +68,13 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 	
 	if !counter! == %numKeys% call set /A counter=0
 	
+	
+	
 	set /A counter+=1
 		
 	@echo on
   
 )	
+listARemnants.bat
+
 exit
