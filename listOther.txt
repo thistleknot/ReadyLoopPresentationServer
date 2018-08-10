@@ -1,5 +1,5 @@
-TGTX;TG Therapeutics, Inc. - Common Stock;S;N;N;100;N;N
-THFF;First Financial Corporation Indiana - Common Stock;Q;N;N;100;N;N
-THRM;Gentherm Inc - Common Stock;Q;N;N;100;N;N
-THST;Truett-Hurst, Inc. - Class A Common Stock;S;N;N;100;N;N
-TIBR;Tiberius Acquisition Corporation - Common Stock;S;N;N;100;N;N
+TWIN;Twin Disc, Incorporated - Common Stock;Q;N;N;100;N;N
+TWLV;Twelve Seas Investment Company - Ordinary Shares;S;N;N;100;N;N
+TWLVR;Twelve Seas Investment Company - Rights;S;N;N;100;N;N
+TWLVU;Twelve Seas Investment Company - Units;S;N;N;100;N;N
+TWLVW;Twelve Seas Investment Company - Warrant;S;N;N;100;N;N

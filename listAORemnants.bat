@@ -6,7 +6,7 @@ REM go through remaining list
 set /A newCounter=1
 
 REM %%a is symbol
-for /F "delims=;" %%a in (list.txt) do (
+for /F "delims=;" %%a in (listOther.txt) do (
 	echo %%a
 
 	FOR /F "tokens=*" %%c in ('returnLine.bat !newCounter! apiKey.txt') do SET APIKEY=%%c
