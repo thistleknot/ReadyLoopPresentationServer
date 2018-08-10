@@ -143,6 +143,8 @@ Add readylooppresentationserver to path
 Dependencies
 
 	PopulateDb.bat 
+	
+		generates: ETFNamesSymbols.txt
 		
 		DownloadDataNasdaq.bat (Nasdaq)
 			downloadAlphaNasdaq.bat 
@@ -159,9 +161,6 @@ Dependencies
 
 		dlSP500.bat
 			getCrumb.bat
-			
-		etfnamessymbols.bat
-			generates: etfnamessymbols.txt
 		
 			downloadBonds.bat (ETF Bond Markets)
 				subdownloadBonds.bat

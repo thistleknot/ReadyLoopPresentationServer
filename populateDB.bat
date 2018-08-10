@@ -31,9 +31,13 @@ REM ETF Bonds
 curl --silent "https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?download=Yes" --stderr -> ETFList.csv
 
 	REM symbol list, nothing else.
-	call etfnamessymbols.bat
+	cut -f 1,2 -d , ETFList.csv > c:\test\ETFListwQuotes.csv
+	sed 's/^^/"/;s/"//g;s/$//' c:\test\ETFListwQuotes.csv > c:\test\ETFList.csv
+
+	cut -f 1,1 -d , c:\test\ETFList.csv > c:\test\ETFNamesSymbols.csv
+
 	REM just symbol names with symbol header, should be merged
-	xcopy ETFNamesSymbols.csv C:\test\ /y
+	
 	more +1 c:\test\ETFNamesSymbols.csv > ETFNamesSymbolsNoHeaderwQuotes.csv
 
 REM remove last line that is a log
@@ -52,8 +56,8 @@ sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbolsMaster.csv
 REM remove header, required for downloadDataOther.bat and downloadDataNasdaq.bat and insertBonds.bat
 more +1 c:\test\nasdaqSymbolsMaster.csv > c:\test\nasdaqSymbolsNoHeaderFull.csv
 more +1 c:\test\otherSymbolsMaster.csv > c:\test\otherSymbolsNoHeaderFull.csv
-cut -f 1,2 -d , ETFList.csv > c:\test\ETFListwQuotes.csv
-sed 's/^^/"/;s/"//g;s/$//' c:\test\ETFListwQuotes.csv > c:\test\ETFList.csv
+more +1 c:\test\ETFNamesSymbols.csv > c:\test\ETFNamesSymbolsNoHeader.csv
+
 REM xcopy ETFList.csv c:\test\ETFList.csv
 
 randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv > c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv
