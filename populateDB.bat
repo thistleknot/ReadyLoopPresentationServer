@@ -32,42 +32,40 @@ curl --silent "https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?dow
 
 	REM symbol list, nothing else.
 	cut -f 1,2 -d , ETFList.csv > c:\test\ETFListwQuotes.csv
+
+	REM remove quotes
+	sed 's/^^/"/;s/"//g;s/$//' removedPipes.txt > c:\test\nasdaqSymbolsMaster.csv
+	sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbolsMaster.csv	
 	sed 's/^^/"/;s/"//g;s/$//' c:\test\ETFListwQuotes.csv > c:\test\ETFList.csv
 
 	cut -f 1,1 -d , c:\test\ETFList.csv > c:\test\ETFNamesSymbols.csv
-
-	REM just symbol names with symbol header, should be merged
-	
-	more +1 c:\test\ETFNamesSymbols.csv > ETFNamesSymbolsNoHeaderwQuotes.csv
 
 REM remove last line that is a log
 	sed -i "$d" nasdaqlisted.txt
 	sed -i "$d" otherlisted.txt
 	
 REM ^^essential for | , escape character stuff
-sed 's/^^/"/;s/|/;/g;s/$/"/' nasdaqlisted.txt > removedPipes.txt
-sed 's/^^/"/;s/|/;/g;s/$/"/' otherlisted.txt > removedPipes2.txt
-
-REM remove quotes (had a few errors with ,'s in the descriptions for etflist.csv
-sed 's/^^/"/;s/"//g;s/$//' removedPipes.txt > c:\test\nasdaqSymbolsMaster.csv
-sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbolsMaster.csv
-
+	sed 's/^^/"/;s/|/;/g;s/$/"/' nasdaqlisted.txt > removedPipes.txt
+	sed 's/^^/"/;s/|/;/g;s/$/"/' otherlisted.txt > removedPipes2.txt
 
 REM remove header, required for downloadDataOther.bat and downloadDataNasdaq.bat and insertBonds.bat
-more +1 c:\test\nasdaqSymbolsMaster.csv > c:\test\nasdaqSymbolsNoHeaderFull.csv
-more +1 c:\test\otherSymbolsMaster.csv > c:\test\otherSymbolsNoHeaderFull.csv
-more +1 c:\test\ETFNamesSymbols.csv > c:\test\ETFNamesSymbolsNoHeader.csv
+	more +1 c:\test\nasdaqSymbolsMaster.csv > c:\test\nasdaqSymbolsNoHeaderFull.csv
+	more +1 c:\test\otherSymbolsMaster.csv > c:\test\otherSymbolsNoHeaderFull.csv
+	more +1 c:\test\ETFNamesSymbols.csv > c:\test\ETFNamesSymbolsNoHeaderFull.csv
 
 REM xcopy ETFList.csv c:\test\ETFList.csv
 
 randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv > c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv
 randomizeSymbolList.bat c:\test\otherSymbolsNoHeaderFull.csv > c:\test\RNG-otherSymbolsNoHeaderFull.csv
+randomizeSymbolList.bat c:\test\ETFNamesSymbolsNoHeaderFull.csv > c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv
 
-head -n 601 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
-head -n 601 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
+head -n 201 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
+head -n 201 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
+head -n 201 c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv > c:\test\ETFNamesSymbolsNoHeader100RNG.csv
 
 xcopy c:\test\nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader.csv /y
 xcopy c:\test\otherSymbolsNoHeader100RNG.csv c:\test\otherSymbolsNoHeader.csv /y
+xcopy c:\test\ETFNamesSymbolsNoHeader100RNG.csv c:\test\ETFNamesSymbolsNoHeader.csv /y
 
 
 REM download SP500 Index
