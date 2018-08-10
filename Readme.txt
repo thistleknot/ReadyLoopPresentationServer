@@ -157,3 +157,7 @@ Dependencies
 		insertNasdaq.bat
 			nasdaqSymbols.bat
 	
+		checkBad.bat
+			differ2.bat
+			
+			relies on c:\test\share\diffComparison
