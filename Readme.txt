@@ -1,5 +1,15 @@
 Readme
 
+History info
+
+	only 3 pages
+	useful to track what tickers to repull
+	https://www.nasdaq.com/markets/stocks/symbol-change-history.aspx?page=3
+	
+	#possible way to scrape tables using gnu commands
+	
+		https://stackoverflow.com/questions/1403087/how-can-i-convert-an-html-table-to-csv
+
 Requires
 	Gnuutils
 
