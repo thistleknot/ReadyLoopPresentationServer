@@ -19,7 +19,7 @@ set urlbase=https://query1.finance.yahoo.com/v7/finance/download/
 
 REM etfsymbols.bat
 
-for /F %%a in ('tail -n +2 c:\test\ETFNamesSymbols.csv') do (
+for /F %%a in (c:\test\ETFNamesSymbolsNoHeader.csv) do (
 
 	
 	echo !reset!

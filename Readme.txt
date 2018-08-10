@@ -178,4 +178,7 @@ Dependencies
 		checkBad.bat
 			differ2.bat
 			
-			relies on c:\test\share\diffComparison
+			relies on c:\test\share\diffComparison'
+			
+		checkBadETF.bat
+			differETF.bat

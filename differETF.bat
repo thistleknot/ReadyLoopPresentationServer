@@ -1,4 +1,4 @@
-fc /b %1 c:\test\share\diffComparison > nul
+fc /b %1 c:\test\share\diffComparisonETF > nul
 if errorlevel 1 (
     echo different
 ) else (

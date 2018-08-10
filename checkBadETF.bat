@@ -1,0 +1,1 @@
+for %%f in (*.csv) do call differETF.bat %%f

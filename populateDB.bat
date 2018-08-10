@@ -244,18 +244,28 @@ REM create ETF-Bonds fact table
 REM download data
 	
 	downloadBonds.bat
+	
+		cd c:\test\share\etf\
+		
+		checkBadETF.bat
+		
+		xcopy reruns.txt c:\test\share\OtherReRuns.txt /y
 		
 	downloadDataNasdaq.bat
 	
 		cd c:\test\share\nasdaq\
 	
 		checkBad.bat	
+		
+		xcopy reruns.txt c:\test\share\NasdaqReRuns.txt /y
 	
 	downloadDataOther.bat
 	
 		cd c:\test\share\other\
 	
 		checkBad.bat
+		
+		xcopy reruns.txt c:\test\share\ETFReruns.txt /y
 		
 	cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
 		
