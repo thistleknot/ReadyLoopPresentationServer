@@ -55,8 +55,8 @@ randomizeSymbolList.bat c:\test\otherSymbolsNoHeaderFull.csv > c:\test\RNG-other
 head -n 100 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
 head -n 100 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
 
-xcopy c:\test\RNG-nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader.csv
-xcopy c:\test\RNG-otherSymbolsNoHeaderFull.csv c:\test\otherSymbolsNoHeaderFull.csv
+xcopy c:\test\nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader.csv /y
+xcopy c:\test\otherSymbolsNoHeader100RNG.csv c:\test\otherSymbolsNoHeaderFull.csv /y
 
 
 REM download SP500 Index
