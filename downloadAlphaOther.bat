@@ -30,7 +30,7 @@ FOR /F "tokens=*" %%a in ('returnLine.bat 1 useragent.txt') do SET useragent=%%a
 REM if %fullFlag%==1 (curl -insecure -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
 REM if NOT %fullFlag%==1 (curl -insecure -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
 
-if %fullFlag%==1 (curl -x %1 -L -u %useragent% "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
+if %fullFlag%==1 (curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
 if NOT %fullFlag%==1 (curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
 
 
@@ -47,6 +47,6 @@ REM echo insert into %tableName% select distinct * from temp_table%2 ON CONFLICT
 
 REM echo drop table temp_table%2;| psql -U postgres %dbName%
 	
-timeout /t 4
+timeout /t 60
 
 exit
