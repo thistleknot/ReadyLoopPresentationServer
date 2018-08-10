@@ -49,14 +49,14 @@ REM required for downloadDataOther.bat and downloadDataNasdaq.bat
 more +1 c:\test\nasdaqSymbolsMaster.csv > c:\test\nasdaqSymbolsNoHeaderFull.csv
 more +1 c:\test\otherSymbolsMaster.csv > c:\test\otherSymbolsNoHeaderFull.csv
 
-randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv > c:\test\RNG-nasdaqSymbolsNoHeaderFull.txt
-randomizeSymbolList.bat c:\test\otherSymbolsNoHeaderFull.csv > c:\test\RNG-nasdaqSymbolsNoHeaderFull.txt
+randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv > c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv
+randomizeSymbolList.bat c:\test\otherSymbolsNoHeaderFull.csv > c:\test\RNG-otherSymbolsNoHeaderFull.csv
 
 head -n 100 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
-head -n 100 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
+head -n 100 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
 
-xcopy c:\test\RNG-nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader
-xcopy c:\test\RNG-nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader
+xcopy c:\test\RNG-nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader.csv
+xcopy c:\test\RNG-otherSymbolsNoHeaderFull.csv c:\test\otherSymbolsNoHeaderFull.csv
 
 
 REM download SP500 Index
