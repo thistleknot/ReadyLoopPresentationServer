@@ -42,12 +42,21 @@ sed 's/^^/"/;s/|/;/g;s/$/"/' nasdaqlisted.txt > removedPipes.txt
 sed 's/^^/"/;s/|/;/g;s/$/"/' otherlisted.txt > removedPipes2.txt
 
 REM remove quotes
-sed 's/^^/"/;s/"//g;s/$//' removedPipes.txt > c:\test\nasdaqSymbols.csv
-sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbols.csv
+sed 's/^^/"/;s/"//g;s/$//' removedPipes.txt > c:\test\nasdaqSymbolsMaster.csv
+sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbolsMaster.csv
 
 REM required for downloadDataOther.bat and downloadDataNasdaq.bat
-more +1 c:\test\nasdaqSymbols.csv > c:\test\nasdaqSymbolsNoHeader.csv
-more +1 c:\test\otherSymbols.csv > c:\test\otherSymbolsNoHeader.csv
+more +1 c:\test\nasdaqSymbolsMaster.csv > c:\test\nasdaqSymbolsNoHeaderFull.csv
+more +1 c:\test\otherSymbolsMaster.csv > c:\test\otherSymbolsNoHeaderFull.csv
+
+randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv > c:\test\RNG-nasdaqSymbolsNoHeaderFull.txt
+randomizeSymbolList.bat c:\test\otherSymbolsNoHeaderFull.csv > c:\test\RNG-nasdaqSymbolsNoHeaderFull.txt
+
+head -n 100 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
+head -n 100 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
+
+xcopy c:\test\RNG-nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader
+xcopy c:\test\RNG-nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader
 
 
 REM download SP500 Index

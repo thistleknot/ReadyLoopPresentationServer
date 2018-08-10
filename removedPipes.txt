@@ -1613,7 +1613,7 @@
 "IPDN;Professional Diversity Network, Inc. - Common Stock;S;N;N;100;N;N"
 "IPGP;IPG Photonics Corporation - Common Stock;Q;N;N;100;N;N"
 "IPHS;Innophos Holdings, Inc. - Common Stock;Q;N;N;100;N;N"
-"IPIC;iPic Entertainment Inc. - Class A Common Stock;G;N;D;100;N;N"
+"IPIC;iPic Entertainment Inc. - Class A Common Stock;S;N;D;100;N;N"
 "IPKW;Invesco International BuyBack Achievers ETF;G;N;N;100;Y;N"
 "IPWR;Ideal Power Inc. - Common Stock;S;N;N;100;N;N"
 "IQ;iQIYI, Inc. - American Depositary Shares;Q;N;N;100;N;N"
