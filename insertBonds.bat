@@ -6,11 +6,11 @@ set dbName=readyloop
 
 set PGPASSWORD=1234
 
+echo drop table if exists etf_bond_facts cascade;| psql -U postgres %dbName%
+
 for /F %%a in (c:\test\ETFNamesSymbolsNoHeader.csv) do (
 
 			awk '{print F,$1,$2,$3,$4,$5,$6,$7}' FS=, OFS=, F=%%a c:\test\share\etf\etf-%%a.csv > c:\test\share\etf\etf-%%awSymbols.csv
-	
-			echo drop table etf_bond_facts cascade;| psql -U postgres %dbName%
 
 			echo drop table if exists temp_table%%a;| psql -U postgres %dbName%
 	
