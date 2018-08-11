@@ -64,7 +64,24 @@ potential sources
 		https://finance.yahoo.com/quote/HECO/history?period1=1325404800&period2=1514707200&interval=1d&filter=history&frequency=1d
 		
 		w/crumb
-		https://query1.finance.yahoo.com/v7/finance/download/HECO?period1=1325404800&period2=1514707200&interval=1d&events=history&crumb=XwK9tui4bLR
+		https://query1.finance.yahoo.com/v7/finance/download/HECO?period1=1325404800&period2=1514707200&interval=1d&events=history&crumb=XwK9tui4bLR		
+
+		#they have a cboe list
+		https://quant.stackexchange.com/questions/26162/where-can-i-get-a-list-of-all-yahoo-finance-stocks-symbols
+		
+		https://quant.stackexchange.com/questions/1640/where-to-download-list-of-all-common-stocks-traded-on-nyse-nasdaq-and-amex
+		
+		http://www.eoddata.com/symbols.aspx
+			NYSE: http://www.eoddata.com/Data/symbollist.aspx?e=NYSE
+			registration required
+			
+			allows me to download the entire nyse eoddata.  Not sure how to incorporate into splits or if it's necessary.  Very useful if I wish to maintain daily updates on say the nasdaq.  Requires manual download (or email?).
+			
+			has access to past 21 trading days (past month of data).  would only require a onetime manual update per month.
+		
+		http://markets.cboe.com/us/equities/market_statistics/
+		
+		https://stackoverflow.com/questions/5246843/how-to-get-a-complete-list-of-ticker-symbols-from-yahoo-finance		
 	
 	https://www.programmableweb.com/news/96-stocks-apis-bloomberg-nasdaq-and-etrade/2013/05/22
 	https://www.quantshare.com/sa-620-10-new-ways-to-download-historical-stock-quotes-for-free
@@ -139,6 +156,7 @@ proxylist.txt
 	REM format of file ip:port
 
 Add readylooppresentationserver to path	
+
 	
 Dependencies
 

@@ -21,7 +21,6 @@ setlocal enableextensions enabledelayedexpansion
 REM %1 = drop flag, assume 0 (not 1)
 
 set dbName=readyloop
-REM set tableName=nasdaq_facts
 
 REM download NASDAQ & Other (DOW and NYSE)
 curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqlisted.txt" --stderr -> nasdaqlisted.txt
@@ -225,9 +224,9 @@ REM symbol tables
 			echo CREATE USER readyloop WITH LOGIN NOSUPERUSER NOCREATEDB INHERIT NOREPLICATION CONNECTION LIMIT -1 PASSWORD 'read123'; GRANT SELECT ON ALL TABLES IN SCHEMA public TO readyloop; ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readyloop;| psql -U postgres %dbName%	
 					
 REM create NASDAQ & Other (DOW and NYSE) fact tables
-	echo CREATE TABLE IF NOT EXISTS nasdaq_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT nasdaq_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE nasdaq_facts_template OWNER to postgres; | psql -U postgres %dbName%
+	echo CREATE TABLE IF NOT EXISTS nasdaq_facts_template (symbol varchar(8), timestamp date, open real null, high real null,low real null,close real null,adjusted_close real null,volume real null,dividend_amount real null,split_coefficient real null,CONSTRAINT nasdaq_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE nasdaq_facts_template OWNER to postgres; | psql -U postgres %dbName%
 	
-	echo CREATE TABLE IF NOT EXISTS other_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,dividend_amount real,split_coefficient real,CONSTRAINT other_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE other_facts_template OWNER to postgres; | psql -U postgres %dbName%
+	echo CREATE TABLE IF NOT EXISTS other_facts_template (symbol varchar(8), timestamp date, open real null, high real null,low real null,close real null,adjusted_close real null,volume real null,dividend_amount real null,split_coefficient real null,CONSTRAINT other_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE other_facts_template OWNER to postgres; | psql -U postgres %dbName%
 	
 	echo CREATE TABLE IF NOT EXISTS other_facts AS select * from other_facts_template;| psql -U postgres %dbName%
 

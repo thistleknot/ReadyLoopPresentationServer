@@ -21,15 +21,15 @@ for /F %%a in (bondList) do (
 
 			awk '{print F,$1,$2,$3,$4,$5,$6,$7}' FS=, OFS=, F=%%a c:\test\share\etf\%%a.csv > c:\test\share\etf\%%awSymbols.csv
 
-			echo drop table if exists temp_table%%a;| psql -U postgres %dbName%
+			echo drop table if exists temp_table_%%a;| psql -U postgres %dbName%
 	
-			echo create table bond_facts%%a as table bond_facts_template;|psql -U postgres %dbName%
+			echo create table bond_facts_%%a as table bond_facts_template;|psql -U postgres %dbName%
 
-			echo copy bond_facts%%a from 'c:\test\share\etf\%%awSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+			echo copy bond_facts_%%a from 'c:\test\share\etf\%%awSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
 
-			echo insert into etf_bond_facts select distinct * from bond_facts%%a ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
+			echo insert into etf_bond_facts select distinct * from bond_facts_%%a ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
 
-			echo drop table bond_facts%%a;| psql -U postgres %dbName%
+			echo drop table bond_facts_%%a;| psql -U postgres %dbName%
 	)
 erase bondDirList.txt
 erase bondlist.txt
