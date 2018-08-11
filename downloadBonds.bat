@@ -32,6 +32,8 @@ for /F %%a in (c:\test\ETFNamesSymbolsNoHeader.csv) do (
 	
 	REM c:\test\share\etf\ETF-%%a.csv
 	
+	REM put here or in subdownloadBonds... gonna be tricky either way.
+	
 	fc /b c:\test\share\etf\ETF-%%a.csv c:\test\share\diffComparisonETF > nul
 	if errorlevel 1 (
     echo different
