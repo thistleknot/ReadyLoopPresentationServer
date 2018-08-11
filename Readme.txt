@@ -202,3 +202,8 @@ Dependencies
 			
 		checkBadETF.bat
 			differETF.bat
+			
+			to rerun
+			parsereruns.bat
+			xcopy reruns.txt to c:\test\ETFNamesSymbolsNoHeader.csv /y
+			downloadBonds.bat

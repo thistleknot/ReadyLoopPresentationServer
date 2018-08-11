@@ -28,7 +28,17 @@ for /F %%a in (c:\test\ETFNamesSymbolsNoHeader.csv) do (
 	
 	REM subDownloadBonds.bat
 	
-	start call subDownloadBonds.bat %%a %begin% %end% !crumb!
+	cmd.exe /c call subDownloadBonds.bat %%a %begin% %end%
+	
+	REM c:\test\share\etf\ETF-%%a.csv
+	
+	fc /b c:\test\share\etf\ETF-%%a.csv c:\test\share\diffComparisonETF > nul
+	if errorlevel 1 (
+    echo different
+	) else (
+		erase c:\test\share\etf\ETF-%%a.csv
+		cmd.exe /c call subDownloadBonds.bat %%a %begin% %end%
+	)
 	
 	REM it's not waiting for file to download before doing comparison
 	REM for /f "delims=" %%z in ('differ.bat c:\test\share\ETF-%%a.csv c:\test\invalidCookie.txt') do (set "reset=%%z")
@@ -38,7 +48,7 @@ for /F %%a in (c:\test\ETFNamesSymbolsNoHeader.csv) do (
 		
 		REM )
 	
-	timeout /t 3
+	
 	
 	
 )
