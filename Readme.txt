@@ -162,6 +162,8 @@ Dependencies
 
 	PopulateDb.bat 
 	
+		InsertIndice.bat
+	
 		generates: ETFNamesSymbols.txt
 		
 		DownloadDataNasdaq.bat (Nasdaq)
