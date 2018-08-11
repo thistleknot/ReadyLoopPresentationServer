@@ -1,5 +1,5 @@
-BIKR;Rogers AI Global Macro ETF;P;BIKR;Y;100;N;BIKR
-MET$A;MetLife, Inc. Preferred Series A Floating Rate;N;METpA;N;100;N;MET-A
-PRF;Invesco FTSE RAFI US 1000 ETF;P;PRF;Y;100;N;PRF
-HLT;Hilton Worldwide Holdings Inc. Common Stock ;N;HLT;N;100;N;HLT
-SCHO;Schwab Short-Term U.S. Treasury ETF;P;SCHO;Y;100;N;SCHO
+DL;China Distance Education Holdings Limited American Depositary Shares;N;DL;N;100;N;DL
+AKG;Asanko Gold Inc.;A;AKG;N;100;N;AKG
+NSPR;InspireMD Inc. Common Stock;A;NSPR;N;100;N;NSPR
+HYD;VanEck Vectors High Yield Municipal Index ETF;P;HYD;Y;100;N;HYD
+SFL;Ship Finance International Limited;N;SFL;N;100;N;SFL

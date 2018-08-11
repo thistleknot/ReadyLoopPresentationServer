@@ -51,7 +51,7 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 				echo !PROXY!
 				echo %%a
 				echo !APIKEY!
-				start call downloadAlphaOther.bat !PROXY! %%a !APIKEY!
+				cmd.exe /c call downloadAlphaOther.bat !PROXY! %%a !APIKEY!
 				set /A newCounter+=1				
 				)
 				timeout /t 55	

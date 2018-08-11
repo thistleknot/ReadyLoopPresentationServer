@@ -13,8 +13,6 @@ set dbName=readyloop
 set tableName=nasdaq_facts
 @echo on
 
-setlocal enableextensions enabledelayedexpansion
-
 FOR /F "tokens=*" %%a in ('returnNumLines.bat apiKey.txt') do SET numKeys=%%a
 echo %numKeys%
 
@@ -58,7 +56,7 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 				echo !PROXY!
 				echo %%a
 				echo !APIKEY!
-				start call downloadAlphaNasdaq.bat !PROXY! %%a !APIKEY!
+				cmd.exe /c call downloadAlphaNasdaq.bat !PROXY! %%a !APIKEY!
 				set /A newCounter+=1				
 				)
 				timeout /t 55

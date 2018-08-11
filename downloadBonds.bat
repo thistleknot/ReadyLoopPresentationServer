@@ -32,7 +32,7 @@ for /F %%a in (c:\test\ETFNamesSymbolsNoHeader.csv) do (
 	
 	REM c:\test\share\etf\ETF-%%a.csv
 	
-	REM put here or in subdownloadBonds... gonna be tricky either way.
+	REM put here or in subdownloadBonds... having here, I can't use start to spawn a bunch of processes and expect it to be done for error checking.  Doing it inside is a headache too due to rerunning the curl as well as the cookie command.
 	
 	fc /b c:\test\share\etf\ETF-%%a.csv c:\test\share\diffComparisonETF > nul
 	if errorlevel 1 (
