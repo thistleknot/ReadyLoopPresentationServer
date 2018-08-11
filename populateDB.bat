@@ -254,7 +254,7 @@ REM download data
 		
 		cmd.exe /c otherCleanup.bat
 			
-		cmd.exe /c inserOther.bat
+		cmd.exe /c insertOther.bat
 
 REM echo select * from %tableName%;| psql -U postgres %dbName%
 REM echo's all symbols

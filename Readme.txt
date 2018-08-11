@@ -179,6 +179,8 @@ Dependencies
 			downloadAlphaOther.bat 
 			
 			c:\test\otherSymbolsNoHeader.csv
+			
+			otherCleanup.bat
 				
 		subcurrentdate.bat
 			currentdate.bat
