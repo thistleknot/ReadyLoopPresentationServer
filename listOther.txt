@@ -1,5 +1,1 @@
-RVNU;Xtrackers Municipal Infrastructure Revenue Bond ETF;P;RVNU;Y;100;N;RVNU
-VIOV;Vanguard S&P Small-Cap 600 Value ETF;P;VIOV;Y;100;N;VIOV
-NUSC;NuShares ESG Small-Cap ETF;Z;NUSC;Y;100;N;NUSC
-AIZ;Assurant, Inc. Common Stock;N;AIZ;N;100;N;AIZ
-GSBD;Goldman Sachs BDC, Inc. Common Stock;N;GSBD;N;100;N;GSBD
+HSCZ;iShares Currency Hedged MSCI EAFE Small-Cap ETF;P;HSCZ;Y;100;N;HSCZ
