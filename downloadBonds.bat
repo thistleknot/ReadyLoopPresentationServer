@@ -54,7 +54,7 @@ for /F %%a in (c:\test\ETFNamesSymbolsNoHeader.csv) do (
 	
 	
 )
-erase etfSymbolsNoQuotesNoHeader.txt
+REM erase etfSymbolsNoQuotesNoHeader.txt
 
 
 	

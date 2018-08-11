@@ -10,8 +10,6 @@ set dbName=readyloop
 
 set PGPASSWORD=1234
 
-echo drop table if exists nasdaq_facts cascade;|psql -U postgres %dbName%
-
 echo CREATE TABLE IF NOT EXISTS nasdaq_facts AS select * from nasdaq_facts_template;| psql -U postgres %dbName%
 
 dir c:\test\share\nasdaq\*.csv /b > c:\test\share\nasdaq\nasdaqDirList.txt
@@ -25,7 +23,7 @@ for /F %%a in (c:\test\share\nasdaq\NasdaqList) do (
 
 			echo create table temp_table_NS_%%a as table nasdaq_facts_template;|psql -U postgres %dbName%
 
-			echo copy temp_table_NS_%%a from 'c:\test\share\nasdaq\%%awSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+			echo copy temp_table_NS_%%a from 'c:\test\share\nasdaq\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres %dbName%
 
 			echo insert into nasdaq_facts select distinct * from temp_table_NS_%%a ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
 

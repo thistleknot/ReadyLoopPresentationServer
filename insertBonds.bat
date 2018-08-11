@@ -10,8 +10,6 @@ set dbName=readyloop
 
 set PGPASSWORD=1234
 
-echo drop table if exists etf_bond_facts cascade;| psql -U postgres %dbName%
-
 echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from bond_facts_template;| psql -U postgres %dbName%	
 
 dir c:\test\share\etf\*.csv /b > bondDirList.txt
@@ -25,7 +23,7 @@ for /F %%a in (bondList) do (
 	
 			echo create table bond_facts_%%a as table bond_facts_template;|psql -U postgres %dbName%
 
-			echo copy bond_facts_%%a from 'c:\test\share\etf\%%awSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+			echo copy bond_facts_%%a from 'c:\test\share\etf\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres %dbName%
 
 			echo insert into etf_bond_facts select distinct * from bond_facts_%%a ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
 
@@ -34,4 +32,4 @@ for /F %%a in (bondList) do (
 erase bondDirList.txt
 erase bondlist
 cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
-exit
+REM exit

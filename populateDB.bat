@@ -17,6 +17,9 @@ set fullFlag=1
 set dbName=readyloop
 set tableName=nasdaq_facts
 
+REM needed for null string for copy statements
+set NULL="null"
+
 REM %1 = drop flag, assume 0 (not 1)
 
 REM download NASDAQ & Other (DOW and NYSE)
@@ -57,9 +60,9 @@ REM xcopy ETFList.csv c:\test\ETFList.csv
 	
 	cmd.exe /c randomizeSymbolList.bat c:\test\ETFNamesSymbolsNoHeaderFull.csv c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv
 	
-head -n 500 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
-head -n 700 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
-head -n 600 c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv > c:\test\ETFNamesSymbolsNoHeader100RNG.csv
+head -n 10 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
+head -n 10 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
+head -n 10 c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv > c:\test\ETFNamesSymbolsNoHeader100RNG.csv
 
 xcopy c:\test\nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader.csv /y
 xcopy c:\test\otherSymbolsNoHeader100RNG.csv c:\test\otherSymbolsNoHeader.csv /y
@@ -191,7 +194,7 @@ REM create NASDAQ & Other (DOW and NYSE) fact tables
 	echo CREATE TABLE IF NOT EXISTS other_facts AS select * from other_facts_template;| psql -U postgres %dbName%
 
 REM create Bonds fact table		
-	echo CREATE TABLE IF NOT EXISTS bond_facts_template (symbol varchar(8), timestamp date, open real, high real,low real,close real,adjusted_close real,volume real,CONSTRAINT bond_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE bond_facts_template OWNER to postgres; | psql -U postgres %dbName%
+	echo CREATE TABLE IF NOT EXISTS bond_facts_template (symbol varchar(8), timestamp date, open real null, high real null,low real null,close real null,adjusted_close real null,volume real  null,CONSTRAINT bond_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE bond_facts_template OWNER to postgres; | psql -U postgres %dbName%
 	
 REM create ETF-Bonds fact table	
 	echo CREATE TABLE IF NOT EXISTS public.etf_bond_facts_template (symbol varchar(8), timestamp date, open real null, high real null,low real null,close real null,adjusted_close real null,volume real null,CONSTRAINT etf_bond_facts_template_key PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;ALTER TABLE public.etf_bond_facts_template OWNER to postgres; | psql -U postgres %dbName%
@@ -201,6 +204,10 @@ REM create ETF-Bonds fact table
 REM download data
 
 	cmd.exe /c insertIndice.bat
+	
+	Rem need to run outside
+	
+	echo drop table if exists etf_bond_facts cascade;| psql -U postgres %dbName%
 	
 	erase c:\test\share\etf\*.* /q
 	
@@ -215,7 +222,11 @@ REM download data
 		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
 		
 		cmd.exe /c insertBonds.bat
-		
+	
+	REM need to run outside.
+	
+	echo drop table if exists nasdaq_facts cascade;|psql -U postgres %dbName%
+	
 	erase c:\test\share\nasdaq\*.* /q
 	
 	cmd.exe /c downloadDataNasdaq.bat
@@ -226,10 +237,21 @@ REM download data
 		
 		echo f|xcopy reruns.txt c:\test\share\NasdaqReRuns.txt /y
 		
+		REM one more time
+		cd c:\test\share\nasdaq\
+		checkbad.bat
+		parsereruns.bat
+		echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
+		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
+		cmd.exe /c downloadDataNasdaq.bat
+		
 		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
 		
-		cmd.exe /c insertNasdaq.bat
-	
+		cmd.exe /c insertNasdaq.bat		
+
+	Rem can't run inside because it will drop when I wish to rerun!
+	echo drop table if exists other_facts cascade;|psql -U postgres %dbName%
+		
 	erase c:\test\share\other\*.* /q
 	
 	cmd.exe /c downloadDataOther.bat
@@ -241,6 +263,18 @@ REM download data
 		echo f|xcopy reruns.txt c:\test\share\ETFReruns.txt /y
 		
 		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
+
+		REM one more time
+		cd c:\test\share\other\
+		checkbad.bat
+		parsereruns.bat
+		echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
+		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
+		cmd.exe /c downloadDataOther.bat
+		
+		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
+		
+
 		
 		cmd.exe /c insertOther.bat
 		
