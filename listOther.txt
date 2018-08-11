@@ -1,5 +1,5 @@
-TAIL;Cambria Tail Risk ETF;Z;TAIL;Y;100;N;TAIL
-RWL;Oppenheimer S&P 500 Revenue ETF;P;RWL;Y;100;N;RWL
-CLNY$I;Colony Capital, Inc. 7.15 Series I Cumulative Redeemable Perpetual Preferred Stock;N;CLNYpI;N;100;N;CLNY-I
-PPTB;PortfolioPlus Total Bond Markets ETF;P;PPTB;Y;100;N;PPTB
-SKF;ProShares UltraShort Financials;P;SKF;Y;100;N;SKF
+HEZU;iShares Currency Hedged MSCI Eurozone ETF;P;HEZU;Y;100;N;HEZU
+FDM;First Trust DJ Select MicroCap ETF;P;FDM;Y;100;N;FDM
+QXMI;QuantX Risk Managed Multi-Asset Income ETF;Z;QXMI;Y;100;N;QXMI
+HLX;Helix Energy Solutions Group, Inc. Common Stock;N;HLX;N;100;N;HLX
+GF;New Germany Fund, Inc. (The) Common Stock;N;GF;N;100;N;GF

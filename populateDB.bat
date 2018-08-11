@@ -241,23 +241,23 @@ REM download data
 		REM echo f|xcopy reruns.txt c:\test\share\NasdaqReRuns.txt /y
 		
 		REM one more time
-		cd c:\test\share\nasdaq\
+		REM cd c:\test\share\nasdaq\
 		
-		cmd.exe /c checkbad.bat
-		cmd.exe /c parsereruns.bat
-		echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
-		erase c:\test\share\nasdaq\reruns.txt
+		REM cmd.exe /c checkbad.bat
+		REM cmd.exe /c parsereruns.bat
+		REM echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
+		REM erase c:\test\share\nasdaq\reruns.txt
 		
-		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
-		cmd.exe /c downloadDataNasdaq.bat
+		REM cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
+		REM cmd.exe /c downloadDataNasdaq.bat
 		
-		cd c:\test\share\nasdaq\
-		cmd.exe /c checkbad.bat
-		cmd.exe /c parsereruns.bat
+		REM cd c:\test\share\nasdaq\
+		REM cmd.exe /c checkbad.bat
+		REM cmd.exe /c parsereruns.bat
 		
-		echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
-		erase c:\test\share\nasdaq\reruns.txt
-		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
+		REM echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
+		REM erase c:\test\share\nasdaq\reruns.txt
+		REM cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
 		
 		cmd.exe /c insertNasdaq.bat		
 
@@ -272,32 +272,32 @@ REM download data
 	
 	cmd.exe /c downloadDataOther.bat
 	
-		cd c:\test\share\other\
+		REM cd c:\test\share\other\
 	
-		cmd.exe /c checkBad.bat
-		cmd.exe /c parsereruns.bat
+		REM cmd.exe /c checkBad.bat
+		REM cmd.exe /c parsereruns.bat
 		
-		echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
-		erase c:\test\share\other\reruns.txt
+		REM echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
+		REM erase c:\test\share\other\reruns.txt
 		
-		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
+		REM cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
 
 		REM one more time
-		cmd.exe /c downloadDataOther.bat
+		REM cmd.exe /c downloadDataOther.bat
 		
-		cd c:\test\share\other\
+		REM cd c:\test\share\other\
 	
-		cmd.exe /c checkBad.bat
-		cmd.exe /c parsereruns.bat
+		REM cmd.exe /c checkBad.bat
+		REM cmd.exe /c parsereruns.bat
 		
-		echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
-		erase c:\test\share\other\reruns.txt
+		REM echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
+		REM erase c:\test\share\other\reruns.txt
 		
-		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer		
+		REM cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer		
 		
-		cmd.exe /c insertOther.bat
+		REM cmd.exe /c insertOther.bat
 		
-	rem insertBonds.bat
+	cmd.exe /c inserOther.bat
 
 REM echo select * from %tableName%;| psql -U postgres %dbName%
 REM echo's all symbols
