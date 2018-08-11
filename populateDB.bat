@@ -60,9 +60,9 @@ REM xcopy ETFList.csv c:\test\ETFList.csv
 	
 	cmd.exe /c randomizeSymbolList.bat c:\test\ETFNamesSymbolsNoHeaderFull.csv c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv
 	
-head -n 10 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
-head -n 10 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
-head -n 10 c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv > c:\test\ETFNamesSymbolsNoHeader100RNG.csv
+head -n 500 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
+head -n 400 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
+head -n 600 c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv > c:\test\ETFNamesSymbolsNoHeader100RNG.csv
 
 xcopy c:\test\nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader.csv /y
 xcopy c:\test\otherSymbolsNoHeader100RNG.csv c:\test\otherSymbolsNoHeader.csv /y
