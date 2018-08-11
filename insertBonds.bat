@@ -31,4 +31,5 @@ for /F %%a in (bondList) do (
 
 			echo drop table bond_facts%%a;| psql -U postgres %dbName%
 	)
-	erase bondDirList.txt
+erase bondDirList.txt
+erase bondlist.txt
