@@ -83,7 +83,7 @@ REM symbol tables
 	
 		echo CREATE TABLE if not exists nSymbolsTemp as select * from nSymbolsTemplate;| psql -U postgres %dbName%
 
-		echo copy nSymbolsTemp from 'c:\test\nasdaqSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
+		echo copy nSymbolsTemp from 'c:\test\nasdaqSymbolsNoHeaderFull.csv' DELIMITER ';';| psql -U postgres %dbName%
 		
 		echo insert into nSymbols select distinct * from nSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
 		
