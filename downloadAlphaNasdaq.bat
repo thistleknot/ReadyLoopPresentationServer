@@ -45,4 +45,4 @@ REM echo drop table temp_table%2;| psql -U postgres %dbName%
 	
 REM timeout /t 1
 
-REM exit
+exit

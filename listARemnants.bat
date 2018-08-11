@@ -24,4 +24,4 @@ for /F "delims=;" %%a in (list.txt) do (
 	set /A newCounter+=1				
 )
 REM timeout /t 4		
-REM exit
+exit

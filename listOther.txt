@@ -1,5 +1,5 @@
-FNGU;MicroSectors FANG  Index 3X Leveraged ETNs due January 8, 2038;P;FNGU;N;100;N;FNGU
-DEO;Diageo plc Common Stock;N;DEO;N;100;N;DEO
-IVC;Invacare Corporation Common Stock;N;IVC;N;100;N;IVC
-EFA;iShares MSCI EAFE ETF;P;EFA;Y;100;N;EFA
-PTLC;Pacer Fund Trust Pacer Trendpilot US Large Cap ETF;Z;PTLC;Y;100;N;PTLC
+TAIL;Cambria Tail Risk ETF;Z;TAIL;Y;100;N;TAIL
+RWL;Oppenheimer S&P 500 Revenue ETF;P;RWL;Y;100;N;RWL
+CLNY$I;Colony Capital, Inc. 7.15 Series I Cumulative Redeemable Perpetual Preferred Stock;N;CLNYpI;N;100;N;CLNY-I
+PPTB;PortfolioPlus Total Bond Markets ETF;P;PPTB;Y;100;N;PPTB
+SKF;ProShares UltraShort Financials;P;SKF;Y;100;N;SKF

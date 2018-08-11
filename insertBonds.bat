@@ -32,4 +32,4 @@ for /F %%a in (bondList) do (
 erase bondDirList.txt
 erase bondlist
 cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
-REM exit
+exit

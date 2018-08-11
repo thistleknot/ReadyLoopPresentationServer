@@ -75,4 +75,4 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 )	
 listARemnants.bat
 
-REM exit
+exit
