@@ -51,13 +51,15 @@ REM remove header, required for downloadDataOther.bat and downloadDataNasdaq.bat
 
 REM xcopy ETFList.csv c:\test\ETFList.csv
 
-randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv > c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv
-randomizeSymbolList.bat c:\test\otherSymbolsNoHeaderFull.csv > c:\test\RNG-otherSymbolsNoHeaderFull.csv
-randomizeSymbolList.bat c:\test\ETFNamesSymbolsNoHeaderFull.csv > c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv
+	randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv
 
-head -n 201 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
-head -n 201 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
-head -n 201 c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv > c:\test\ETFNamesSymbolsNoHeader100RNG.csv
+	randomizeSymbolList.bat c:\test\otherSymbolsNoHeaderFull.csv c:\test\RNG-otherSymbolsNoHeaderFull.csv
+	
+	randomizeSymbolList.bat c:\test\ETFNamesSymbolsNoHeaderFull.csv c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv
+	
+head -n 5 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
+head -n 5 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
+head -n 5 c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv > c:\test\ETFNamesSymbolsNoHeader100RNG.csv
 
 xcopy c:\test\nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader.csv /y
 xcopy c:\test\otherSymbolsNoHeader100RNG.csv c:\test\otherSymbolsNoHeader.csv /y
@@ -204,6 +206,8 @@ REM download data
 		
 		xcopy reruns.txt c:\test\share\OtherReRuns.txt /y
 		
+		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
+		
 	downloadDataNasdaq.bat
 	
 		cd c:\test\share\nasdaq\
@@ -211,6 +215,8 @@ REM download data
 		checkBad.bat	
 		
 		xcopy reruns.txt c:\test\share\NasdaqReRuns.txt /y
+		
+		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
 	
 	downloadDataOther.bat
 	
@@ -220,7 +226,7 @@ REM download data
 		
 		xcopy reruns.txt c:\test\share\ETFReruns.txt /y
 		
-	cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
+		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
 		
 	rem insertBonds.bat
 
