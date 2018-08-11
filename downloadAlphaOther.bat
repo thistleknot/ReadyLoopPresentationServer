@@ -30,8 +30,9 @@ FOR /F "tokens=*" %%a in ('returnLine.bat 1 useragent.txt') do SET useragent=%%a
 REM if %fullFlag%==1 (curl -insecure -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
 REM if NOT %fullFlag%==1 (curl -insecure -x %1 -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
 
-if %fullFlag%==1 (curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
-if NOT %fullFlag%==1 (curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
+REM if %fullFlag%==1 (curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
+REM if NOT %fullFlag%==1 (curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv)
+curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%2&outputsize=full&apikey=%3&datatype=csv" -o c:\test\share\other\O-%2.csv
 
 
 REM adds symbol to front of columns

@@ -228,6 +228,9 @@ REM download data
 	echo drop table if exists nasdaq_facts cascade;|psql -U postgres %dbName%
 	
 	erase c:\test\share\nasdaq\*.csv /q
+	erase c:\test\share\nasdaq\reruns.txt
+	erase c:\test\share\nasdaq\nasdaqDirList.txt
+	erase c:\test\share\nasdaq\nasdaqList
 	
 	cmd.exe /c downloadDataNasdaq.bat
 	
@@ -239,16 +242,21 @@ REM download data
 		
 		REM one more time
 		cd c:\test\share\nasdaq\
+		
 		cmd.exe /c checkbad.bat
 		cmd.exe /c parsereruns.bat
 		echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
+		erase c:\test\share\nasdaq\reruns.txt
+		
 		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
 		cmd.exe /c downloadDataNasdaq.bat
 		
 		cd c:\test\share\nasdaq\
 		cmd.exe /c checkbad.bat
 		cmd.exe /c parsereruns.bat
+		
 		echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
+		erase c:\test\share\nasdaq\reruns.txt
 		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
 		
 		cmd.exe /c insertNasdaq.bat		
@@ -257,29 +265,34 @@ REM download data
 	echo drop table if exists other_facts cascade;|psql -U postgres %dbName%
 		
 	erase c:\test\share\other\*.csv /q
+	erase c:\test\share\other\reruns.txt
+	erase c:\test\share\other\otherDirList.txt
+	erase c:\test\share\other\otherList
+	
 	
 	cmd.exe /c downloadDataOther.bat
 	
 		cd c:\test\share\other\
 	
 		cmd.exe /c checkBad.bat
+		cmd.exe /c parsereruns.bat
 		
-		echo f|xcopy reruns.txt c:\test\share\ETFReruns.txt /y
+		echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
+		erase c:\test\share\other\reruns.txt
 		
 		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
 
 		REM one more time
-		cd c:\test\share\other\
-		cmd.exe /c checkbad.bat
-		cmd.exe /c parsereruns.bat
-		echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
-		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
 		cmd.exe /c downloadDataOther.bat
 		
 		cd c:\test\share\other\
-		cmd.exe /c checkbad.bat
+	
+		cmd.exe /c checkBad.bat
 		cmd.exe /c parsereruns.bat
+		
 		echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
+		erase c:\test\share\other\reruns.txt
+		
 		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer		
 		
 		cmd.exe /c insertOther.bat
