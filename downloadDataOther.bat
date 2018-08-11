@@ -24,48 +24,26 @@ FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\otherSymbolsNoHeader.csv')
 @echo off
 
 set /A counter=1
-FOR /L %%i IN (1,1,%numLines%) DO (
+FOR /f "delims=;" %%a IN (c:\test\otherSymbolsNoHeader.csv) DO (
 
-	REM new file
-	
-	echo "counter: " !counter!
-
-	REM queue's up a certain # before downloading
-	if !counter! == 1 call returnLine.bat %%i 'c:\test\otherSymbolsNoHeader.csv' > listOther.txt
-	if !counter! gtr 1 call returnLine.bat %%i 'c:\test\otherSymbolsNoHeader.csv' >> listOther.txt
-	
-	REM list is ready
-	if !counter! == %numKeys% ( 
-	
-		set /A newCounter=1
-	
 			REM %%a is symbol
-			for /F "delims=;" %%a in (listOther.txt) do (
 				echo %%a
 				
-				FOR /F "tokens=*" %%c in ('returnLine.bat !newCounter! apiKey.txt') do SET APIKEY=%%c
-				SET /A test=%RANDOM% * 20 / 32768 + 1
+				FOR /F "tokens=*" %%c in ('returnLine.bat 1 apiKey.txt') do SET APIKEY=%%c
 				
-				FOR /F "tokens=*" %%b in ('returnLine.bat %%newCounter%% proxyList.txt') do SET PROXY=%%b
-				echo !newCounter!
+				REM SET /A test=%RANDOM% * 20 / 32768 + 1				
+				REM for now not using random
+				FOR /F "tokens=*" %%b in ('returnLine.bat 1 proxyList.txt') do SET PROXY=%%b
+
+				REM echo %test%
+				REM echo !newCounter!
 				echo !PROXY!
 				echo %%a
 				echo !APIKEY!
 				cmd.exe /c call downloadAlphaOther.bat !PROXY! %%a !APIKEY!
-				set /A newCounter+=1				
+				rEM set /A newCounter+=1				
+				timeout /t 8
 				)
-				REM setting to 40 because I will do a second pass.  Assuming each pass takes 5 seconds, 5*5 = 25 seconds, 35 seconds to spare, so I'm giving each process 4 seconds, some take up to 7.  What is lost will be recpatured second round.
-				timeout /t 40
-	)
-	
-	if !counter! == %numKeys% call echo	
-	
-	if !counter! == %numKeys% call set /A counter=0
-	
-	set /A counter+=1
-		
-	@echo on
-  
-)	
-listAORemnants.bat
+				
+REM listAORemnants.bat
 exit

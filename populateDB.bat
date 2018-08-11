@@ -232,32 +232,11 @@ REM download data
 	erase c:\test\share\nasdaq\nasdaqDirList.txt
 	erase c:\test\share\nasdaq\nasdaqList
 	
-	cmd.exe /c downloadDataNasdaq.bat
+		cmd.exe /c downloadDataNasdaq.bat
 	
-		REM cd c:\test\share\nasdaq\
-	
-		REM cmd.exe /c checkBad.bat	
-		
-		REM echo f|xcopy reruns.txt c:\test\share\NasdaqReRuns.txt /y
-		
-		REM one more time
-		REM cd c:\test\share\nasdaq\
-		
-		REM cmd.exe /c checkbad.bat
-		REM cmd.exe /c parsereruns.bat
-		REM echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
-		REM erase c:\test\share\nasdaq\reruns.txt
-		
-		REM cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
-		REM cmd.exe /c downloadDataNasdaq.bat
-		
-		REM cd c:\test\share\nasdaq\
-		REM cmd.exe /c checkbad.bat
-		REM cmd.exe /c parsereruns.bat
-		
-		REM echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
-		REM erase c:\test\share\nasdaq\reruns.txt
-		REM cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
+		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
+
+		cmd.exe /c nasdaqCleanup.bat
 		
 		cmd.exe /c insertNasdaq.bat		
 
@@ -269,35 +248,13 @@ REM download data
 	erase c:\test\share\other\otherDirList.txt
 	erase c:\test\share\other\otherList
 	
-	
-	cmd.exe /c downloadDataOther.bat
-	
-		REM cd c:\test\share\other\
-	
-		REM cmd.exe /c checkBad.bat
-		REM cmd.exe /c parsereruns.bat
+		cmd.exe /c downloadDataOther.bat
 		
-		REM echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
-		REM erase c:\test\share\other\reruns.txt
+		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
 		
-		REM cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
-
-		REM one more time
-		REM cmd.exe /c downloadDataOther.bat
-		
-		REM cd c:\test\share\other\
-	
-		REM cmd.exe /c checkBad.bat
-		REM cmd.exe /c parsereruns.bat
-		
-		REM echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
-		REM erase c:\test\share\other\reruns.txt
-		
-		REM cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer		
-		
-		REM cmd.exe /c insertOther.bat
-		
-	cmd.exe /c inserOther.bat
+		cmd.exe /c otherCleanup.bat
+			
+		cmd.exe /c inserOther.bat
 
 REM echo select * from %tableName%;| psql -U postgres %dbName%
 REM echo's all symbols

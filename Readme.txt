@@ -172,6 +172,8 @@ Dependencies
 			 c:\test\nasdaqSymbolsNoHeader.csv
 			 c:\test\otherSymbolsNoHeader.csv
 			 c:\test\ETFNamesSymbolsNoHeader.csv
+			 
+			nasdaqCleanup.bat
 			
 		DownloadDataOther.bat (DOW,NYSE)
 			downloadAlphaOther.bat 
