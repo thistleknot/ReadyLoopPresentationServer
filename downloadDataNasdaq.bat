@@ -26,53 +26,31 @@ FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv'
 @echo off
 
 set /A counter=1
-FOR /L %%i IN (1,1,%numLines%) DO (
+FOR /f "delims=;" %%a IN (c:\test\nasdaqSymbolsNoHeader.csv) DO (
 
-	REM new file
-	
-	echo "counter: " !counter!
-
-	REM queue's up a certain # before downloading
-	if !counter! == 1 call returnLine.bat %%i 'c:\test\nasdaqSymbolsNoHeader.csv' > list.txt
-	if !counter! gtr 1 call returnLine.bat %%i 'c:\test\nasdaqSymbolsNoHeader.csv' >> list.txt
-	
-	REM list is ready
-	if !counter! == %numKeys% ( 
-	
-		set /A newCounter=1
-	
 			REM %%a is symbol
-			for /F "delims=;" %%a in (list.txt) do (
 				echo %%a
 				
-				FOR /F "tokens=*" %%c in ('returnLine.bat !newCounter! apiKey.txt') do SET APIKEY=%%c
+				FOR /F "tokens=*" %%c in ('returnLine.bat 1 apiKey.txt') do SET APIKEY=%%c
 				
-				SET /A test=%RANDOM% * 20 / 32768 + 1				
+				REM SET /A test=%RANDOM% * 20 / 32768 + 1				
 				REM for now not using random
-				FOR /F "tokens=*" %%b in ('returnLine.bat %%newCounter%% proxyList.txt') do SET PROXY=%%b
+				FOR /F "tokens=*" %%b in ('returnLine.bat 1 proxyList.txt') do SET PROXY=%%b
 
-				echo %test%
-				echo !newCounter!
+				REM echo %test%
+				REM echo !newCounter!
 				echo !PROXY!
 				echo %%a
 				echo !APIKEY!
 				cmd.exe /c call downloadAlphaNasdaq.bat !PROXY! %%a !APIKEY!
-				set /A newCounter+=1				
+				rEM set /A newCounter+=1				
+				timeout /t 8
 				)
-				timeout /t 40
-	)
-	
-	if !counter! == %numKeys% call echo	
-	
-	if !counter! == %numKeys% call set /A counter=0
-	
-	
-	
-	set /A counter+=1
-		
+				
 	@echo on
   
-)	
-listARemnants.bat
+	
+REM returnLine.bat !counter! c:\test\nasdaqSymbolsNoHeader.csv
+REM listARemnants.bat
 
 exit

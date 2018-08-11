@@ -1,5 +1,5 @@
-HEZU;iShares Currency Hedged MSCI Eurozone ETF;P;HEZU;Y;100;N;HEZU
-FDM;First Trust DJ Select MicroCap ETF;P;FDM;Y;100;N;FDM
-QXMI;QuantX Risk Managed Multi-Asset Income ETF;Z;QXMI;Y;100;N;QXMI
-HLX;Helix Energy Solutions Group, Inc. Common Stock;N;HLX;N;100;N;HLX
-GF;New Germany Fund, Inc. (The) Common Stock;N;GF;N;100;N;GF
+UVXY;ProShares Trust Ultra VIX Short Term Futures ETF;P;UVXY;Y;100;N;UVXY
+DCO;Ducommun Incorporated Common Stock;N;DCO;N;100;N;DCO
+ZEXIT;IEX Test Company Test Symbol Two for IEX;V;ZEXIT;N;100;Y;ZEXIT
+ENZ;Enzo Biochem, Inc. Common Stock ($0.01 Par Value);N;ENZ;N;100;N;ENZ
+COTY;Coty Inc. Class A Common Stock;N;COTY;N;100;N;COTY
