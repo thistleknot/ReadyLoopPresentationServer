@@ -35,3 +35,5 @@ for /F %%a in (c:\test\share\nasdaq\NasdaqList) do (
 	
 erase nasdaqDirList.txt
 erase NasdaqList
+cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
+exit

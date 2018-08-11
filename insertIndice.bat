@@ -10,7 +10,7 @@ call %command%
 
 REM indice tables
 
-	echo DROP TABLE eod_indices;| psql -U postgres %dbName%
+	echo DROP TABLE if exists eod_indices;| psql -U postgres %dbName%
 	
 	echo CREATE TABLE if not exists eod_indices_Template( symbol character varying(16) COLLATE pg_catalog."default" NOT NULL, date date NOT NULL, open real, high real, low real, close real, adj_close real, volume double precision, CONSTRAINT eod_indicesTemplate_pkey PRIMARY KEY (symbol, date)) WITH (OIDS = FALSE) TABLESPACE pg_default; ALTER TABLE public.eod_indices OWNER to postgres;| psql -U postgres %dbName%
 	

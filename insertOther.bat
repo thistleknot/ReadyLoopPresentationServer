@@ -35,3 +35,5 @@ for /F %%a in (c:\test\share\other\OtherList) do (
 	
 erase otherDirList.txt
 erase otherList
+cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
+exit

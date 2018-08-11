@@ -29,7 +29,6 @@ curl --silent "https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?dow
 	REM symbol list, nothing else.
 	cut -f 1,2 -d , ETFList.csv > c:\test\ETFListwQuotes.csv
 
-
 	cut -f 1,1 -d , c:\test\ETFList.csv > c:\test\ETFNamesSymbols.csv
 
 REM remove last line that is a log
@@ -52,11 +51,11 @@ REM remove header, required for downloadDataOther.bat and downloadDataNasdaq.bat
 
 REM xcopy ETFList.csv c:\test\ETFList.csv
 
-	randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv
+	cmd.exe /c randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv
 
-	randomizeSymbolList.bat c:\test\otherSymbolsNoHeaderFull.csv c:\test\RNG-otherSymbolsNoHeaderFull.csv
+	cmd.exe /c randomizeSymbolList.bat c:\test\otherSymbolsNoHeaderFull.csv c:\test\RNG-otherSymbolsNoHeaderFull.csv
 	
-	randomizeSymbolList.bat c:\test\ETFNamesSymbolsNoHeaderFull.csv c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv
+	cmd.exe /c randomizeSymbolList.bat c:\test\ETFNamesSymbolsNoHeaderFull.csv c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv
 	
 head -n 5 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
 head -n 5 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
@@ -79,6 +78,8 @@ REM symbol tables
 
 	echo create table if not exists nSymbolsTemplate (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
 	
+		echo drop table if exists nsymbols;| psql -U postgres %dbName%	
+		
 		echo CREATE TABLE if not exists nSymbols as select * from nSymbolsTemplate;| psql -U postgres %dbName%
 	
 		echo CREATE TABLE if not exists nSymbolsTemp as select * from nSymbolsTemplate;| psql -U postgres %dbName%
@@ -91,6 +92,8 @@ REM symbol tables
 
 	REM Other (DOW and NYSE)
 	echo CREATE TABLE if not exists oSymbolsTemplate (symbol varchar(8), securityName varchar(256), Exchange varchar(16),CQSSymbol varchar(16),ETF varchar(8),roundLotSize varchar(4),testIssue varchar(4), nasdaqSymbol varchar(8),CONSTRAINT osymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
+	
+		echo drop table if exists oSymbols;| psql -U postgres %dbName%	
 	
 		echo CREATE TABLE if not exists oSymbols as select * from oSymbolsTemplate;| psql -U postgres %dbName%
 	
@@ -197,37 +200,49 @@ REM create ETF-Bonds fact table
 	
 REM download data
 
-	insertIndice.bat
+	cmd.exe /c insertIndice.bat
 	
-	downloadBonds.bat
+	erase c:\test\share\etf\*.* /q
+	
+	cmd.exe /c downloadBonds.bat
 	
 		cd c:\test\share\etf\
 		
-		checkBadETF.bat
+		cmd.exe /c checkBadETF.bat
 		
-		xcopy reruns.txt c:\test\share\OtherReRuns.txt /y
+		echo f|xcopy reruns.txt c:\test\share\OtherReRuns.txt /y
 		
 		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
 		
-	downloadDataNasdaq.bat
+		cmd.exe /c insertBonds.bat
+		
+	erase c:\test\share\nasdaq\*.* /q
+	
+	cmd.exe /c downloadDataNasdaq.bat
 	
 		cd c:\test\share\nasdaq\
 	
-		checkBad.bat	
+		cmd.exe /c checkBad.bat	
 		
-		xcopy reruns.txt c:\test\share\NasdaqReRuns.txt /y
+		echo f|xcopy reruns.txt c:\test\share\NasdaqReRuns.txt /y
 		
 		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
+		
+		cmd.exe /c insertNasdaq.bat
 	
-	downloadDataOther.bat
+	erase c:\test\share\other\*.* /q
+	
+	cmd.exe /c downloadDataOther.bat
 	
 		cd c:\test\share\other\
 	
-		checkBad.bat
+		cmd.exe /c checkBad.bat
 		
-		xcopy reruns.txt c:\test\share\ETFReruns.txt /y
+		echo f|xcopy reruns.txt c:\test\share\ETFReruns.txt /y
 		
 		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
+		
+		cmd.exe /c insertOther.bat
 		
 	rem insertBonds.bat
 

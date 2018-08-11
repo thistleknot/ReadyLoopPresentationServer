@@ -20,7 +20,8 @@ for /F "delims=;" %%a in (listOther.txt) do (
 	echo !PROXY!
 	echo %%a
 	echo !APIKEY!
-	start call downloadAlpha.bat !PROXY! %%a !APIKEY!
+	start call downloadAlphaOther.bat !PROXY! %%a !APIKEY!
 	set /A newCounter+=1				
 )
 timeout /t 13				
+exit

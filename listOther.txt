@@ -1,1 +1,5 @@
-HSCZ;iShares Currency Hedged MSCI EAFE Small-Cap ETF;P;HSCZ;Y;100;N;HSCZ
+BIKR;Rogers AI Global Macro ETF;P;BIKR;Y;100;N;BIKR
+MET$A;MetLife, Inc. Preferred Series A Floating Rate;N;METpA;N;100;N;MET-A
+PRF;Invesco FTSE RAFI US 1000 ETF;P;PRF;Y;100;N;PRF
+HLT;Hilton Worldwide Holdings Inc. Common Stock ;N;HLT;N;100;N;HLT
+SCHO;Schwab Short-Term U.S. Treasury ETF;P;SCHO;Y;100;N;SCHO
