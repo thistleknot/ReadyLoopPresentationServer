@@ -1,5 +1,5 @@
-DL;China Distance Education Holdings Limited American Depositary Shares;N;DL;N;100;N;DL
-AKG;Asanko Gold Inc.;A;AKG;N;100;N;AKG
-NSPR;InspireMD Inc. Common Stock;A;NSPR;N;100;N;NSPR
-HYD;VanEck Vectors High Yield Municipal Index ETF;P;HYD;Y;100;N;HYD
-SFL;Ship Finance International Limited;N;SFL;N;100;N;SFL
+FNGU;MicroSectors FANG  Index 3X Leveraged ETNs due January 8, 2038;P;FNGU;N;100;N;FNGU
+DEO;Diageo plc Common Stock;N;DEO;N;100;N;DEO
+IVC;Invacare Corporation Common Stock;N;IVC;N;100;N;IVC
+EFA;iShares MSCI EAFE ETF;P;EFA;Y;100;N;EFA
+PTLC;Pacer Fund Trust Pacer Trendpilot US Large Cap ETF;Z;PTLC;Y;100;N;PTLC

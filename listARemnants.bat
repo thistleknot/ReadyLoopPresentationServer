@@ -20,8 +20,8 @@ for /F "delims=;" %%a in (list.txt) do (
 	echo !PROXY!
 	echo %%a
 	echo !APIKEY!
-	start call downloadAlphaOther.bat !PROXY! %%a !APIKEY!
+	start call downloadAlphaNasdaq.bat !PROXY! %%a !APIKEY!
 	set /A newCounter+=1				
 )
 REM timeout /t 4		
-exit
+REM exit

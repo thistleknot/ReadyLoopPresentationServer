@@ -231,21 +231,19 @@ REM download data
 	
 	cmd.exe /c downloadDataNasdaq.bat
 	
-		cd c:\test\share\nasdaq\
+		REM cd c:\test\share\nasdaq\
 	
-		cmd.exe /c checkBad.bat	
+		REM cmd.exe /c checkBad.bat	
 		
-		echo f|xcopy reruns.txt c:\test\share\NasdaqReRuns.txt /y
+		REM echo f|xcopy reruns.txt c:\test\share\NasdaqReRuns.txt /y
 		
 		REM one more time
-		cd c:\test\share\nasdaq\
-		checkbad.bat
-		parsereruns.bat
-		echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
-		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
-		cmd.exe /c downloadDataNasdaq.bat
-		
-		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
+		REM cd c:\test\share\nasdaq\
+		REM checkbad.bat
+		REM parsereruns.bat
+		REM echo f|xcopy reruns.txt c:\test\nasdaqSymbolsNoHeader.csv /y
+		REM cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
+		REM cmd.exe /c downloadDataNasdaq.bat
 		
 		cmd.exe /c insertNasdaq.bat		
 
@@ -270,11 +268,7 @@ REM download data
 		parsereruns.bat
 		echo f|xcopy reruns.txt c:\test\otherSymbolsNoHeader.csv /y
 		cd c:\Users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer
-		cmd.exe /c downloadDataOther.bat
-		
-		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
-		
-
+		REM cmd.exe /c downloadDataOther.bat
 		
 		cmd.exe /c insertOther.bat
 		

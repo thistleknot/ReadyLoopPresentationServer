@@ -54,7 +54,8 @@ FOR /L %%i IN (1,1,%numLines%) DO (
 				cmd.exe /c call downloadAlphaOther.bat !PROXY! %%a !APIKEY!
 				set /A newCounter+=1				
 				)
-				timeout /t 55	
+				REM setting to 40 because I will do a second pass.  Assuming each pass takes 5 seconds, 5*5 = 25 seconds, 35 seconds to spare, so I'm giving each process 4 seconds, some take up to 7.  What is lost will be recpatured second round.
+				timeout /t 40
 	)
 	
 	if !counter! == %numKeys% call echo	
