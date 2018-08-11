@@ -29,10 +29,6 @@ curl --silent "https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?dow
 	REM symbol list, nothing else.
 	cut -f 1,2 -d , ETFList.csv > c:\test\ETFListwQuotes.csv
 
-	REM remove quotes
-	sed 's/^^/"/;s/"//g;s/$//' removedPipes.txt > c:\test\nasdaqSymbolsMaster.csv
-	sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbolsMaster.csv	
-	sed 's/^^/"/;s/"//g;s/$//' c:\test\ETFListwQuotes.csv > c:\test\ETFList.csv
 
 	cut -f 1,1 -d , c:\test\ETFList.csv > c:\test\ETFNamesSymbols.csv
 
@@ -43,6 +39,11 @@ REM remove last line that is a log
 REM ^^essential for | , escape character stuff
 	sed 's/^^/"/;s/|/;/g;s/$/"/' nasdaqlisted.txt > removedPipes.txt
 	sed 's/^^/"/;s/|/;/g;s/$/"/' otherlisted.txt > removedPipes2.txt
+	
+	REM remove quotes
+	sed 's/^^/"/;s/"//g;s/$//' removedPipes.txt > c:\test\nasdaqSymbolsMaster.csv
+	sed 's/^^/"/;s/"//g;s/$//' removedPipes2.txt > c:\test\otherSymbolsMaster.csv	
+	sed 's/^^/"/;s/"//g;s/$//' c:\test\ETFListwQuotes.csv > c:\test\ETFList.csv	
 
 REM remove header, required for downloadDataOther.bat and downloadDataNasdaq.bat and insertBonds.bat
 	more +1 c:\test\nasdaqSymbolsMaster.csv > c:\test\nasdaqSymbolsNoHeaderFull.csv
