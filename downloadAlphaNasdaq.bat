@@ -43,6 +43,6 @@ REM echo insert into %tableName% select distinct * from temp_table%2 ON CONFLICT
 
 REM echo drop table temp_table%2;| psql -U postgres %dbName%
 	
-timeout /t 4
+REM timeout /t 1
 
 exit

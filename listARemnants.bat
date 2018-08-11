@@ -23,5 +23,5 @@ for /F "delims=;" %%a in (list.txt) do (
 	start call downloadAlphaOther.bat !PROXY! %%a !APIKEY!
 	set /A newCounter+=1				
 )
-timeout /t 4		
+REM timeout /t 4		
 exit
