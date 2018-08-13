@@ -1,5 +1,12 @@
 Readme
 
+Important variables
+
+stockmarketRCode
+	setPercent,
+	set to the % of top and bottom performers you wish to capture.  If set to 1%, it will capture the top 1% of the symbols and bottom 1% of the symbols to build hold/short profiles from.
+	test
+
 History info
 
 	only 3 pages
@@ -11,6 +18,9 @@ History info
 		https://stackoverflow.com/questions/1403087/how-can-i-convert-an-html-table-to-csv
 
 Requires
+
+	Add readyloop to path
+	
 	Gnuutils
 
 	https://stackoverflow.com/questions/3454112/is-there-a-way-to-get-epoch-time-using-a-windows-command
@@ -43,6 +53,10 @@ Areas to look into
 	alternative to 24,000/year
 		
 potential sources
+
+	Market watch
+	
+		https://www.marketwatch.com/investing
 
 	Calendar
 		great list of holidays for scraping!
@@ -156,7 +170,6 @@ proxylist.txt
 	REM format of file ip:port
 
 Add readylooppresentationserver to path	
-
 	
 Dependencies
 
