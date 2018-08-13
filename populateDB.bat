@@ -155,6 +155,8 @@ REM download data
 	
 	erase c:\test\share\etf\*.csv /q
 	
+	cmd.exe /c insertQs.bat
+	
 	cmd.exe /c downloadBonds.bat
 	
 		cd c:\test\share\etf\

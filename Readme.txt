@@ -189,6 +189,10 @@ Dependencies
 		
 		calendar.bat
 		
+		insertQs.bat
+		
+		downloadBonds.bat
+		
 		DownloadDataNasdaq.bat (Nasdaq)
 			downloadAlphaNasdaq.bat 
 			
