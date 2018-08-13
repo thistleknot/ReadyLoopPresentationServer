@@ -57,7 +57,11 @@ potential sources
 	Market watch
 	
 		https://www.marketwatch.com/investing
-
+		stock market simulator
+		
+		#simulators
+		https://corporatefinanceinstitute.com/resources/knowledge/trading-investing/three-best-stock-simulators/
+		
 	Calendar
 		great list of holidays for scraping!
 		supports up to 1990
