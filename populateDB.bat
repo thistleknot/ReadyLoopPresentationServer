@@ -148,6 +148,14 @@ Rem create qs_fact table
 	
 	insertQs.bat
 	
+	REM views, ran after inserts to ensure refresh is properly applied.
+	echo create materialized view if not exists mv_qs_symbols as select distinct (symbol) from qs_facts; refresh materialized view mv_qs_symbols; ALTER TABLE mv_qs_symbols OWNER to postgres; | psql -U postgres readyloop
+	
+	echo select count (symbol) from mv_qs_symbols;| psql -U postgres readyloop > qs_count.txt
+	FOR /F "tokens=*" %%a in ('call returnline.bat 3 qs_count.txt') do SET numQSSymbols=%%a
+	echo %numQSSymbols%
+	
+	
 REM download data
 
 	cmd.exe /c insertIndice.bat
