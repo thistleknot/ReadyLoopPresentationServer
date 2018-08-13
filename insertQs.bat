@@ -1,16 +1,20 @@
-setlocal enableextensions enabledelayedexpansion
+REM setlocal enableextensions enabledelayedexpansion
 
-set PGPASSWORD=1234
+REM set PGPASSWORD=1234
 
-set dbName=readyloop
+REM set dbName=readyloop
 
 REM download Quantshare export
 
-	echo DROP TABLE if exists qs_facts;| psql -U postgres %dbName%
+	REM echo DROP TABLE if exists qs_facts;| psql -U postgres %dbName%
 	
-		echo CREATE TABLE if not exists qs_facts as select * from qs_facts_Template;| psql -U postgres %dbName%
+		REM echo CREATE TABLE if not exists qs_facts as select * from qs_facts_Template;| psql -U postgres %dbName%
 		
-		echo copy qs_facts from 'd:\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
+		echo copy qs_facts from 'd:\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres readyloop
+		
+		REM echo copy qs_facts from 'd:\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
+		
+		REM SELECT TO_CHAR(NOW(), 'yyyy/mm/dd')::date;
 		
 		REM echo insert into eod_indices select distinct * from eod_indicesTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
 		
