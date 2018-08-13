@@ -6,6 +6,9 @@ set fullFlag=1
 
 REM download SP500 Index
 set command=dlsp500.bat ^> SP500.csv
+
+REM FOR /F "tokens=*" %%a in ('subcurrentdate.bat') do SET currentdate=%%a
+
 call %command%
 
 REM indice tables
@@ -32,8 +35,6 @@ REM indice tables
 
 		REM need to create materialized views
 	
-		FOR /F "tokens=*" %%a in ('subcurrentdate.bat') do SET currentdate=%%a
-
 		echo drop view v_eod_indices_date_filtered_indice| psql -U postgres %dbName%	
 		REM echo CREATE OR REPLACE VIEW v_eod_indices_date_filtered_indice AS SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date order by date asc; > command.txt
 		REM ECHO SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date ORDER BY DATE ASC; > command.txt

@@ -6,7 +6,7 @@ REM present date
 set epochNow="%gnuUtilpath%date.exe" +%%s
 %epochNow% > epochNow.txt
 
-set epochThen="%gnuUtilpath%date.exe" -d "01/01/2001" +%%s
+set epochThen="%gnuUtilpath%date.exe" -d "12/30/1999" +%%s
 %epochThen% > epochThen.txt
 
 for /f "delims=" %%x in ('cat epochThen.txt') do set "begin=%%x"
