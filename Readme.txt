@@ -5,7 +5,7 @@ Important variables
 stockmarketRCode
 	setPercent,
 	set to the % of top and bottom performers you wish to capture.  If set to 1%, it will capture the top 1% of the symbols and bottom 1% of the symbols to build hold/short profiles from.
-	test
+	
 
 History info
 
@@ -60,8 +60,12 @@ potential sources
 
 	Calendar
 		great list of holidays for scraping!
+		supports up to 1990
 			http://www.market-holidays.com/
 			https://www.timeanddate.com/holidays/us/2013
+		
+			has future dates
+			https://www.nyse.com/markets/hours-calendars
 
 	ETF Historical Prices and ratings (speculative, investment grade)
 		see: https://www.pimco.com/en-us/resources/education/understanding-corporate-bonds/
@@ -178,6 +182,8 @@ Dependencies
 		InsertIndice.bat
 	
 		generates: ETFNamesSymbols.txt
+		
+		calendar.bat
 		
 		DownloadDataNasdaq.bat (Nasdaq)
 			downloadAlphaNasdaq.bat 
