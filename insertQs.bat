@@ -20,5 +20,15 @@ REM download Quantshare export
 		
 		REM echo ALTER TABLE nSymbols OWNER to postgres;| psql -U postgres %dbName%
 
+	
+	REM views, ran after inserts to ensure refresh is properly applied.
+	echo create materialized view if not exists mv_qs_symbols as select distinct (symbol) from qs_facts; refresh materialized view mv_qs_symbols; ALTER TABLE mv_qs_symbols OWNER to postgres; | psql -U postgres readyloop
+	
+	echo create materialized view if not exists mv_qs_facts as select * from qs_facts; ALTER TABLE  mv_qs_facts OWNER to postgres; | psql -U postgres readyloop
+	
+	echo create materialized view if not exists mv_qs_facts as select * from qs_facts; ALTER TABLE  mv_qs_facts OWNER to postgres; | psql -U postgres readyloop
+	
+	echo refresh materialized view mv_qs_facts; | psql -U postgres readyloop
+		
 REM exit		
 		
