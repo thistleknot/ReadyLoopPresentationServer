@@ -42,8 +42,8 @@ set dbName=readyloop
 			REM had to use nulliff 
 			REM need to base this on current dates
 			rem Note: select * from v_eod_indices_2013_2017 where adjusted_close='0'
-			echo Create Materialized View IF NOT EXISTS returnsNasdaq AS SELECT EOD.symbol,EOD.timestamp,EOD.adjusted_close/NULLIF( PREV_EOD.adjusted_close, 0 )-1.0 AS ret FROM v_eod_indices_2013_2017 EOD INNER JOIN custom_calendar CC ON EOD.timestamp=CC.date INNER JOIN v_eod_indices_2013_2017 PREV_EOD ON PREV_EOD.symbol=EOD.symbol AND PREV_EOD.timestamp=CC.prev_trading_day;| psql -U postgres %dbName%
-			echo REFRESH MATERIALIZED VIEW returnsNasdaq WITH DATA;| psql -U postgres %dbName%
+			REM echo Create Materialized View IF NOT EXISTS returnsNasdaq AS SELECT EOD.symbol,EOD.timestamp,EOD.adjusted_close/NULLIF( PREV_EOD.adjusted_close, 0 )-1.0 AS ret FROM v_eod_indices_2013_2017 EOD INNER JOIN custom_calendar CC ON EOD.timestamp=CC.date INNER JOIN v_eod_indices_2013_2017 PREV_EOD ON PREV_EOD.symbol=EOD.symbol AND PREV_EOD.timestamp=CC.prev_trading_day;| psql -U postgres %dbName%
+			REM echo REFRESH MATERIALIZED VIEW returnsNasdaq WITH DATA;| psql -U postgres %dbName%
 			
 		REM query: select symbol, AVG(NULLIF(ret,0)) as average from returnsNasdaq group by symbol order by average desc; 
 			
@@ -63,14 +63,14 @@ set dbName=readyloop
 
 			echo GRANT SELECT ON TABLE public.exclusions_2013_2017 TO readyloop;| psql -U postgres %dbName%
 
-		echo INSERT INTO exclusions_2013_2017 SELECT DISTINCT symbol, 'Return higher than 100%' as reason FROM returnsNasdaq WHERE ret>1.0; > command.txt
+		REM echo INSERT INTO exclusions_2013_2017 SELECT DISTINCT symbol, 'Return higher than 100%' as reason FROM returnsNasdaq WHERE ret>1.0; > command.txt
 			
 			REM OMG it works
 			set command=returnLine 1 command.txt
 			%command%|psql -U postgres %dbName%
 			erase command.txt						
 		
-			echo create view filtered as SELECT * FROM returnsNasdaq WHERE symbol NOT IN  (SELECT DISTINCT symbol FROM exclusions_2013_2017);| psql -U postgres %dbName%		
+			REM echo create view filtered as SELECT * FROM returnsNasdaq WHERE symbol NOT IN  (SELECT DISTINCT symbol FROM exclusions_2013_2017);| psql -U postgres %dbName%		
 		
 			echo select symbol, AVG(NULLIF(ret,0)) as average from filtered group by symbol order by average desc;| psql -U postgres %dbName%	
 
