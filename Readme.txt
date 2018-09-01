@@ -19,6 +19,21 @@ History info
 
 Requires
 
+	mingw
+		msys
+		
+	curl
+		
+		git for windows
+		
+			add to path
+	
+	awk
+	
+		git for windows
+		
+			add to path
+
 	Add readyloop to path
 	
 	Gnuutils
