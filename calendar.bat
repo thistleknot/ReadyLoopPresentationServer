@@ -42,7 +42,8 @@ set dbName=readyloop
 			REM had to use nulliff 
 			REM need to base this on current dates
 			rem Note: select * from v_eod_indices_2013_2017 where adjusted_close='0'
-			echo Create Materialized View IF NOT EXISTS returnsNasdaq AS SELECT EOD.symbol,EOD.timestamp,EOD.adjusted_close/NULLIF( PREV_EOD.adjusted_close, 0 )-1.0 AS ret FROM v_eod_indices_2013_2017 EOD INNER JOIN custom_calendar CC ON EOD.timestamp=CC.date INNER JOIN v_eod_indices_2013_2017 PREV_EOD ON PREV_EOD.symbol=EOD.symbol AND PREV_EOD.timestamp=CC.prev_trading_day; REFRESH MATERIALIZED VIEW returnsNasdaq WITH DATA;| psql -U postgres %dbName%
+			echo Create Materialized View IF NOT EXISTS returnsNasdaq AS SELECT EOD.symbol,EOD.timestamp,EOD.adjusted_close/NULLIF( PREV_EOD.adjusted_close, 0 )-1.0 AS ret FROM v_eod_indices_2013_2017 EOD INNER JOIN custom_calendar CC ON EOD.timestamp=CC.date INNER JOIN v_eod_indices_2013_2017 PREV_EOD ON PREV_EOD.symbol=EOD.symbol AND PREV_EOD.timestamp=CC.prev_trading_day;| psql -U postgres %dbName%
+			echo REFRESH MATERIALIZED VIEW returnsNasdaq WITH DATA;| psql -U postgres %dbName%
 			
 		REM query: select symbol, AVG(NULLIF(ret,0)) as average from returnsNasdaq group by symbol order by average desc; 
 			
