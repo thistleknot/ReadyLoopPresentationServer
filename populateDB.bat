@@ -125,7 +125,7 @@ REM symbol tables
 
 	REM calendar
 	
-			calendar.bat
+			cmd.exe /c calendar.bat
 			
 REM create NASDAQ & Other (DOW and NYSE) fact tables
 	echo CREATE TABLE IF NOT EXISTS nasdaq_facts_template (symbol varchar(8), timestamp date, open real null, high real null,low real null,close real null,adjusted_close real null,volume real null,dividend_amount real null,split_coefficient real null,CONSTRAINT nasdaq_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE nasdaq_facts_template OWNER to postgres; | psql -U postgres %dbName%
@@ -146,7 +146,7 @@ Rem create qs_fact table
 	
 	echo CREATE TABLE IF NOT EXISTS qs_facts AS select * from qs_facts_template;| psql -U postgres readyloop
 	
-	insertQs.bat
+	cmd.exe /c insertQs.bat
 	
 	REM echo select count (symbol) from mv_qs_symbols;| psql -U postgres readyloop > qs_count.txt
 	REM FOR /F "tokens=*" %%a in ('call returnline.bat 3 qs_count.txt') do SET numQSSymbols=%%a
