@@ -19,6 +19,9 @@ History info
 
 Requires
 
+	gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
+	set gnuUtilpath=c:\Program Files (x86)\GnuWin32\bin\
+
 	psql needs to be accessible by path
 
 	mingw

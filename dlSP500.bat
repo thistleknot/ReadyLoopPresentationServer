@@ -1,6 +1,7 @@
-@echo off
+REM @echo off
 
-set gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
+REM set gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
+set gnuUtilpath=c:\Program Files (x86)\GnuWin32\bin\
 
 REM present date
 set epochNow="%gnuUtilpath%date.exe" +%%s
@@ -19,4 +20,4 @@ for /f "delims=" %%x in ('getCrumb.bat %symbol%') do set "crumb=%%x"
 
 curl -s --cookie cookie.txt  "%urlbase%%symbol%?period1=0%begin%&period2=%end%&interval=1d&events=history&crumb=%crumb%"
 REM echo "%urlbase%%symbol%?period1=0%begin%&period2=%end%&interval=1d&events=history&crumb=%crumb%"
-@echo on
+REM @echo on
