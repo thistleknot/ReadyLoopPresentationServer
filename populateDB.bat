@@ -60,9 +60,9 @@ REM xcopy ETFList.csv c:\test\ETFList.csv
 	
 	cmd.exe /c randomizeSymbolList.bat c:\test\ETFNamesSymbolsNoHeaderFull.csv c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv
 	
-head -n 50 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
-head -n 40 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
-head -n 60 c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv > c:\test\ETFNamesSymbolsNoHeader100RNG.csv
+head -n 125 c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqSymbolsNoHeader100RNG.csv
+head -n 100 c:\test\RNG-otherSymbolsNoHeaderFull.csv > c:\test\otherSymbolsNoHeader100RNG.csv
+head -n 150 c:\test\RNG-ETFNamesSymbolsNoHeaderFull.csv > c:\test\ETFNamesSymbolsNoHeader100RNG.csv
 
 xcopy c:\test\nasdaqSymbolsNoHeader100RNG.csv c:\test\nasdaqSymbolsNoHeader.csv /y
 xcopy c:\test\otherSymbolsNoHeader100RNG.csv c:\test\otherSymbolsNoHeader.csv /y
@@ -70,9 +70,15 @@ xcopy c:\test\ETFNamesSymbolsNoHeader100RNG.csv c:\test\ETFNamesSymbolsNoHeader.
 
 REM rebuild scripts
 	REM if %1 equ 1 (
-	REM echo drop database if exists %dbName%; create database %dbName%;| psql -U postgres; echo drop table if exists public.%tableName%; | psql -U postgres %dbName%
-	REM echo drop table if exists public.nSymbols;| psql -U postgres %dbName%
-	REM echo drop table if exists public.oSymbols;| psql -U postgres %dbName%
+	
+	echo drop database readyloop; create database readyloop;| psql -U postgres| psql -U postgres
+	echo drop table if exists public.nasdaq_facts cascade; | psql -U postgres %dbName%
+	echo drop table if exists public.other_facts cascade; | psql -U postgres %dbName%
+	echo drop table if exists public.etf_bond_facts cascade; | psql -U postgres %dbName%
+	echo drop table if exists public.qs_facts cascade; | psql -U postgres %dbName%
+	echo drop table if exists public.nSymbols;| psql -U postgres %dbName%
+	echo drop table if exists public.oSymbols;| psql -U postgres %dbName%
+	echo drop table if exists public.bSymbols;| psql -U postgres %dbName%
 	REM )
 	
 REM symbol tables
