@@ -10,7 +10,7 @@ set dbName=readyloop
 
 set PGPASSWORD=1234
 
-echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from bond_facts_template;| psql -U postgres %dbName%	
+echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from etf_bond_facts_template;| psql -U postgres %dbName%	
 
 dir c:\test\share\etf\*.csv /b > bondDirList.txt
 cut -f 1 -d . bondDirList.txt > bondList
@@ -21,7 +21,7 @@ for /F %%a in (bondList) do (
 
 			echo drop table if exists temp_table_%%a;| psql -U postgres %dbName%
 	
-			echo create table bond_facts_%%a as table bond_facts_template;|psql -U postgres %dbName%
+			echo create table bond_facts_%%a as table etf_bond_facts_template;|psql -U postgres %dbName%
 
 			echo copy bond_facts_%%a from 'c:\test\share\etf\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres %dbName%
 
