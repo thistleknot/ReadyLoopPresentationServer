@@ -10,9 +10,9 @@ REM download Quantshare export
 	
 		REM echo CREATE TABLE if not exists qs_facts as select * from qs_facts_Template;| psql -U postgres %dbName%
 		
-		echo copy qs_facts from 'd:\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres readyloop
+		echo copy qs_facts from 'c:\test\share\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres readyloop
 		
-		REM echo copy qs_facts from 'd:\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
+		REM echo copy qs_facts from 'c:\test\share\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
 		
 		REM SELECT TO_CHAR(NOW(), 'yyyy/mm/dd')::date;
 		
