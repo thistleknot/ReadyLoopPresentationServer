@@ -19,6 +19,8 @@ History info
 
 Requires
 
+	psql needs to be accessible by path
+
 	mingw
 		msys
 		

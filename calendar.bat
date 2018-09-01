@@ -54,7 +54,15 @@ set dbName=readyloop
 			%command%|psql -U postgres %dbName%
 			erase command.txt			
 			
-			echo INSERT INTO exclusions_2013_2017 SELECT DISTINCT symbol, 'Return higher than 100%' as reason FROM returnsNasdaq WHERE ret>1.0; > command.txt
+		echo CREATE TABLE if not exists public.exclusions_2013_2017 (symbol character varying(8) COLLATE pg_catalog."default",reason text COLLATE pg_catalog."default") WITH (OIDS = FALSE) TABLESPACE pg_default; | psql -U postgres %dbName%
+
+			echo ALTER TABLE public.exclusions_2013_2017 OWNER to postgres;| psql -U postgres %dbName%
+
+			echo GRANT ALL ON TABLE public.exclusions_2013_2017 TO postgres;| psql -U postgres %dbName%
+
+			echo GRANT SELECT ON TABLE public.exclusions_2013_2017 TO readyloop;| psql -U postgres %dbName%
+
+		echo INSERT INTO exclusions_2013_2017 SELECT DISTINCT symbol, 'Return higher than 100%' as reason FROM returnsNasdaq WHERE ret>1.0; > command.txt
 			
 			REM OMG it works
 			set command=returnLine 1 command.txt
