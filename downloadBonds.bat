@@ -1,7 +1,9 @@
 
 setlocal enableextensions enabledelayedexpansion
 
-set gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
+REM set gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
+set gnuUtilpath=c:\Program Files (x86)\GnuWin32\bin\
+
 
 REM present date
 set epochNow="%gnuUtilpath%date.exe" +%%s
