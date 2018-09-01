@@ -186,6 +186,9 @@ REM download data
 	erase c:\test\share\nasdaq\nasdaqDirList.txt
 	erase c:\test\share\nasdaq\nasdaqList
 	
+		xcopy diffComparison c:\test\share\ /y
+		xcopy diffComparisonETF c:\test\share\ /y
+	
 		cmd.exe /c downloadDataNasdaq.bat
 	
 		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
