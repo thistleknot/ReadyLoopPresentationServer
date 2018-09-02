@@ -15,7 +15,7 @@ other.out <- BatchGetSymbols(tickers = as.character(other_Tickers$V1),
                               first.date = first.date,
                               last.date = last.date)
 
-other.out <- BatchGetSymbols(tickers = as.character(etf_Tickers$V1),
+etf.out <- BatchGetSymbols(tickers = as.character(etf_Tickers$V1),
                              first.date = first.date,
                              last.date = last.date)
 
