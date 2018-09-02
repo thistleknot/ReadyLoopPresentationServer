@@ -19,6 +19,11 @@ History info
 
 Requires
 
+	7-zip
+		C:\Program Files\7-Zip - path
+
+	imagemagick
+	
 	gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
 	set gnuUtilpath=c:\Program Files (x86)\GnuWin32\bin\
 
