@@ -51,17 +51,17 @@ set dbName=readyloop
 			REM echo SELECT symbol, 'More than 1% missing' as reason INTO exclusions_2013_2017 FROM %tableName% GROUP BY symbol HAVING count(*)::real/(SELECT COUNT(*) FROM custom_calendar WHERE trading=1 AND date BETWEEN '2012-12-31' AND '2018-07-28')::real^<0.99; > command.txt
 			
 			REM OMG it works
-			set command=returnLine 1 command.txt
-			%command%|psql -U postgres %dbName%
-			erase command.txt			
+			REM set command=returnLine 1 command.txt
+			REM %command%|psql -U postgres %dbName%
+			REM erase command.txt			
 			
-		echo CREATE TABLE if not exists public.exclusions_2013_2017 (symbol character varying(8) COLLATE pg_catalog."default",reason text COLLATE pg_catalog."default") WITH (OIDS = FALSE) TABLESPACE pg_default; | psql -U postgres %dbName%
+		REM echo CREATE TABLE if not exists public.exclusions_2013_2017 (symbol character varying(8) COLLATE pg_catalog."default",reason text COLLATE pg_catalog."default") WITH (OIDS = FALSE) TABLESPACE pg_default; | psql -U postgres %dbName%
 
-			echo ALTER TABLE public.exclusions_2013_2017 OWNER to postgres;| psql -U postgres %dbName%
+			REM echo ALTER TABLE public.exclusions_2013_2017 OWNER to postgres;| psql -U postgres %dbName%
 
-			echo GRANT ALL ON TABLE public.exclusions_2013_2017 TO postgres;| psql -U postgres %dbName%
+			REM echo GRANT ALL ON TABLE public.exclusions_2013_2017 TO postgres;| psql -U postgres %dbName%
 
-			echo GRANT SELECT ON TABLE public.exclusions_2013_2017 TO readyloop;| psql -U postgres %dbName%
+			REM echo GRANT SELECT ON TABLE public.exclusions_2013_2017 TO readyloop;| psql -U postgres %dbName%
 
 		REM echo INSERT INTO exclusions_2013_2017 SELECT DISTINCT symbol, 'Return higher than 100%' as reason FROM returnsNasdaq WHERE ret>1.0; > command.txt
 			
@@ -75,6 +75,7 @@ set dbName=readyloop
 			REM echo select symbol, AVG(NULLIF(ret,0)) as average from filtered group by symbol order by average desc;| psql -U postgres %dbName%	
 
 			REM NOCREATEROL throws an error
-			echo CREATE USER readyloop WITH LOGIN NOSUPERUSER NOCREATEDB INHERIT NOREPLICATION CONNECTION LIMIT -1 PASSWORD 'read123'; GRANT SELECT ON ALL TABLES IN SCHEMA public TO readyloop; ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readyloop;| psql -U postgres %dbName%	
+			REM echo CREATE USER readyloop WITH LOGIN NOSUPERUSER NOCREATEDB INHERIT NOREPLICATION CONNECTION LIMIT -1 PASSWORD 'read123'; 
+			echo GRANT SELECT ON ALL TABLES IN SCHEMA public TO readyloop; ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readyloop;| psql -U postgres %dbName%	
 					
 			
