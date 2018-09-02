@@ -29,10 +29,8 @@ curl --silent "ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt" --std
 REM ETF Bonds
 curl --silent "https://www.nasdaq.com/investing/etfs/etf-finder-results.aspx?download=Yes" --stderr -> ETFList.csv
 
-	REM symbol list, nothing else.
+	REM encapsulate q quotes
 	cut -f 1,2 -d , ETFList.csv > c:\test\ETFListwQuotes.csv
-
-	cut -f 1,1 -d , c:\test\ETFList.csv > c:\test\ETFNamesSymbols.csv
 
 REM remove last line that is a log
 	sed -i "$d" nasdaqlisted.txt
@@ -52,6 +50,11 @@ REM remove header, required for downloadDataOther.bat and downloadDataNasdaq.bat
 	more +1 c:\test\otherSymbolsMaster.csv > c:\test\otherSymbolsNoHeaderFull.csv
 	more +1 c:\test\ETFNamesSymbols.csv > c:\test\ETFNamesSymbolsNoHeaderFull.csv
 
+REM symbol list, nothing else.
+	cut -f 1 -d ; c:\test\nasdaqSymbolsNoHeaderFull.csv > c:\test\nasdaqNamesSymbols.csv
+	cut -f 1 -d , c:\test\ETFNamesSymbolsNoHeaderFull.csv > c:\test\ETFNamesSymbols.csv
+	cut -f 1 -d ; c:\test\otherSymbolsNoHeaderFull.csv > c:\test\otherNamesSymbols.csv
+	
 REM xcopy ETFList.csv c:\test\ETFList.csv
 
 	cmd.exe /c randomizeSymbolList.bat c:\test\nasdaqSymbolsNoHeaderFull.csv c:\test\RNG-nasdaqSymbolsNoHeaderFull.csv
