@@ -11,9 +11,13 @@ nasdaq.out <- BatchGetSymbols(tickers = as.character(nasdaq_Tickers$V1),
                          first.date = first.date,
                          last.date = last.date)
 
-other.out <- BatchGetSymbols(tickers = as.character(nasdaq_Tickers$V1),
+other.out <- BatchGetSymbols(tickers = as.character(other_Tickers$V1),
                               first.date = first.date,
                               last.date = last.date)
+
+other.out <- BatchGetSymbols(tickers = as.character(etf_Tickers$V1),
+                             first.date = first.date,
+                             last.date = last.date)
 
 
 print(nasdaq.out$df.control)
