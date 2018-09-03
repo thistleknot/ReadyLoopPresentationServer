@@ -22,4 +22,7 @@ etf.out <- BatchGetSymbols(tickers = as.character(etf_Tickers$V1),
 
 print(nasdaq.out$df.control)
 print(nasdaq.out$df.tickers)
+
+
+
 View(df)
