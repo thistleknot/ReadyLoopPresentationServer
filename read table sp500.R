@@ -1,3 +1,4 @@
+#https://stackoverflow.com/questions/7411216/error-index-vectors-are-of-different-classes-numeric-date
 library(XML)
 library(RCurl)
 
