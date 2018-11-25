@@ -74,7 +74,7 @@ xcopy c:\test\ETFNamesSymbolsNoHeader100RNG.csv c:\test\ETFNamesSymbolsNoHeader.
 REM rebuild scripts
 	REM if %1 equ 1 (
 	
-	echo drop database readyloop; create database readyloop;| psql -U postgres| psql -U postgres
+	echo drop database readyloop; create database readyloop;| psql -U postgres
 	echo drop table if exists public.nasdaq_facts cascade; | psql -U postgres %dbName%
 	echo drop table if exists public.other_facts cascade; | psql -U postgres %dbName%
 	echo drop table if exists public.etf_bond_facts cascade; | psql -U postgres %dbName%
