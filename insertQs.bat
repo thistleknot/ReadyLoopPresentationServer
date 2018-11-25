@@ -34,7 +34,7 @@ REM download Quantshare export
 	
 	echo DROP TABLE if exists qs_max_date;| psql -U postgres -h %host% readyloop
 	
-	echo CREATE TABLE as qs_max_date select max(timestamp) from mv_qs_facts; | psql -U postgres -h %host% readyloop
+	echo CREATE TABLE qs_max_date as select max(timestamp) from mv_qs_facts; | psql -U postgres -h %host% readyloop
 			
 REM exit		
 		
