@@ -17,7 +17,7 @@ set dbName=readyloop
 			REM atm based on nasdaq holidays as found here: http://markets.on.nytimes.com/research/markets/holidays/holidays.asp?display=all
 			xcopy tradingDays.csv c:\test\ /y
 				
-			echo copy temp_table2 from 'c:\test\tradingDays.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%	
+			echo \copy temp_table2 from 'c:\test\tradingDays.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%	
 				
 			echo insert into public.custom_calendar select distinct * from temp_table2 ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%	
 				

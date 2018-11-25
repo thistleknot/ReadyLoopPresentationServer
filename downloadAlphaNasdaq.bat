@@ -38,7 +38,7 @@ REM echo drop table temp_table%2;| psql -U postgres -h %host% %dbName%
 
 REM echo create table temp_table%2 as table temp_table;|psql -U postgres %dbName%
 
-REM echo copy temp_table%2 from 'c:\test\%2wSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%
+REM echo \copy temp_table%2 from 'c:\test\%2wSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%
 
 REM echo insert into %tableName% select distinct * from temp_table%2 ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%
 

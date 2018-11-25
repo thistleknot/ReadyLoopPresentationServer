@@ -23,7 +23,7 @@ for /F %%a in (c:\test\share\other\OtherList) do (
 
 		echo create table temp_table_O_%%a as table other_facts_template;|psql -U postgres %dbName%
 
-		echo copy temp_table_O_%%a from 'c:\test\share\other\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres -h %host% %dbName%
+		echo \copy temp_table_O_%%a from 'c:\test\share\other\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres -h %host% %dbName%
 
 		echo insert into other_facts select distinct * from temp_table_O_%%a ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%
 

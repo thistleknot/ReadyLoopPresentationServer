@@ -23,7 +23,7 @@ for /F %%a in (bondList) do (
 	
 			echo create table bond_facts_%%a as table etf_bond_facts_template;|psql -U postgres %dbName%
 
-			echo copy bond_facts_%%a from 'c:\test\share\etf\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres -h %host% %dbName%
+			echo \copy bond_facts_%%a from 'c:\test\share\etf\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres -h %host% %dbName%
 
 			echo insert into etf_bond_facts select distinct * from bond_facts_%%a ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%
 

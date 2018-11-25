@@ -97,7 +97,7 @@ REM symbol tables
 	
 		echo CREATE TABLE if not exists nSymbolsTemp as select * from nSymbolsTemplate;| psql -U postgres -h %host% %dbName%
 
-		echo copy nSymbolsTemp from 'c:\test\nasdaqSymbolsNoHeaderFull.csv' DELIMITER ';';| psql -U postgres -h %host% %dbName%
+		echo \copy nSymbolsTemp from 'c:\test\nasdaqSymbolsNoHeaderFull.csv' DELIMITER ';';| psql -U postgres -h %host% %dbName%
 		
 		echo insert into nSymbols select distinct * from nSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%	
 		
@@ -112,7 +112,7 @@ REM symbol tables
 	
 		echo CREATE TABLE if not exists oSymbolsTemp as select * from oSymbolsTemplate;| psql -U postgres -h %host% %dbName%
 
-		echo copy nSymbolsTemp from 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres -h %host% %dbName%
+		echo \copy nSymbolsTemp from 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres -h %host% %dbName%
 		
 		echo insert into oSymbols select distinct * from oSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%	
 		
@@ -127,7 +127,7 @@ REM symbol tables
 
 			echo ALTER TABLE bSymbols OWNER to postgres;| psql -U postgres -h %host% %dbName%				
 			
-			echo copy bSymbolsTemp from 'c:\test\ETFList.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%
+			echo \copy bSymbolsTemp from 'c:\test\ETFList.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%
 
 			echo insert into bSymbols select distinct * from bSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%
 

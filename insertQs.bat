@@ -1,18 +1,23 @@
-REM setlocal enableextensions enabledelayedexpansion
+setlocal enableextensions enabledelayedexpansion
+set host=192.168.1.5
+set PGPASSWORD=Read1234
 
-REM set PGPASSWORD=Read1234
-
-REM set dbName=readyloop
+set dbName=readyloop
 
 REM download Quantshare export
 
-	REM echo DROP TABLE if exists qs_facts;| psql -U postgres -h %host% %dbName%
+	echo DROP TABLE if exists qs_facts cascade;| psql -U postgres -h %host% %dbName%;
 	
-		REM echo CREATE TABLE if not exists qs_facts as select * from qs_facts_Template;| psql -U postgres -h %host% %dbName%
+		echo CREATE TABLE if not exists qs_facts as select * from qs_facts_Template;| psql -U postgres -h %host% %dbName%
 		
-		echo copy qs_facts from 'c:\test\share\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres -h %host% readyloop
+		REM http://matt.might.net/articles/ssh-hacks/
+		REM cat file | ssh -e none remote-host 'cat > file'
 		
-		REM echo copy qs_facts from 'c:\test\share\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres -h %host% %dbName%
+		REM https://stackoverflow.com/questions/33353997/how-to-insert-csv-data-into-postgresql-database-remote-database
+		REM psql -h remotehost -d remote_mydb -U myuser -c "\copy mytable (column1, column2)  from '/path/to/local/file.csv' with delimiter as ','"
+		echo \copy qs_facts from PROGRAM 'cat c:\test\share\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres -h %host% readyloop
+		
+		REM echo \copy qs_facts from 'c:\test\share\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres -h %host% %dbName%
 		
 		REM SELECT TO_CHAR(NOW(), 'yyyy/mm/dd')::date;
 		

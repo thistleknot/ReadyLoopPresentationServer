@@ -23,7 +23,7 @@ for /F %%a in (c:\test\share\nasdaq\NasdaqList) do (
 
 			echo create table temp_table_NS_%%a as table nasdaq_facts_template;|psql -U postgres %dbName%
 
-			echo copy temp_table_NS_%%a from 'c:\test\share\nasdaq\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres -h %host% %dbName%
+			echo \copy temp_table_NS_%%a from 'c:\test\share\nasdaq\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres -h %host% %dbName%
 
 			echo insert into nasdaq_facts select distinct * from temp_table_NS_%%a ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%
 

@@ -27,7 +27,7 @@ REM indice tables
 		
 		awk '{print F,$1,$2,$3,$4,$5,$6,$7}' FS=, OFS=, F=SP500TR c:\test\sp500.csv > c:\test\sp500wSymbols.csv
   
-		echo copy eod_indicesTemp from 'c:\test\sp500wSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%
+		echo \copy eod_indicesTemp from 'c:\test\sp500wSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%
 		
 		echo insert into eod_indices select distinct * from eod_indicesTemp ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%	
 		
