@@ -40,7 +40,7 @@ REM indice tables
 		REM ECHO SELECT * FROM eod_indices WHERE eod_indices.date ^>= '2012-12-31'::date AND eod_indices.date ^<= '%currentdate%'::date ORDER BY DATE ASC; > command.txt
 		
 		REM set command=returnLine 1 command.txt
-		REM %command%|psql -U postgres %dbName%
+		REM %command%|psql -U postgres -h %host% %dbName%	
 		REM erase command.txt		
 		
 		

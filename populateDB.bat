@@ -189,7 +189,7 @@ REM download data
 	
 	REM need to run outside.
 	
-	echo drop table if exists nasdaq_facts cascade;|psql -U postgres %dbName%
+	echo drop table if exists nasdaq_facts cascade;|psql -U postgres -h %host% %dbName%	
 	
 	erase c:\test\share\nasdaq\*.csv /q
 	erase c:\test\share\nasdaq\reruns.txt
@@ -208,7 +208,7 @@ REM download data
 		cmd.exe /c insertNasdaq.bat		
 
 	Rem can't run inside because it will drop when I wish to rerun!
-	echo drop table if exists other_facts cascade;|psql -U postgres %dbName%
+	echo drop table if exists other_facts cascade;|psql -U postgres -h %host% %dbName%	
 		
 	erase c:\test\share\other\*.csv /q
 	erase c:\test\share\other\reruns.txt

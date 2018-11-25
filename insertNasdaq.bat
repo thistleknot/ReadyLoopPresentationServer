@@ -21,7 +21,7 @@ for /F %%a in (c:\test\share\nasdaq\NasdaqList) do (
 				
 			echo drop table if exists temp_table_NS_%%a;| psql -U postgres -h %host% %dbName%
 
-			echo create table temp_table_NS_%%a as table nasdaq_facts_template;|psql -U postgres %dbName%
+			echo create table temp_table_NS_%%a as table nasdaq_facts_template;|psql -U postgres -h %host% %dbName%	
 
 			echo \copy temp_table_NS_%%a from 'c:\test\share\nasdaq\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres -h %host% %dbName%
 

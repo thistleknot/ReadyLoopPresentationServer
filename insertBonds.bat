@@ -21,7 +21,7 @@ for /F %%a in (bondList) do (
 
 			echo drop table if exists temp_table_%%a;| psql -U postgres -h %host% %dbName%
 	
-			echo create table bond_facts_%%a as table etf_bond_facts_template;|psql -U postgres %dbName%
+			echo create table bond_facts_%%a as table etf_bond_facts_template;|psql -U postgres -h %host% %dbName%	
 
 			echo \copy bond_facts_%%a from 'c:\test\share\etf\%%awSymbols.csv' DELIMITER ',' CSV HEADER NULL AS 'null';| psql -U postgres -h %host% %dbName%
 
