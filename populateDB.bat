@@ -11,7 +11,7 @@ FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
 FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
 set waitPeriod=12
 echo %waitPeriod%
-set host=192.168.1.5
+set host=192.168.3.103
 set PGPASSWORD=Read1234
 set fullFlag=1
 

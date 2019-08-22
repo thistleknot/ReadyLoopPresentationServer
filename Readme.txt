@@ -1,5 +1,21 @@
 Readme
 
+ToDo
+	code changes
+
+	replace ip's with a source file that is called from all files
+
+password for server is set to 
+	Read1234
+	
+	populateDB.bat
+		host
+			192.168.3.103
+			
+			user of container
+			postgres
+			Read1234
+
 Important variables
 
 stockmarketRCode
@@ -25,24 +41,30 @@ Requires
 	imagemagick
 	
 	gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
+
 	set gnuUtilpath=c:\Program Files (x86)\GnuWin32\bin\
 
 	psql needs to be accessible by path
+		C:\Program Files\PostgreSQL\11\bin
 
 	mingw
 		msys
 		
 	curl
 		
-		git for windows
+		mingw
+			https://gitforwindows.org/
 		
 			add to path
+			C:\Program Files\Git\mingw64\bin
 	
 	awk
 	
 		git for windows
 		
 			add to path
+			
+			C:\Program Files\Git\usr\bin\
 
 	Add readyloop to path
 	
@@ -147,7 +169,7 @@ potential sources
 		tons of api sources as well as csv pubs
 		https://quantpedia.com/Links/HistoricalData
 		
-	Use Quantl (if the script was't broken, might be easier to fix script than recoding an ETL)
+	Use Quandl (if the script was't broken, might be easier to fix script than recoding an ETL)
 		https://www.quantshare.com/title-95-export-to-csv-the-whole-database-including-symbols
 		
 	FRED

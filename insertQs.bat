@@ -1,5 +1,5 @@
 setlocal enableextensions enabledelayedexpansion
-set host=192.168.1.5
+set host=192.168.3.103
 set PGPASSWORD=Read1234
 
 set dbName=readyloop

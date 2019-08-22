@@ -7,7 +7,7 @@ cd c:\test\share\nasdaq\
 rename "NS-*.csv" "///*.csv"
 
 set dbName=readyloop
-set host=192.168.1.5
+set host=192.168.3.103
 set PGPASSWORD=Read1234
 
 echo CREATE TABLE IF NOT EXISTS nasdaq_facts AS select * from nasdaq_facts_template;| psql -U postgres -h %host% %dbName%

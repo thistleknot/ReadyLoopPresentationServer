@@ -7,7 +7,7 @@ cd c:\test\share\etf\
 rename "etf-*.csv" "////*.csv"
 
 set dbName=readyloop
-set host=192.168.1.5
+set host=192.168.3.103
 set PGPASSWORD=Read1234
 
 echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from etf_bond_facts_template;| psql -U postgres -h %host% %dbName%	

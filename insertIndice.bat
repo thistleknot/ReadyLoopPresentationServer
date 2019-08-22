@@ -1,7 +1,7 @@
 setlocal enableextensions enabledelayedexpansion
 
 set PGPASSWORD=Read1234
-set host=192.168.1.5
+set host=192.168.3.103
 set fullFlag=1
 
 REM download SP500 Index
