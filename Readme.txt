@@ -15,8 +15,13 @@ password for server is set to
 			user of container
 			postgres
 			Read1234
+			
+			rstudio
+			1234
 
 Important variables
+	add to path	
+		C:\Users\user\Documents\GitHub\ReadyLoopPresentationServer
 
 stockmarketRCode
 	setPercent,
@@ -237,6 +242,7 @@ Dependencies
 		calendar.bat
 		
 		insertQs.bat
+			#used for importing quantshare data
 		
 		downloadBonds.bat
 		

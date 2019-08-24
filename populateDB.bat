@@ -173,9 +173,9 @@ REM download data
 	
 	erase c:\test\share\etf\*.csv /q
 	
-	REM cmd.exe /c insertQs.bat
+	cmd.exe /c insertQs.bat
 	
-	cmd.exe /c downloadBonds.bat
+	REM cmd.exe /c downloadBonds.bat
 	
 		cd c:\test\share\etf\
 		
@@ -199,13 +199,13 @@ REM download data
 		xcopy diffComparison c:\test\share\ /y
 		xcopy diffComparisonETF c:\test\share\ /y
 	
-		cmd.exe /c downloadDataNasdaq.bat
+		REM cmd.exe /c downloadDataNasdaq.bat
 	
 		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
 
 		cmd.exe /c nasdaqCleanup.bat
 		
-		cmd.exe /c insertNasdaq.bat		
+		REM cmd.exe /c insertNasdaq.bat		
 
 	Rem can't run inside because it will drop when I wish to rerun!
 	echo drop table if exists other_facts cascade;|psql -U postgres -h %host% %dbName%	
@@ -215,7 +215,7 @@ REM download data
 	erase c:\test\share\other\otherDirList.txt
 	erase c:\test\share\other\otherList
 	
-		cmd.exe /c downloadDataOther.bat
+		REM cmd.exe /c downloadDataOther.bat
 		
 		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
 		
