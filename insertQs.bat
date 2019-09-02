@@ -17,7 +17,7 @@ REM download Quantshare export
 		
 		REM https://stackoverflow.com/questions/33353997/how-to-insert-csv-data-into-postgresql-database-remote-database
 		REM psql -h remotehost -d remote_mydb -U myuser -c "\copy mytable (column1, column2)  from '/path/to/local/file.csv' with delimiter as ','"
-		echo \copy qs_facts from PROGRAM 'cat C:\Users\user\Documents\quantshare\quotes.csv' DELIMITER ';' CSV HEADER| psql -U postgres -h %host% %dbName%
+		echo \copy qs_facts (symbol, timestamp, close, open, high, low, volume) from PROGRAM 'cat C:\Users\user\Documents\quantshare\quotes.csv' DELIMITER ';' CSV HEADER| psql -U postgres -h %host% %dbName%
 		
 		REM echo \copy qs_facts from 'c:\test\share\quantshare\quotes.csv' DELIMITER ';' CSV HEADER;| psql -U postgres -h %host% %dbName%
 		
