@@ -149,15 +149,6 @@ REM create ETF-Bonds fact table
 	
 	echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from public.etf_bond_facts_template;| psql -U postgres -h %host% %dbName%
 
-Rem create qs_fact table
-	echo drop table if exists qs_facts CASCADE;| psql -U postgres -h %host% readyloop
-	
-	echo drop table if exists qs_facts_template CASCADE;| psql -U postgres -h %host% readyloop
-	
-	echo CREATE TABLE IF NOT EXISTS qs_facts_template (id SERIAL, symbol varchar(8), timestamp date, close real null, open real null, high real null, low real null, volume real null, CONSTRAINT qs_facts_template_key PRIMARY KEY (id)) WITH (OIDS=TRUE) TABLESPACE pg_default; ALTER TABLE qs_facts_template OWNER to postgres; | psql -U postgres -h %host% readyloop
-	
-	echo CREATE TABLE IF NOT EXISTS qs_facts AS select * from qs_facts_template;| psql -U postgres -h %host% readyloop
-	
 	cmd.exe /c insertQs.bat
 	
 	REM echo select count (symbol) from mv_qs_symbols;| psql -U postgres -h %host% readyloop > qs_count.txt
