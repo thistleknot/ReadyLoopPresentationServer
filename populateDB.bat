@@ -11,7 +11,8 @@ FOR /F "tokens=*" %%a in ('returnLine.bat 1 psqlPW.txt') do SET PGPASSWORD=%%a
 FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.csv') do SET numNasdaqSymbols=%%a
 set waitPeriod=12
 echo %waitPeriod%
-set PGPASSWORD=1234
+set host=192.168.3.103
+set PGPASSWORD=Read1234
 set fullFlag=1
 
 set dbName=readyloop
@@ -74,90 +75,94 @@ xcopy c:\test\ETFNamesSymbolsNoHeader100RNG.csv c:\test\ETFNamesSymbolsNoHeader.
 REM rebuild scripts
 	REM if %1 equ 1 (
 	
-	echo drop database readyloop; create database readyloop;| psql -U postgres| psql -U postgres
-	echo drop table if exists public.nasdaq_facts cascade; | psql -U postgres %dbName%
-	echo drop table if exists public.other_facts cascade; | psql -U postgres %dbName%
-	echo drop table if exists public.etf_bond_facts cascade; | psql -U postgres %dbName%
-	echo drop table if exists public.qs_facts cascade; | psql -U postgres %dbName%
-	echo drop table if exists public.nSymbols;| psql -U postgres %dbName%
-	echo drop table if exists public.oSymbols;| psql -U postgres %dbName%
-	echo drop table if exists public.bSymbols;| psql -U postgres %dbName%
+	echo drop database readyloop; create database readyloop;| psql -U postgres -h %host%
+	echo drop table if exists public.nasdaq_facts cascade; | psql -U postgres -h %host% %dbName%
+	echo drop table if exists public.other_facts cascade; | psql -U postgres -h %host% %dbName%
+	echo drop table if exists public.etf_bond_facts cascade; | psql -U postgres -h %host% %dbName%
+	echo drop table if exists public.qs_facts cascade; | psql -U postgres -h %host% %dbName%
+	echo drop table if exists public.nSymbols;| psql -U postgres -h %host% %dbName%
+	echo drop table if exists public.oSymbols;| psql -U postgres -h %host% %dbName%
+	echo drop table if exists public.bSymbols;| psql -U postgres -h %host% %dbName%
 	REM )
 	
 REM symbol tables
 
 	REM Nasdaq
 
-	echo create table if not exists nSymbolsTemplate (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
+	echo create table if not exists nSymbolsTemplate (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres -h %host% %dbName%
 	
-		echo drop table if exists nsymbols;| psql -U postgres %dbName%	
+		echo drop table if exists nsymbols;| psql -U postgres -h %host% %dbName%	
 		
-		echo CREATE TABLE if not exists nSymbols as select * from nSymbolsTemplate;| psql -U postgres %dbName%
+		echo CREATE TABLE if not exists nSymbols as select * from nSymbolsTemplate;| psql -U postgres -h %host% %dbName%
 	
-		echo CREATE TABLE if not exists nSymbolsTemp as select * from nSymbolsTemplate;| psql -U postgres %dbName%
+		echo CREATE TABLE if not exists nSymbolsTemp as select * from nSymbolsTemplate;| psql -U postgres -h %host% %dbName%
 
-		echo copy nSymbolsTemp from 'c:\test\nasdaqSymbolsNoHeaderFull.csv' DELIMITER ';';| psql -U postgres %dbName%
+		echo \copy nSymbolsTemp from 'c:\test\nasdaqSymbolsNoHeaderFull.csv' DELIMITER ';';| psql -U postgres -h %host% %dbName%
 		
-		echo insert into nSymbols select distinct * from nSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
+		echo insert into nSymbols select distinct * from nSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%	
 		
-		echo ALTER TABLE nSymbols OWNER to postgres;| psql -U postgres %dbName%
+		echo ALTER TABLE nSymbols OWNER to postgres;| psql -U postgres -h %host% %dbName%
 
 	REM Other (DOW and NYSE)
-	echo CREATE TABLE if not exists oSymbolsTemplate (symbol varchar(8), securityName varchar(256), Exchange varchar(16),CQSSymbol varchar(16),ETF varchar(8),roundLotSize varchar(4),testIssue varchar(4), nasdaqSymbol varchar(8),CONSTRAINT osymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
+	echo CREATE TABLE if not exists oSymbolsTemplate (symbol varchar(8), securityName varchar(256), Exchange varchar(16),CQSSymbol varchar(16),ETF varchar(8),roundLotSize varchar(4),testIssue varchar(4), nasdaqSymbol varchar(8),CONSTRAINT osymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres -h %host% %dbName%
 	
-		echo drop table if exists oSymbols;| psql -U postgres %dbName%	
+		echo drop table if exists oSymbols;| psql -U postgres -h %host% %dbName%	
 	
-		echo CREATE TABLE if not exists oSymbols as select * from oSymbolsTemplate;| psql -U postgres %dbName%
+		echo CREATE TABLE if not exists oSymbols as select * from oSymbolsTemplate;| psql -U postgres -h %host% %dbName%
 	
-		echo CREATE TABLE if not exists oSymbolsTemp as select * from oSymbolsTemplate;| psql -U postgres %dbName%
+		echo CREATE TABLE if not exists oSymbolsTemp as select * from oSymbolsTemplate;| psql -U postgres -h %host% %dbName%
 
-		echo copy nSymbolsTemp from 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres %dbName%
+		echo \copy nSymbolsTemp from 'c:\test\otherSymbols.csv' DELIMITER ';' CSV HEADER;| psql -U postgres -h %host% %dbName%
 		
-		echo insert into oSymbols select distinct * from oSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%	
+		echo insert into oSymbols select distinct * from oSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%	
 		
-		echo ALTER TABLE oSymbols OWNER to postgres;| psql -U postgres %dbName%
+		echo ALTER TABLE oSymbols OWNER to postgres;| psql -U postgres -h %host% %dbName%
 
 	REM Bonds
-	echo CREATE TABLE if not exists bSymbolsTemplate (symbol varchar(8), securityName varchar(256),CONSTRAINT bsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres %dbName%
+	echo CREATE TABLE if not exists bSymbolsTemplate (symbol varchar(8), securityName varchar(256),CONSTRAINT bsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres -h %host% %dbName%
 	
-		echo CREATE TABLE if not exists bSymbols as select * from bSymbolsTemplate;| psql -U postgres %dbName%
+		echo CREATE TABLE if not exists bSymbols as select * from bSymbolsTemplate;| psql -U postgres -h %host% %dbName%
 		
-			echo CREATE TABLE if not exists bSymbolsTemp as select * from bSymbolsTemplate;| psql -U postgres %dbName%
+			echo CREATE TABLE if not exists bSymbolsTemp as select * from bSymbolsTemplate;| psql -U postgres -h %host% %dbName%
 
-			echo ALTER TABLE bSymbols OWNER to postgres;| psql -U postgres %dbName%				
+			echo ALTER TABLE bSymbols OWNER to postgres;| psql -U postgres -h %host% %dbName%				
 			
-			echo copy bSymbolsTemp from 'c:\test\ETFList.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+			echo \copy bSymbolsTemp from 'c:\test\ETFList.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%
 
-			echo insert into bSymbols select distinct * from bSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
+			echo insert into bSymbols select distinct * from bSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%
 
-			echo drop table bSymbolsTemp;| psql -U postgres %dbName%		
+			echo drop table bSymbolsTemp;| psql -U postgres -h %host% %dbName%		
 
 	REM calendar
 	
 			cmd.exe /c calendar.bat
 			
 REM create NASDAQ & Other (DOW and NYSE) fact tables
-	echo CREATE TABLE IF NOT EXISTS nasdaq_facts_template (symbol varchar(8), timestamp date, open real null, high real null,low real null,close real null,adjusted_close real null,volume real null,dividend_amount real null,split_coefficient real null,CONSTRAINT nasdaq_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE nasdaq_facts_template OWNER to postgres; | psql -U postgres %dbName%
+	echo CREATE TABLE IF NOT EXISTS nasdaq_facts_template (symbol varchar(8), timestamp date, open real null, high real null,low real null,close real null,adjusted_close real null,volume real null,dividend_amount real null,split_coefficient real null,CONSTRAINT nasdaq_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE nasdaq_facts_template OWNER to postgres; | psql -U postgres -h %host% %dbName%
 	
-	echo CREATE TABLE IF NOT EXISTS other_facts_template (symbol varchar(8), timestamp date, open real null, high real null,low real null,close real null,adjusted_close real null,volume real null,dividend_amount real null,split_coefficient real null,CONSTRAINT other_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE other_facts_template OWNER to postgres; | psql -U postgres %dbName%
+	echo CREATE TABLE IF NOT EXISTS other_facts_template (symbol varchar(8), timestamp date, open real null, high real null,low real null,close real null,adjusted_close real null,volume real null,dividend_amount real null,split_coefficient real null,CONSTRAINT other_facts_template_pkey PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE other_facts_template OWNER to postgres; | psql -U postgres -h %host% %dbName%
 	
-	echo CREATE TABLE IF NOT EXISTS other_facts AS select * from other_facts_template;| psql -U postgres %dbName%
+	echo CREATE TABLE IF NOT EXISTS other_facts AS select * from other_facts_template;| psql -U postgres -h %host% %dbName%
 
 REM create ETF-Bonds fact table	
-	echo CREATE TABLE IF NOT EXISTS public.etf_bond_facts_template (symbol varchar(8), timestamp date, open real null, high real null, low real null, close real null, adjusted_close real null, volume real null, CONSTRAINT etf_bond_facts_template_key PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE public.etf_bond_facts_template OWNER to postgres; | psql -U postgres %dbName%
+	echo CREATE TABLE IF NOT EXISTS public.etf_bond_facts_template (symbol varchar(8), timestamp date, open real null, high real null, low real null, close real null, adjusted_close real null, volume real null, CONSTRAINT etf_bond_facts_template_key PRIMARY KEY (timestamp,symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE public.etf_bond_facts_template OWNER to postgres; | psql -U postgres -h %host% %dbName%
 	
-	echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from public.etf_bond_facts_template;| psql -U postgres %dbName%
+	echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from public.etf_bond_facts_template;| psql -U postgres -h %host% %dbName%
 
 Rem create qs_fact table
-	echo drop table if exists qs_facts;| psql -U postgres readyloop
+	echo drop table if exists qs_facts;| psql -U postgres -h %host% readyloop
 	
+<<<<<<< HEAD
 	echo CREATE TABLE IF NOT EXISTS qs_facts_template (id SERIAL, symbol varchar(8), timestamp date, close real null, open real null, high real null, low real null, volume real null, CONSTRAINT qs_facts_template_key PRIMARY KEY (id)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE qs_facts_template OWNER to postgres; | psql -U postgres readyloop
+=======
+	echo CREATE TABLE IF NOT EXISTS qs_facts_template (symbol varchar(8), timestamp date, close real null, open real null, high real null, low real null, volume real null, CONSTRAINT qs_facts_template_key PRIMARY KEY (timestamp, symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default; ALTER TABLE qs_facts_template OWNER to postgres; | psql -U postgres -h %host% readyloop
+>>>>>>> 1c220e14c3cde52eae870a0eadf37b63e346b945
 	
-	echo CREATE TABLE IF NOT EXISTS qs_facts AS select * from qs_facts_template;| psql -U postgres readyloop
+	echo CREATE TABLE IF NOT EXISTS qs_facts AS select * from qs_facts_template;| psql -U postgres -h %host% readyloop
 	
 	cmd.exe /c insertQs.bat
 	
-	REM echo select count (symbol) from mv_qs_symbols;| psql -U postgres readyloop > qs_count.txt
+	REM echo select count (symbol) from mv_qs_symbols;| psql -U postgres -h %host% readyloop > qs_count.txt
 	REM FOR /F "tokens=*" %%a in ('call returnline.bat 3 qs_count.txt') do SET numQSSymbols=%%a
 	REM echo %numQSSymbols%
 	
@@ -168,13 +173,13 @@ REM download data
 	
 	Rem need to run outside
 	
-	echo drop table if exists etf_bond_facts cascade;| psql -U postgres %dbName%
+	echo drop table if exists etf_bond_facts cascade;| psql -U postgres -h %host% %dbName%
 	
 	erase c:\test\share\etf\*.csv /q
 	
-	REM cmd.exe /c insertQs.bat
+	cmd.exe /c insertQs.bat
 	
-	cmd.exe /c downloadBonds.bat
+	REM cmd.exe /c downloadBonds.bat
 	
 		cd c:\test\share\etf\
 		
@@ -188,7 +193,7 @@ REM download data
 	
 	REM need to run outside.
 	
-	echo drop table if exists nasdaq_facts cascade;|psql -U postgres %dbName%
+	echo drop table if exists nasdaq_facts cascade;|psql -U postgres -h %host% %dbName%	
 	
 	erase c:\test\share\nasdaq\*.csv /q
 	erase c:\test\share\nasdaq\reruns.txt
@@ -198,23 +203,23 @@ REM download data
 		xcopy diffComparison c:\test\share\ /y
 		xcopy diffComparisonETF c:\test\share\ /y
 	
-		cmd.exe /c downloadDataNasdaq.bat
+		REM cmd.exe /c downloadDataNasdaq.bat
 	
 		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
 
 		cmd.exe /c nasdaqCleanup.bat
 		
-		cmd.exe /c insertNasdaq.bat		
+		REM cmd.exe /c insertNasdaq.bat		
 
 	Rem can't run inside because it will drop when I wish to rerun!
-	echo drop table if exists other_facts cascade;|psql -U postgres %dbName%
+	echo drop table if exists other_facts cascade;|psql -U postgres -h %host% %dbName%	
 		
 	erase c:\test\share\other\*.csv /q
 	erase c:\test\share\other\reruns.txt
 	erase c:\test\share\other\otherDirList.txt
 	erase c:\test\share\other\otherList
 	
-		cmd.exe /c downloadDataOther.bat
+		REM cmd.exe /c downloadDataOther.bat
 		
 		cd c:\users\user\Documents\alphaAdvantageApi\ReadyLoopPresentationServer\
 		
@@ -222,6 +227,6 @@ REM download data
 			
 		cmd.exe /c insertOther.bat
 
-REM echo select * from %tableName%;| psql -U postgres %dbName%
+REM echo select * from %tableName%;| psql -U postgres -h %host% %dbName%
 REM echo's all symbols
-	echo select symbol FROM nSymbols;| psql -U postgres %dbName%
+	echo select symbol FROM nSymbols;| psql -U postgres -h %host% %dbName%

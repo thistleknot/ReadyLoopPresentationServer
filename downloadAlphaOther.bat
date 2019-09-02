@@ -8,7 +8,7 @@ REM FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\nasdaqSymbolsNoHeader.
 REM FOR /F "tokens=*" %%a in ('returnNumLines.bat c:\test\otherSymbolsNoHeader.csv') do SET numOtherSymbols=%%a
 REM set waitPeriod=12
 REM echo %waitPeriod%
-REM set PGPASSWORD=1234
+REM set PGPASSWORD=Read1234
 REM set fullFlag=1
 
 REM set dbName=readyloop
@@ -38,15 +38,15 @@ curl -L "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&s
 REM adds symbol to front of columns
 REM awk '{print F,$1,$2,$3,$4,$5,$6,$7,$8,$9}' FS=, OFS=, F=%2 c:\test\share\other\O-%2.csv > c:\test\share\other\O-%2wSymbols.csv
 	
-REM echo drop table temp_table%2;| psql -U postgres %dbName%
+REM echo drop table temp_table%2;| psql -U postgres -h %host% %dbName%
 
-REM echo create table temp_table%2 as table temp_table;|psql -U postgres %dbName%
+REM echo create table temp_table%2 as table temp_table;|psql -U postgres -h %host% %dbName%	
 
-REM echo copy temp_table%2 from 'c:\test\%2wSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres %dbName%
+REM echo \copy temp_table%2 from 'c:\test\%2wSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%
 
-REM echo insert into %tableName% select distinct * from temp_table%2 ON CONFLICT DO NOTHING;| psql -U postgres %dbName%
+REM echo insert into %tableName% select distinct * from temp_table%2 ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%
 
-REM echo drop table temp_table%2;| psql -U postgres %dbName%
+REM echo drop table temp_table%2;| psql -U postgres -h %host% %dbName%
 	
 REM timeout /t 1
 
