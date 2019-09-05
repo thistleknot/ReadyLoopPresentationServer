@@ -48,7 +48,8 @@ Rem create qs_fact table
 	echo refresh materialized view mv_qs_symbols | psql -U postgres -h %host% %dbName%
 	echo ALTER TABLE mv_qs_symbols OWNER to postgres | psql -U postgres -h %host% %dbName%
 	
-	echo create materialized view if not exists mv_qs_facts as select * from qs_facts| psql -U postgres -h %host% %dbName%
+	echo CREATE materialized view temp AS  SELECT DISTINCT ON (symbol, timestamp) id, timestamp, symbol, close, open, high, low FROM qs_facts order by symbol, timestamp, id desc; | psql -U postgres -h %host% %dbName%
+	
 	echo ALTER TABLE mv_qs_facts OWNER to postgres| psql -U postgres -h %host% %dbName%
 	
 	echo refresh materialized view mv_qs_facts| psql -U postgres -h %host% %dbName%
