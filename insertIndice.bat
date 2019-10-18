@@ -30,8 +30,6 @@ REM indice tables
 		echo \copy eod_indicesTemp from 'c:\test\sp500wSymbols.csv' DELIMITER ',' CSV HEADER;| psql -U postgres -h %host% %dbName%
 		
 		echo insert into eod_indices select distinct * from eod_indicesTemp ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%	
-		
-		echo ALTER TABLE nSymbols OWNER to postgres;| psql -U postgres -h %host% %dbName%
 
 		REM need to create materialized views
 	
