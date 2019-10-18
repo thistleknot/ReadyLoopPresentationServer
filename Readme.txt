@@ -50,7 +50,7 @@ Requires
 	set gnuUtilpath=c:\Program Files (x86)\GnuWin32\bin\
 
 	psql needs to be accessible by path
-		C:\Program Files\PostgreSQL\11\bin
+		C:\Program Files\PostgreSQL\12\bin
 
 	mingw
 		msys
