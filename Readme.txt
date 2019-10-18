@@ -239,6 +239,13 @@ proxylist.txt
 
 Add readylooppresentationserver to path	
 	
+populateDB2.bat
+	use with quantshare csv
+	
+	insertQs.bat
+	InsertIndices.bat
+	calender.bat
+	
 Dependencies
 
 	PopulateDb.bat 
