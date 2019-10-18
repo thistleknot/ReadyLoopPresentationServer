@@ -5,6 +5,8 @@ set dbName=readyloop
 
 REM download Quantshare export
 
+	echo drop database readyloop; create database readyloop;| psql -U postgres -h %host%
+
 	echo DROP materialized view if exists mv_qs_facts cascade| psql -U postgres -h %host% %dbName%
 	echo DROP materialized view if exists mv_qs_symbols cascade| psql -U postgres -h %host% %dbName%
 
