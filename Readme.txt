@@ -45,25 +45,36 @@ Requires
 
 	imagemagick
 	
-	gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
+	coreutils
+		http://gnuwin32.sourceforge.net/packages/coreutils.htm
+	
+		#gnuUtilpath=c:\Program Files (x86)\coreutils-5.3.0-bin\bin\
 
 	set gnuUtilpath=c:\Program Files (x86)\GnuWin32\bin\
 
 	psql needs to be accessible by path
 		C:\Program Files\PostgreSQL\12\bin
 
-	mingw
-		msys
+	#needed for populateDB and other scripts, but not insertQs
+	#mingw
+		#msys
 		
 	curl
+		#mingw
+			#https://sourceforge.net/projects/mingw-w64/
+	
+		https://curl.haxx.se/windows/
 		
-		mingw
-			https://gitforwindows.org/
+		https://gitforwindows.org/
 		
 			add to path
 			C:\Program Files\Git\mingw64\bin
 	
 	awk
+		http://gnuwin32.sourceforge.net/packages/gawk.htm
+		
+		#gnuwin32
+			http://gnuwin32.sourceforge.net/
 	
 		git for windows
 		
@@ -76,9 +87,6 @@ Requires
 	Gnuutils
 
 	https://stackoverflow.com/questions/3454112/is-there-a-way-to-get-epoch-time-using-a-windows-command
-
-	coreutils
-	http://gnuwin32.sourceforge.net/packages/coreutils.htm
 
 	date requires
 		libintl
@@ -243,6 +251,8 @@ Dependencies
 		
 		insertQs.bat
 			#used for importing quantshare data
+			#use quantshareExportfunction.cs in quantshare
+			#create directory quantshare in c:\users\user\documents\
 		
 		downloadBonds.bat
 		
