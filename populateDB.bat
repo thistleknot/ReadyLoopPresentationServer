@@ -89,20 +89,8 @@ REM symbol tables
 
 	REM Nasdaq
 
-	echo create table if not exists nSymbolsTemplate (symbol varchar(8), securityName varchar(256), MarketCategory varchar(4),testIssue varchar(4),financialStatus varchar(4),roundLotSize varchar(4),ETF varchar(4), nextShares varchar(4),CONSTRAINT nsymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres -h %host% %dbName%
+	cmd.exe /c nSymbols.bat
 	
-		echo drop table if exists nsymbols;| psql -U postgres -h %host% %dbName%	
-		
-		echo CREATE TABLE if not exists nSymbols as select * from nSymbolsTemplate;| psql -U postgres -h %host% %dbName%
-	
-		echo CREATE TABLE if not exists nSymbolsTemp as select * from nSymbolsTemplate;| psql -U postgres -h %host% %dbName%
-
-		echo \copy nSymbolsTemp from 'c:\test\nasdaqSymbolsNoHeaderFull.csv' DELIMITER ';';| psql -U postgres -h %host% %dbName%
-		
-		echo insert into nSymbols select distinct * from nSymbolsTemp ON CONFLICT DO NOTHING;| psql -U postgres -h %host% %dbName%	
-		
-		echo ALTER TABLE nSymbols OWNER to postgres;| psql -U postgres -h %host% %dbName%
-
 	REM Other (DOW and NYSE)
 	echo CREATE TABLE if not exists oSymbolsTemplate (symbol varchar(8), securityName varchar(256), Exchange varchar(16),CQSSymbol varchar(16),ETF varchar(8),roundLotSize varchar(4),testIssue varchar(4), nasdaqSymbol varchar(8),CONSTRAINT osymbolsTemplate_pkey PRIMARY KEY (symbol)) WITH (OIDS=FALSE) TABLESPACE pg_default;| psql -U postgres -h %host% %dbName%
 	
@@ -149,6 +137,7 @@ REM create ETF-Bonds fact table
 	
 	echo CREATE TABLE IF NOT EXISTS etf_bond_facts AS select * from public.etf_bond_facts_template;| psql -U postgres -h %host% %dbName%
 
+<<<<<<< HEAD
 Rem create qs_fact table
 	echo drop table if exists qs_facts;| psql -U postgres -h %host% readyloop
 	
@@ -160,6 +149,8 @@ Rem create qs_fact table
 	
 	echo CREATE TABLE IF NOT EXISTS qs_facts AS select * from qs_facts_template;| psql -U postgres -h %host% readyloop
 	
+=======
+>>>>>>> 98e8545a2362426df119ed3a0bb86efc52969979
 	cmd.exe /c insertQs.bat
 	
 	REM echo select count (symbol) from mv_qs_symbols;| psql -U postgres -h %host% readyloop > qs_count.txt
