@@ -9,7 +9,9 @@ library(janitor)
 library(rvest)
 
 
-get_symbols = function(ticker = "AAPL"){
+bonds <- read.csv("ftp://ftp.nasdaqtrader.com/SymbolDirectory/bondslist.txt",sep = "|")
+
+get_symbols = function(ticker = "SRVEX"){
   df = tq_get(ticker, from = date) %>% mutate(symbol = rep(ticker, length(date)))
 }
 
