@@ -54,8 +54,8 @@ tickers_df = tickers_df %>%
   # left join with wikipedia data
   left_join(sp500tickers, by = c('symbol' = 'Symbol')) %>% 
   # make names R compatible
-  #clean_names() %>% 
+  clean_names() %>% 
   #doesn't work
   # keep only the columns we need
-  select(date:Security, "GICS Sector", "GICS Sub Industry")
+  select(date:security, "gics_sector", "gics_sub_industry")
 
