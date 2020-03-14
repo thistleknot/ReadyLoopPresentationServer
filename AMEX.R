@@ -20,6 +20,8 @@ append_url <- function(x) {
 }
 urls <- lapply(letters, append_url)
 
+url="http://www.findata.co.nz/markets/AMEX/symbols/Y.htm"
+
 tickers <- function(x) {
   # use that URL to scrape AMEX page 
   tickers <- x %>%
@@ -28,7 +30,7 @@ tickers <- function(x) {
     # one way to get table
     #html_nodes(xpath='//*[@id="mw-content-text"]/div/table[1]') %>%
     # easier way to get table
-    html_nodes(xpath = '//*[@id="cph1_bsa1_divSymbols"]/table/') %>% 
+    html_nodes(xpath = '//*[@id="cph1_bsa1_divSymbols"]/table') %>% 
     html_table()
 }
 
@@ -42,3 +44,4 @@ lettersNumbers <- 1:26
 
 symbols <- unlist(lapply(lettersNumbers,extractSymbols))
 View(symbols)
+#AMEX scrape has 2076
