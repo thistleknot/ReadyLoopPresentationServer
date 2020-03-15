@@ -8,10 +8,7 @@ library(tidyquant)
 library(janitor)
 library(rvest)
 
-
-bonds <- read.csv("ftp://ftp.nasdaqtrader.com/SymbolDirectory/bondslist.txt",sep = "|")
-
-get_symbols = function(ticker = "SRVEX"){
+get_symbols = function(ticker = "CL"){
   df = tq_get(ticker, from = date) %>% mutate(symbol = rep(ticker, length(date)))
 }
 
