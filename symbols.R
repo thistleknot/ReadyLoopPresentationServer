@@ -1,4 +1,5 @@
 library(HelpersMG)
+library(BatchGetSymbols)
 
 wget("ftp://ftp.nasdaqtrader.com/SymbolDirectory/mfundslist.txt")
 
@@ -17,6 +18,6 @@ freq.data <- 'daily'
 l.out <- BatchGetSymbols(tickers = bonds, 
                          first.date = first.date,
                          last.date = last.date, 
-                         freq.data = freq.data,
+                         #freq.data = freq.data,
                          cache.folder = file.path(tempdir(), 
                                                   'BGS_Cache') ) # cache in tempdir()
