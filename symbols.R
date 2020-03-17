@@ -15,7 +15,7 @@ first.date <- Sys.Date() - 60
 last.date <- Sys.Date()
 freq.data <- 'daily'
 
-l.out <- BatchGetSymbols(tickers = bonds, 
+l.out <- BatchGetSymbols(tickers = nasdaqtraded, 
                          first.date = first.date,
                          last.date = last.date, 
                          #freq.data = freq.data,
