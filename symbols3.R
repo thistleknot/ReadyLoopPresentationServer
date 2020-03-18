@@ -1,4 +1,7 @@
+if (!require(HelpersMG)) install.packages('HelpersMG')
 if (!require(BatchGetSymbols)) install.packages('BatchGetSymbols')
+if (!require(future)) install.packages('future')
+if (!require(anytime)) install.packages('anytime')
 
 library(HelpersMG)
 library(BatchGetSymbols)
