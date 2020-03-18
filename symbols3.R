@@ -2,6 +2,8 @@ if (!require(BatchGetSymbols)) install.packages('BatchGetSymbols')
 
 library(HelpersMG)
 library(BatchGetSymbols)
+library(future)
+library(anytime)
 
 # set dates
 first.date <- Sys.Date() - 821
@@ -14,18 +16,19 @@ nasdaqTraded <- head(read.csv("nasdaqtraded.txt",sep="|")$Symbol,-2)
 wget("ftp://ftp.nasdaqtrader.com/SymbolDirectory/bondslist.txt")
 bonds <- head(read.csv("bondslist.txt",sep="|")$Symbol,-2)
 
-tickers <- c('FB','MMM','PETR4.SA','abcdef')
 fil <- c()
 fil <- tempfile()
+first.date <- Sys.Date() - 821
+last.date <- Sys.Date() - 814
+future::plan(future::multisession, workers = floor(parallel::detectCores()/1))
+dput(BatchGetSymbols(tickers = nasdaqTraded,
+                     do.parallel = TRUE,
+                     first.date = first.date,
+                     last.date = last.date, 
+                     #cache results in "can only subtract from "Date" objects"
+                     do.cache=FALSE),
+     fil)
 
-dput(BatchGetSymbols(tickers = nasdaqTraded, first.date = first.date,last.date = last.date, cache.folder = file.path(tempdir()) ),fil ) # cache in tempdir(), fil)
-
-#l.out <- BatchGetSymbols(tickers = tickers, 
-#                         first.date = first.date,
-#                         last.date = last.date, 
-                         #freq.data = freq.data,
-#                         cache.folder = file.path(tempdir(), 
-#                                                  'BGS_Cache') ) # cache in tempdir()
 
 filtered <- unique(dget(fil, keep.source = TRUE)$df.tickers$ticker)
 
