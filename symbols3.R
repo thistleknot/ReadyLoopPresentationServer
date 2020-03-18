@@ -5,10 +5,6 @@ library(BatchGetSymbols)
 library(future)
 library(anytime)
 
-# set dates
-first.date <- Sys.Date() - 821
-last.date <- Sys.Date() - 814
-freq.data <- 'daily'
 # set tickers
 wget("ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt")
 nasdaqTraded <- head(read.csv("nasdaqtraded.txt",sep="|")$Symbol,-2)
