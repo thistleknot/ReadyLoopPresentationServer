@@ -20,12 +20,13 @@ fil <- c()
 fil <- tempfile()
 first.date <- Sys.Date() - 821
 last.date <- Sys.Date() - 814
-future::plan(future::multisession, workers = floor(parallel::detectCores()/1))
+future::plan(future::multisession, workers = floor(parallel::detectCores()/2))
 dput(BatchGetSymbols(tickers = nasdaqTraded,
                      do.parallel = TRUE,
                      first.date = first.date,
                      last.date = last.date, 
                      #cache results in "can only subtract from "Date" objects"
+                     #probably due to parallel
                      do.cache=FALSE),
      fil)
 
@@ -41,5 +42,5 @@ last.date <- Sys.Date()
 fil <- c()
 fil <- tempfile()
 
-dput(BatchGetSymbols(tickers = filtered, first.date = first.date,last.date = last.date, cache.folder = file.path(tempdir()) ),fil ) # cache in tempdir(), fil)
-
+dput(BatchGetSymbols(tickers = sample(filtered,200), first.date = first.date,last.date = last.date, do.parallel = TRUE, do.cache=FALSE),fil ) # cache in tempdir(), fil)
+dget(fil, keep.source = TRUE)$df.tickers$ticker
