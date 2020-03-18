@@ -20,7 +20,7 @@ fil <- c()
 fil <- tempfile()
 first.date <- Sys.Date() - 821
 last.date <- Sys.Date() - 814
-future::plan(future::multisession, workers = floor(parallel::detectCores()/2))
+future::plan(future::multisession, workers = floor(parallel::detectCores()*.75))
 dput(BatchGetSymbols(tickers = nasdaqTraded,
                      do.parallel = TRUE,
                      first.date = first.date,
