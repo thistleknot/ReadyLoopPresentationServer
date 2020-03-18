@@ -3,6 +3,8 @@ if (!require(BatchGetSymbols)) install.packages('BatchGetSymbols')
 if (!require(future)) install.packages('future')
 if (!require(anytime)) install.packages('anytime')
 
+options("download.file.method"="wget")
+
 library(HelpersMG)
 library(BatchGetSymbols)
 library(future)
