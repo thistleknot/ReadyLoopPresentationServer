@@ -25,6 +25,7 @@ dput(BatchGetSymbols(tickers = nasdaqTraded,
                      do.parallel = TRUE,
                      first.date = first.date,
                      last.date = last.date, 
+                     be.quiet = TRUE,
                      #cache results in "can only subtract from "Date" objects"
                      #probably due to parallel
                      do.cache=FALSE),
@@ -43,4 +44,7 @@ fil <- c()
 fil <- tempfile()
 
 dput(BatchGetSymbols(tickers = sample(filtered,200), first.date = first.date,last.date = last.date, do.parallel = TRUE, do.cache=FALSE),fil ) # cache in tempdir(), fil)
-dget(fil, keep.source = TRUE)$df.tickers$ticker
+
+fwrite(dget(fil, keep.source = TRUE)$df.tickers, "200Symbols2Years.csv")          
+
+
