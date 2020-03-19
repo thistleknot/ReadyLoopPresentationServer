@@ -54,9 +54,9 @@ future::plan(future::multisession, workers = 4)
 
 #using 3 sigma
 #61% success rate
-dput(batch_get_symbols(nasdaqTraded,770),fil1)
+dput(batch_get_symbols(nasdaqTraded,770),fil_Nasdaq)
 #76% success rate
-dput(batch_get_symbols(mfunds,324),fil2)
+dput(batch_get_symbols(mfunds,324),fil_mfunds)
 
 filteredNasdaq <- dget(fil_Nasdaq, keep.source = TRUE)$df.control$ticker
 filteredMFunds <- dget(fil_mfunds, keep.source = TRUE)$df.control$ticker
