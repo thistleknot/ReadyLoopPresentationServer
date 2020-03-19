@@ -70,7 +70,7 @@ fil_mfunds <- c()
 fil_mfunds <- tempfile()
 
 dput(BatchGetSymbols(tickers = sample(filteredNasdaq,220*betaTestCoefficient), first.date = first.date,last.date = last.date, do.parallel = TRUE, do.cache=FALSE),fil_Nasdaq ) # cache in tempdir(), fil)
-dput(BatchGetSymbols(tickers = sample(filteredNasdaq,220*betaTestCoefficient), first.date = first.date,last.date = last.date, do.parallel = TRUE, do.cache=FALSE),fil_mfunds ) # cache in tempdir(), fil)
+dput(BatchGetSymbols(tickers = sample(filteredMFunds,220*betaTestCoefficient), first.date = first.date,last.date = last.date, do.parallel = TRUE, do.cache=FALSE),fil_mfunds ) # cache in tempdir(), fil)
 
 fwrite(dget(fil_Nasdaq, keep.source = TRUE)$df.tickers, "200NasdaqSymbols2Years.csv")
 fwrite(dget(fil_mfunds, keep.source = TRUE)$df.tickers, "200MFundsSymbols2Years.csv")          
