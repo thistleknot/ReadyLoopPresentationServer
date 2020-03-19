@@ -6,7 +6,7 @@ options("download.file.method"="curl")
 batch_get_symbols <- function(x) {
   getSymbols(x, src=("FRED"), return.class = "xts",from = first.date, to = last.date,auto.assign = TRUE)
 }
-s
+
 View(getSymbols("GOOG", src=("yahoo"),from = first.date, to = last.date))
 #wget("ftp://ftp.nasdaqtrader.com/SymbolDirectory/mfundslist.txt")
 
