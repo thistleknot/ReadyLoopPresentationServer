@@ -25,11 +25,16 @@ library(quantmod)
 wget("ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt")
 wget("ftp://ftp.nasdaqtrader.com/SymbolDirectory/mfundslist.txt")
 #9 quarters is 5479/8897 61% (60%)
-nasdaqTraded <- head(read.csv("nasdaqtraded.txt",sep="|")$Symbol,-2)
-mfunds <- head(read.csv("nasdaqtraded.txt",sep="|")$Symbol,-2)
+nasdaqTraded <- as.character(head(read.csv("nasdaqtraded.txt",sep="|")$Symbol,-2))
+mfunds <- as.character(head(read.csv("nasdaqtraded.txt",sep="|")$Symbol,-2))
 
 #wget("ftp://ftp.nasdaqtrader.com/SymbolDirectory/bondslist.txt")
 #bonds <- head(read.csv("bondslist.txt",sep="|")$Symbol,-2)
+
+#nested function not working
+put_symbols_into_file <- function(fil,data,size) {
+  dput(batch_get_symbols(data,size),fil)
+}
 
 batch_get_symbols <- function(data,size) {
   BatchGetSymbols(tickers = sample(data,size*betaTestCoefficient),
@@ -42,6 +47,7 @@ batch_get_symbols <- function(data,size) {
                   do.cache=FALSE)
 }
 
+#how to create objects of these and create functions for them?
 fil_Nasdaq <- c()
 fil_Nasdaq <- tempfile()
 #mfunds
@@ -52,8 +58,21 @@ first.date <- Sys.Date() - 821
 last.date <- Sys.Date() - 814
 future::plan(future::multisession, workers = 4)
 
+#https://stackoverflow.com/questions/10776742/how-can-i-make-a-list-of-lists-in-r
+#list_nasdaq <- list(fil_Nasdaq,nasdaqTraded,770)
+#list_mfunds <- list(fil_mfunds,mfunds,324)
+#mylists <- list(list_nasdaq, list_mfunds)
+
+#put_symbols_into_file(fil_Nasdaq,nasdaqTraded,770)
+#https://stackoverflow.com/questions/31561238/lapply-function-loops-on-list-of-lists-r
+#lapply(mylists, sapply, put_symbols_into_file)
+#lapply(mylists,put_symbols_into_file)
+
 #using 3 sigma
 #61% success rate
+#testing parent nested function
+#put_symbols_into_file(fil_Nasdaq,nasdaqTraded,770)
+#put_symbols_into_file(fil_mfunds,mfunds,324)
 dput(batch_get_symbols(nasdaqTraded,770),fil_Nasdaq)
 #76% success rate
 dput(batch_get_symbols(mfunds,324),fil_mfunds)
