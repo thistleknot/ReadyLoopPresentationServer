@@ -57,3 +57,11 @@ sp500Symbols <- BatchGetSymbols(tickers = symbols,
 sp500Symbols$df.tickers
 
 list_SP500 <- group_split(sp500Symbols$df.tickers %>% group_by(ticker))
+
+xts(list_SP500[[1]], order.by=as.Date(list_SP500[[1]][, 7]$ref.date))
+
+#getSymbols("AAPL", from="1990-01-01", src="yahoo")
+
+#adjustOHLC(AAPL)
+adjustOHLC(xts(list_SP500[[1]], order.by=as.Date(list_SP500[[1]][, 7]$ref.date)))
+#adjustOHLC(list_SP500[[1]])
