@@ -57,6 +57,21 @@ batch_get_symbols <- function(data,size) {
                   do.cache=FALSE)
 }
 
+filtered_symbols <- function(fil)
+{
+  dget(fil, keep.source = TRUE)$df.control$ticker
+}
+
+join_file_symbols <- function(x)
+{
+  list(filList[[x]],filteredSymbols[[x]])
+}
+
+write_subset_csv <- function()
+{
+  
+}
+
 #how to create objects of these and create functions for them?
 fil_Nasdaq <- c()
 fil_Nasdaq <- tempfile()
@@ -69,37 +84,39 @@ last.date <- Sys.Date() - 814
 future::plan(future::multisession, workers = 4)
 
 #https://stackoverflow.com/questions/10776742/how-can-i-make-a-list-of-lists-in-r
-#list_nasdaq <- list(fil_Nasdaq,nasdaqTraded,770)
-#list_mfunds <- list(fil_mfunds,mfunds,324)
-#mylists <- list(list_nasdaq, list_mfunds)
+#https://stackoverflow.com/questions/60766832/nested-r-function-with-lapply
+list_nasdaq <- list(fil=fil_Nasdaq, data=nasdaqTraded, size=770)
+list_mfunds <- list(fil=fil_mfunds, data=mfunds, size=324)
 
-#put_symbols_into_file(fil_Nasdaq,nasdaqTraded,770)
-#https://stackoverflow.com/questions/31561238/lapply-function-loops-on-list-of-lists-r
-#lapply(mylists, sapply, put_symbols_into_file)
-#lapply(mylists,put_symbols_into_file)
+mylists <- list(list_nasdaq, list_mfunds)
 
+lapply(mylists, FUN=function(x) put_symbols_into_file(fil=x$fil, data=x$data, size=x$size))
+
+#https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list
+files <- lapply(mylists, `[[`, 1)
 #using 3 sigma
-#61% success rate
-#testing parent nested function
-#put_symbols_into_file(fil_Nasdaq,nasdaqTraded,770)
-#put_symbols_into_file(fil_mfunds,mfunds,324)
-dput(batch_get_symbols(nasdaqTraded,770),fil_Nasdaq)
-#76% success rate
-dput(batch_get_symbols(mfunds,324),fil_mfunds)
-
-filteredNasdaq <- dget(fil_Nasdaq, keep.source = TRUE)$df.control$ticker
-filteredMFunds <- dget(fil_mfunds, keep.source = TRUE)$df.control$ticker
+#nasdaq 61% success rate @8897
+#mfunds 76% success rate @250
 
 first.date <- Sys.Date() - 821
 last.date <- Sys.Date()
 
-fil_Nasdaq <- c()
-fil_Nasdaq <- tempfile()
-fil_mfunds <- c()
-fil_mfunds <- tempfile()
+filNasdaq <- c()
+filNasdaq <- tempfile()
+filmfunds <- c()
+filmfunds <- tempfile()
 
-dput(BatchGetSymbols(tickers = sample(filteredNasdaq,220*betaTestCoefficient), first.date = first.date,last.date = last.date, do.parallel = TRUE, do.cache=FALSE),fil_Nasdaq ) # cache in tempdir(), fil)
-dput(BatchGetSymbols(tickers = sample(filteredMFunds,220*betaTestCoefficient), first.date = first.date,last.date = last.date, do.parallel = TRUE, do.cache=FALSE),fil_mfunds ) # cache in tempdir(), fil)
+#Used with filterSymbolsList / join_file_symbols
+filteredSymbols <- lapply(files,filtered_symbols)
+filList <- list(filNasdaq,filmfunds)
+numLists <- 1:length(filList)
+
+#list(filList[[1]],filteredSymbols[[1]])
+filteredSymbolsList <- lapply(numLists,join_file_symbols)
+
+lapply(filteredSymbolsList, FUN=function(x) put_symbols_into_file(fil=x[[1]], data=x[[2]], size=220))
+
+dget(filteredSymbolsList[[1]][[1]],keep.source=TRUE)$df.tickers
 
 fwrite(dget(fil_Nasdaq, keep.source = TRUE)$df.tickers, "200NasdaqSymbols2Years.csv")
 fwrite(dget(fil_mfunds, keep.source = TRUE)$df.tickers, "200MFundsSymbols2Years.csv")          
