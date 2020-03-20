@@ -32,6 +32,16 @@ mfunds <- as.character(head(read.csv("nasdaqtraded.txt",sep="|")$Symbol,-2))
 #bonds <- head(read.csv("bondslist.txt",sep="|")$Symbol,-2)
 
 #nested function not working
+get_Symbols <- function (x)
+{
+  getSymbols(x, from=first.date, src="yahoo")
+}
+
+adjust_OHLC <- function (x)
+{
+  adjustOHLC(x)
+}
+
 put_symbols_into_file <- function(fil,data,size) {
   dput(batch_get_symbols(data,size),fil)
 }
@@ -95,3 +105,12 @@ fwrite(dget(fil_Nasdaq, keep.source = TRUE)$df.tickers, "200NasdaqSymbols2Years.
 fwrite(dget(fil_mfunds, keep.source = TRUE)$df.tickers, "200MFundsSymbols2Years.csv")          
 
 source("sp500.R")
+
+lapply(filteredNasdaq,get_symbols)
+
+holder.a <- lapply(noquote(filteredNasdaq),adjust_OHLC)
+
+adjustOHLC(holder)
+head(AAPL)
+head(AAPL.a <- adjustOHLC(AAPL))
+head(AAPL.uA <- adjustOHLC(AAPL, use.Adjusted=TRUE))
