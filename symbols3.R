@@ -67,9 +67,14 @@ join_file_symbols <- function(x)
   list(filList[[x]],filteredSymbols[[x]])
 }
 
-write_subset_csv <- function()
+join_file_csvNames <- function(x)
 {
-  
+  list(filList[[x]],csvNames[[x]])
+}
+
+write_subset_csv <- function(fil,name)
+{
+  fwrite(dget(fil[[1]][[1]], keep.source = TRUE)$df.tickers, name) 
 }
 
 #how to create objects of these and create functions for them?
@@ -116,10 +121,14 @@ filteredSymbolsList <- lapply(numLists,join_file_symbols)
 
 lapply(filteredSymbolsList, FUN=function(x) put_symbols_into_file(fil=x[[1]], data=x[[2]], size=220))
 
-dget(filteredSymbolsList[[1]][[1]],keep.source=TRUE)$df.tickers
+#dget(filteredSymbolsList[[1]][[1]],keep.source=TRUE)$df.tickers
 
-fwrite(dget(fil_Nasdaq, keep.source = TRUE)$df.tickers, "200NasdaqSymbols2Years.csv")
-fwrite(dget(fil_mfunds, keep.source = TRUE)$df.tickers, "200MFundsSymbols2Years.csv")          
+csvNames=list("200NasdaqSymbols2Years.csv","200MFundsSymbols2Years.csv")
+csv_list <- lapply(numLists,join_file_csvNames)
+
+#dget(csv_list[[1]][[1]],keep.source = TRUE)$df.tickers
+
+lapply(csv_list, FUN=function(x) write_subset_csv(fil=x[[1]], name=x[[2]]))
 
 source("sp500.R")
 
