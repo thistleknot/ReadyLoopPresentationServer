@@ -63,5 +63,6 @@ xts(list_SP500[[1]], order.by=as.Date(list_SP500[[1]][, 7]$ref.date))
 #getSymbols("AAPL", from="1990-01-01", src="yahoo")
 
 #adjustOHLC(AAPL)
+#https://stackoverflow.com/questions/27070040/convert-string-data-frame-to-date
 adjustOHLC(xts(list_SP500[[1]], order.by=as.Date(list_SP500[[1]][, 7]$ref.date)))
 #adjustOHLC(list_SP500[[1]])
