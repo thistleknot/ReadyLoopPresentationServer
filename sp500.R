@@ -45,15 +45,15 @@ sp500tickers = sp500tickers %>% mutate(Symbol = case_when(Symbol == "BRK.B" ~ "B
                                                           TRUE ~ as.character(Symbol)))
 symbols <- sp500tickers$Symbol
 
-tickers_df = map(symbols, get_symbols) %>% bind_rows()
+sp500Symbols <- BatchGetSymbols(tickers = symbols,
+                                do.parallel = TRUE,
+                                first.date = first.date,
+                                last.date = last.date, 
+                                be.quiet = TRUE,
+                                #cache results in "can only subtract from "Date" objects"
+                                #probably due to parallel
+                                do.cache=FALSE)
 
-#colnames(sp500tickers)
-tickers_df = tickers_df %>% 
-  # left join with wikipedia data
-  left_join(sp500tickers, by = c('symbol' = 'Symbol')) %>% 
-  # make names R compatible
-  clean_names() %>% 
-  #doesn't work
-  # keep only the columns we need
-  select(date:security, "gics_sector", "gics_sub_industry")
+sp500Symbols$df.tickers
 
+list_SP500 <- group_split(sp500Symbols$df.tickers %>% group_by(ticker))
