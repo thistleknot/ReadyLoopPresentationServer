@@ -10,6 +10,8 @@ if (!require(dbplyr)) install.packages('dbplyr')
 if (!require(reprex)) install.packages('reprex')
 if (!require(tidyverse)) install.packages('tidyverse')
 
+if (!require(parallel)) install.packages('parallel')
+
 if (!require(tidyquant)) install.packages('tidyquant')
 
 # tidy financial analysis 
@@ -20,9 +22,11 @@ library(tidyverse)
 library(janitor)
 library(rvest)
 library(tidyquant)
+library(parallel)
 
-get_symbols = function(ticker = "CL"){
-  df = tq_get(ticker, from = first.date) %>% mutate(symbol = rep(ticker, length(first.date)))
+get_symbols = function(ticker){
+  #df = tq_get(ticker, from = first.date) %>% mutate(symbol = rep(ticker, length(first.date)))
+  getSymbols(ticker, from=first.date, src="yahoo")
 }
 
 #https://towardsdatascience.com/exploring-the-sp500-with-r-part-1-scraping-data-acquisition-and-functional-programming-56c9498f38e8
@@ -43,26 +47,16 @@ sp500tickers <- tickers[[1]]
 sp500tickers = sp500tickers %>% mutate(Symbol = case_when(Symbol == "BRK.B" ~ "BRK-B",
                                                           Symbol == "BF.B" ~ "BF-B",
                                                           TRUE ~ as.character(Symbol)))
-symbols <- sp500tickers$Symbol
+symbols <- sample(sp500tickers$Symbol,5)
 
-sp500Symbols <- BatchGetSymbols(tickers = symbols,
-                                do.parallel = TRUE,
-                                first.date = first.date,
-                                last.date = last.date, 
-                                be.quiet = TRUE,
-                                #cache results in "can only subtract from "Date" objects"
-                                #probably due to parallel
-                                do.cache=FALSE)
+first.date <- Sys.Date() - 821
+last.date <- Sys.Date()
 
-sp500Symbols$df.tickers
+symbol_env <- new.env()
+data <- mclapply(symbols, function (x) {getSymbols(x, src="yahoo", from=first.date, env = NULL)})
 
-list_SP500 <- group_split(sp500Symbols$df.tickers %>% group_by(ticker))
-
-xts(list_SP500[[1]], order.by=as.Date(list_SP500[[1]][, 7]$ref.date))
-
-#getSymbols("AAPL", from="1990-01-01", src="yahoo")
-
-#adjustOHLC(AAPL)
-#https://stackoverflow.com/questions/27070040/convert-string-data-frame-to-date
-adjustOHLC(xts(list_SP500[[1]], order.by=as.Date(list_SP500[[1]][, 7]$ref.date)))
-#adjustOHLC(list_SP500[[1]])
+#https://stackoverflow.com/questions/5577727/is-there-an-r-function-for-finding-the-index-of-an-element-in-a-vector
+adjusted.list <- mclapply(symbols, function(x) {
+  try(adjustOHLC(data[[which(x == symbols)]], symbol.name=x, adjust=c("split"), 
+                 use.Adjusted=TRUE))
+})
