@@ -47,7 +47,9 @@ sp500tickers <- tickers[[1]]
 sp500tickers = sp500tickers %>% mutate(Symbol = case_when(Symbol == "BRK.B" ~ "BRK-B",
                                                           Symbol == "BF.B" ~ "BF-B",
                                                           TRUE ~ as.character(Symbol)))
-symbols <- sample(sp500tickers$Symbol,5)
+#betaTest
+#symbols <- sample(sp500tickers$Symbol,5)
+symbols <- sp500tickers$Symbol
 
 first.date <- Sys.Date() - 821
 last.date <- Sys.Date()
@@ -60,3 +62,5 @@ adjusted.list <- mclapply(symbols, function(x) {
   try(adjustOHLC(data[[which(x == symbols)]], symbol.name=x, adjust=c("split"), 
                  use.Adjusted=TRUE))
 })
+
+View(adjusted.list)
