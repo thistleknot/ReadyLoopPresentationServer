@@ -49,20 +49,43 @@ sp500tickers = sp500tickers %>% mutate(Symbol = case_when(Symbol == "BRK.B" ~ "B
                                                           TRUE ~ as.character(Symbol)))
 #betaTest
 #symbols <- sample(sp500tickers$Symbol,5)
-symbols <- sp500tickers$Symbol
+symbols <- sample(sp500tickers$Symbol,5)
 
 first.date <- Sys.Date() - 821
-last.date <- Sys.Date()
+last.date <- Sys.Date() - 805
 
 symbol_env <- new.env()
-data <- mclapply(symbols, function (x) {getSymbols(x, src="yahoo", from=first.date, env = NULL)})
-
-#https://stackoverflow.com/questions/41139570/rename-list-items
-names(data) <- symbols
-
-adjusted.list <- mclapply(symbols, function(x) {
-  try(adjustOHLC(data[x], symbol.name=x, adjust=c("split"), 
-                 use.Adjusted=TRUE))
+data <- mclapply(symbols, function (x) {
+  
+  getSymbols(x, src="yahoo", return.class = "xts",from=first.date, env = NULL)
+  
 })
 
-View(adjusted.list)
+c("Open","High","Low","Close","Volume","Adjusted")
+
+#adjustOHLC(getSymbols("AAPL",src="yahoo", return.class = "xts",from=first.date, env = NULL),adjust=c("split","dividend"),symbol.name="AAPL")
+#getSymbols("AAPL")
+#adjustOHLC(AAPL)
+
+#https://stackoverflow.com/questions/5577727/is-there-an-r-function-for-finding-the-index-of-an-element-in-a-vector
+#which may be slightly expensive, alternative is to pass more than one value and pass in an omg iterator!
+names(data) <- symbols
+
+#xts(data.frame(data[1]),order.by=as.Date(rownames(data.frame(data[1])), format = "%Y-%m-%d"))
+
+#one liner doesn't work
+#adjusted.list <- mclapply(symbols, function(x) {try(adjustOHLC(getSymbols(x,src="yahoo", return.class = "xts",from=first.date, env = NULL),adjust=c("split","dividend"),symbol.name=x))})
+#adjustOHLC(getSymbols("AAPL",src="yahoo", return.class = "xts",from=first.date, env = NULL),adjust=c("split","dividend"),symbol.name="AAPL")
+
+adjusted.list <- mclapply(symbols, function(x) {
+  try(adjustOHLC(data.frame(data[x]), adjust=c("split","dividend"), symbol.name=symbols[x], use.Adjusted=TRUE))
+})
+
+names(adjusted.list) <- symbols
+
+adjusted.list.wdates <- mclapply(symbols,function (x) {
+  xts(data.frame(adjusted.list[x]),order.by=as.Date(rownames(data.frame(data[x])), format = "%Y-%m-%d"))
+})
+
+names(adjusted.list.wdates) <- symbols
+
