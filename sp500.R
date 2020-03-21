@@ -57,9 +57,11 @@ last.date <- Sys.Date()
 symbol_env <- new.env()
 data <- mclapply(symbols, function (x) {getSymbols(x, src="yahoo", from=first.date, env = NULL)})
 
-#https://stackoverflow.com/questions/5577727/is-there-an-r-function-for-finding-the-index-of-an-element-in-a-vector
+#https://stackoverflow.com/questions/41139570/rename-list-items
+names(data) <- symbols
+
 adjusted.list <- mclapply(symbols, function(x) {
-  try(adjustOHLC(data[[which(x == symbols)]], symbol.name=x, adjust=c("split"), 
+  try(adjustOHLC(data[x], symbol.name=x, adjust=c("split"), 
                  use.Adjusted=TRUE))
 })
 
