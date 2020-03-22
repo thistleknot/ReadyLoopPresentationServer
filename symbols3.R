@@ -17,10 +17,19 @@ betaTestCoefficient = .25
 library(HelpersMG)
 library(BatchGetSymbols)
 library(future)
+
+#rbindlist
 library(data.table)
+
 library(quantmod)
 #library(anytime)
 #library(RCurl)
+
+#mclapply
+library(parallel)
+
+#group_split
+library(dplyr)
 
 wget("ftp://ftp.nasdaqtrader.com/SymbolDirectory/nasdaqtraded.txt")
 wget("ftp://ftp.nasdaqtrader.com/SymbolDirectory/mfundslist.txt")
@@ -31,16 +40,7 @@ mfunds <- as.character(head(read.csv("nasdaqtraded.txt",sep="|")$Symbol,-2))
 #wget("ftp://ftp.nasdaqtrader.com/SymbolDirectory/bondslist.txt")
 #bonds <- head(read.csv("bondslist.txt",sep="|")$Symbol,-2)
 
-#nested function not working
-get_Symbols <- function (x)
-{
-  getSymbols(x, from=first.date, src="yahoo")
-}
-
-adjust_OHLC <- function (x)
-{
-  adjustOHLC(x)
-}
+#begin function definitions
 
 put_symbols_into_file <- function(fil,data,size) {
   dput(batch_get_symbols(data,size),fil)
@@ -77,7 +77,45 @@ write_subset_csv <- function(fil,name)
   fwrite(dget(fil[[1]][[1]], keep.source = TRUE)$df.tickers, name) 
 }
 
+put_adjusted_into_file <- function(files)
+{
+  
+}
+
+adjusted_list <- function(fil)
+{
+  #takes list
+  #fil <- filteredSymbolsList[[1]][[1]]
+  
+  source_data <- dget(fil[[1]][[1]], keep.source = TRUE)
+  #symbols <- unique(source_data$df.tickers$ticker)
+  
+  list_source <- group_split(source_data$df.tickers, source_data$df.tickers$ticker)
+  symbols <- sort(unique(source_data$df.tickers$ticker))
+  
+  names(list_source) <- symbols
+  names(symbols) <- symbols
+  
+  colNames= c("Open", "High", "Low", "Close", "Volume", "Adjusted", "Date", "Ticker", "Return.Adjusted", "Return.Closing","Ticker2")
+  
+  colnames(list_source[[1]][,])
+  #x=1
+  
+  list_source_data <- mclapply(symbols, function (x) {
+    setNames(list_source[[x]][,], colNames)
+  })
+  
+  mclapply(symbols, function(x) {
+    as.data.frame(adjustOHLC(xts(as.data.frame(list_source_data[[x]][,])[,c("Open","High","Low","Close","Volume","Adjusted")],order.by=as.POSIXct(list_source_data[[x]][,]$Date)), adjust=c("split","dividend"), symbol.name=symbols[x], use.Adjusted=TRUE))
+  }) 
+  
+}
+
+#end function definitions
+
 #how to create objects of these and create functions for them?
+marketNames <- c("Nasdaq","Mutual")
+
 fil_Nasdaq <- c()
 fil_Nasdaq <- tempfile()
 #mfunds
@@ -95,10 +133,12 @@ list_mfunds <- list(fil=fil_mfunds, data=mfunds, size=324)
 
 mylists <- list(list_nasdaq, list_mfunds)
 
+#each subsequent process is parallel, no need to use mclapply here.
 lapply(mylists, FUN=function(x) put_symbols_into_file(fil=x$fil, data=x$data, size=x$size))
 
 #https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list
-files <- lapply(mylists, `[[`, 1)
+
+files <- mclapply(mylists, `[[`, 1)
 #using 3 sigma
 #nasdaq 61% success rate @8897
 #mfunds 76% success rate @250
@@ -111,32 +151,48 @@ filNasdaq <- tempfile()
 filmfunds <- c()
 filmfunds <- tempfile()
 
-#Used with filterSymbolsList / join_file_symbols
-filteredSymbols <- lapply(files,filtered_symbols)
 filList <- list(filNasdaq,filmfunds)
 numLists <- 1:length(filList)
+#Used with filterSymbolsList / join_file_symbols
+filteredSymbols <- mclapply(files,filtered_symbols)
 
 #list(filList[[1]],filteredSymbols[[1]])
-filteredSymbolsList <- lapply(numLists,join_file_symbols)
+#pair fil with symbol list
+filteredSymbolsList <- mclapply(numLists,join_file_symbols)
 
+#Calls BatchGetSymbols which is parallel, no need to use mclapply
 lapply(filteredSymbolsList, FUN=function(x) put_symbols_into_file(fil=x[[1]], data=x[[2]], size=220))
 
-#dget(filteredSymbolsList[[1]][[1]],keep.source=TRUE)$df.tickers
+#get's adjusted prices and stores them into a single list, which deviates from the dput separate fil method I was using earlier.
+#I need them separate for writing to file
+
+fil_Adjusted_Nasdaq <- c()
+fil_Adjusted_Nasdaq <- tempfile()
+fil_Adjusted_mfunds <- c()
+fil_Adjusted_mfunds <- tempfile()
+
+#nested list
+#https://stackoverflow.com/questions/16602173/building-nested-lists-in-r
+iter1 <- list(fil_n=fil_Adjusted_Nasdaq,filNasdaq)
+iter2 <- list(fil_m=fil_Adjusted_mfunds, filmfunds)
+All = c(list(iter1), list(iter2))
+
+num_Adjusted_List <- 1:length(fil_Adjusted_List)
+
+lapply(All, FUN=function(x) put_adjusted_into_file(files=x))
+
+stock_split_adjusted <- mclapply(filteredSymbolsList, FUN=function(x) adjusted_list(fil=x[[1]]))
+
+names(stock_split_adjusted) = marketNames
+
+x=marketNames[1]
+stock_split_adjusted_Sample_200_wDates <- mclapply(marketNames,function (x) {
+  #Markets
+  cbind("Date"=stock_split_adjusted[[x]][,]$Date,stock_split_adjusted[[x]][,])
+})
 
 csvNames=list("200NasdaqSymbols2Years.csv","200MFundsSymbols2Years.csv")
-csv_list <- lapply(numLists,join_file_csvNames)
-
-#dget(csv_list[[1]][[1]],keep.source = TRUE)$df.tickers
-
-lapply(csv_list, FUN=function(x) write_subset_csv(fil=x[[1]], name=x[[2]]))
+csv_list <- mclapply(numLists,join_file_csvNames)
+mclapply(csv_list, FUN=function(x) write_subset_csv(fil=x[[1]], name=x[[2]]))
 
 source("sp500.R")
-
-lapply(filteredNasdaq,get_symbols)
-
-holder.a <- lapply(noquote(filteredNasdaq),adjust_OHLC)
-
-adjustOHLC(holder)
-head(AAPL)
-head(AAPL.a <- adjustOHLC(AAPL))
-head(AAPL.uA <- adjustOHLC(AAPL, use.Adjusted=TRUE))
