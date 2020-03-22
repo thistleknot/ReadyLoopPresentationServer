@@ -24,6 +24,9 @@ library(rvest)
 library(tidyquant)
 library(parallel)
 
+#bind_list
+library(dplyr)
+
 get_symbols = function(ticker){
   #df = tq_get(ticker, from = first.date) %>% mutate(symbol = rep(ticker, length(first.date)))
   getSymbols(ticker, from=first.date, src="yahoo")
@@ -49,11 +52,12 @@ sp500tickers = sp500tickers %>% mutate(Symbol = case_when(Symbol == "BRK.B" ~ "B
                                                           Symbol == "BF.B" ~ "BF-B",
                                                           TRUE ~ as.character(Symbol)))
 #betaTest
-symbols <- sample(sp500tickers$Symbol,5)
-#symbols <- sample(sp500tickers,5)
+#symbols <- sample(sp500tickers$Symbol,5)
+symbols <- sp500tickers$Symbol
 
 first.date <- Sys.Date() - 821
-last.date <- Sys.Date() - 805
+last.date <- Sys.Date()
+#last.date <- Sys.Date() - 805
 
 symbol_env <- new.env()
 data <- mclapply(symbols, function (x) {
@@ -117,5 +121,6 @@ adjusted.list.wdates.xts <- mclapply(symbols,function (x) {
 })
 names(adjusted.list.wdates.xts) <- symbols
 
+singleDF <- bind_rows(adjusted.list.wdates, .id = "Symbol")
 
-
+View(bind_rows(adjusted.list.wdates, .id = "Symbol"))
