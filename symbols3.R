@@ -10,7 +10,7 @@ if (!require(RCurl)) install.packages('RCurl')
 if (!require(data.table)) install.packages('data.table')
 if (!require(quantmod)) install.packages('quantmod')
 
-betaTestCoefficient = .25
+betaTestCoefficient = .1
 
 #options("download.file.method"="wget")
 
@@ -77,17 +77,16 @@ write_subset_csv <- function(fil,name)
   fwrite(dget(fil[[1]][[1]], keep.source = TRUE)$df.tickers, name) 
 }
 
+#fil=All[[1]]
+
+#fil[[1]] is source
 put_adjusted_into_file <- function(files)
 {
   
-}
-
-adjusted_list <- function(fil)
-{
   #takes list
   #fil <- filteredSymbolsList[[1]][[1]]
   
-  source_data <- dget(fil[[1]][[1]], keep.source = TRUE)
+  source_data <- dget(files[[1]], keep.source = TRUE)
   #symbols <- unique(source_data$df.tickers$ticker)
   
   list_source <- group_split(source_data$df.tickers, source_data$df.tickers$ticker)
@@ -105,9 +104,11 @@ adjusted_list <- function(fil)
     setNames(list_source[[x]][,], colNames)
   })
   
-  mclapply(symbols, function(x) {
+  dput(mclapply(symbols, function(x) {
     as.data.frame(adjustOHLC(xts(as.data.frame(list_source_data[[x]][,])[,c("Open","High","Low","Close","Volume","Adjusted")],order.by=as.POSIXct(list_source_data[[x]][,]$Date)), adjust=c("split","dividend"), symbol.name=symbols[x], use.Adjusted=TRUE))
-  }) 
+  }),files[[2]])
+  
+  print(files[[2]])
   
 }
 
@@ -173,19 +174,37 @@ fil_Adjusted_mfunds <- tempfile()
 
 #nested list
 #https://stackoverflow.com/questions/16602173/building-nested-lists-in-r
-iter1 <- list(fil_n=fil_Adjusted_Nasdaq,filNasdaq)
-iter2 <- list(fil_m=fil_Adjusted_mfunds, filmfunds)
+iter1 <- list(fil_n=filNasdaq,fil_Adjusted_Nasdaq)
+iter2 <- list(fil_m=filmfunds,fil_Adjusted_mfunds)
 All = c(list(iter1), list(iter2))
 
-num_Adjusted_List <- 1:length(fil_Adjusted_List)
+#num_Adjusted_List <- 1:length(fil_Adjusted_List)
 
+#passes two files at a time, source and destination
 lapply(All, FUN=function(x) put_adjusted_into_file(files=x))
 
-stock_split_adjusted <- mclapply(filteredSymbolsList, FUN=function(x) adjusted_list(fil=x[[1]]))
+#get 1st market
+nonAdjusted1 <- dget(All[[1]][[1]],keep.source = TRUE)
+nonAdjusted2 <- dget(All[[2]][[1]],keep.source = TRUE)
+View(nonAdjusted1)
+View(nonAdjusted2)
 
-names(stock_split_adjusted) = marketNames
+adjusted1 <- dget(All[[1]][[2]],keep.source = TRUE)
+adjusted2 <- dget(All[[2]][[2]],keep.source = TRUE)
+View(adjusted1)
+View(adjusted2)
 
-x=marketNames[1]
+
+
+#test2 <- dget(All[[2]][[2]],keep.source = TRUE)
+#(unique(test1$df.tickers$ticker))
+#(unique(test2$df.tickers$ticker))
+
+#stock_split_adjusted <- mclapply(filteredSymbolsList, FUN=function(x) adjusted_list(fil=x[[1]]))
+
+#names(stock_split_adjusted) = marketNames
+
+#x=marketNames[1]
 stock_split_adjusted_Sample_200_wDates <- mclapply(marketNames,function (x) {
   #Markets
   cbind("Date"=stock_split_adjusted[[x]][,]$Date,stock_split_adjusted[[x]][,])
