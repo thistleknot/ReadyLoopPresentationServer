@@ -112,6 +112,35 @@ put_adjusted_into_file <- function(files)
   
 }
 
+#files=All2[[1]]
+put_to_file_bind_dates <- function(files)
+{
+  #print("o")
+  #print(files)
+  #print(files[[1]])
+  #print(files[[2]])
+  #print(files[[3]])
+  #print(files$fil_o,files$fil_a,files$fil_d)
+  #print("a")
+  #print(files$fil_a)
+  #print("d")
+  #print(files$fil_d)
+  date_data <- dget(files[[1]], keep.source = TRUE)
+  adjusted_data <- dget(files[[2]], keep.source = TRUE)
+  output_data <- files[[3]]
+  
+  list <- group_split(date_data$df.tickers, date_data$df.tickers$ticker)
+  list_names <- sort(unique(date_data$df.tickers$ticker))
+  
+  names(list) <- list_names
+  names(list_names) <- list_names
+  
+  #x=list_names[1]
+  dput(mclapply(list_names,function (x) {
+    cbind("Date"=list[[x]][,]$ref.date,adjusted_data[[x]][,])
+  }),files[[3]])
+}
+
 #end function definitions
 
 #how to create objects of these and create functions for them?
@@ -191,23 +220,30 @@ View(nonAdjusted2)
 
 adjusted1 <- dget(All[[1]][[2]],keep.source = TRUE)
 adjusted2 <- dget(All[[2]][[2]],keep.source = TRUE)
-View(adjusted1)
-View(adjusted2)
+#View(adjusted1)
+#View(adjusted2)
+#unname(adjusted1)
 
-
-
-#test2 <- dget(All[[2]][[2]],keep.source = TRUE)
-#(unique(test1$df.tickers$ticker))
-#(unique(test2$df.tickers$ticker))
-
-#stock_split_adjusted <- mclapply(filteredSymbolsList, FUN=function(x) adjusted_list(fil=x[[1]]))
+#View(do.call(rbind, unname(adjusted1[1])))
+#rbindlist(adjusted1[1], use.names=TRUE, fill=TRUE, idcol=TRUE)
 
 #names(stock_split_adjusted) = marketNames
 
-#x=marketNames[1]
-stock_split_adjusted_Sample_200_wDates <- mclapply(marketNames,function (x) {
-  #Markets
-  cbind("Date"=stock_split_adjusted[[x]][,]$Date,stock_split_adjusted[[x]][,])
+fil_Adjusted_wDates_Nasdaq <- c()
+fil_Adjusted_wDates_Nasdaq <- tempfile()
+fil_Adjusted_wDates_mfunds <- c()
+fil_Adjusted_wDates_mfunds <- tempfile()
+
+iter1 <- list("fil_o"=filNasdaq,"fil_a"=fil_Adjusted_Nasdaq,"fil_d"=fil_Adjusted_wDates_Nasdaq)
+iter2 <- list("fil_o"=filmfunds,"fil_a"=fil_Adjusted_mfunds,"fil_d"=fil_Adjusted_wDates_mfunds)
+All2 = c(list(iter1), list(iter2))
+
+#get Dates
+mclapply(All2, put_to_file_bind_dates)
+#wDates1 <- dget(All2[[1]][[3]],keep.source = TRUE)
+
+mclapply(list_sp500_Sample_200_names,function (x) {
+  cbind("Date"=list_sp500_Sample_200[[x]][,]$Date,adjusted_list_sp500_Sample_200[[x]][,])
 })
 
 csvNames=list("200NasdaqSymbols2Years.csv","200MFundsSymbols2Years.csv")
