@@ -115,16 +115,6 @@ put_adjusted_into_file <- function(files)
 #files=All2[[1]]
 put_to_file_bind_dates <- function(files)
 {
-  #print("o")
-  #print(files)
-  #print(files[[1]])
-  #print(files[[2]])
-  #print(files[[3]])
-  #print(files$fil_o,files$fil_a,files$fil_d)
-  #print("a")
-  #print(files$fil_a)
-  #print("d")
-  #print(files$fil_d)
   date_data <- dget(files[[1]], keep.source = TRUE)
   adjusted_data <- dget(files[[2]], keep.source = TRUE)
   output_data <- files[[3]]
@@ -139,6 +129,12 @@ put_to_file_bind_dates <- function(files)
   dput(mclapply(list_names,function (x) {
     cbind("Date"=list[[x]][,]$ref.date,adjusted_data[[x]][,])
   }),files[[3]])
+}
+
+write_csvs <- function(files)
+{
+  date_data <- dget(files[[1]], keep.source = TRUE)
+  fwrite(rbindlist(date_data, use.names=TRUE, fill=TRUE, idcol="Symbol"),files[[2]])
 }
 
 #end function definitions
@@ -243,9 +239,11 @@ mclapply(All2, put_to_file_bind_dates)
 #wDates1 <- dget(All2[[1]][[3]],keep.source = TRUE)
 
 #x=marketNames[1]
+#CSV's
+iter1 <- list("fil_d"=fil_Adjusted_wDates_Nasdaq,"csv"="200NasdaqSymbols2Years.csv")
+iter2 <- list("fil_d"=fil_Adjusted_wDates_mfunds,"csv"="200MFundsSymbols2Years.csv")
+All3 = c(list(iter1), list(iter2))
 
-csvNames=list("200NasdaqSymbols2Years.csv","200MFundsSymbols2Years.csv")
-csv_list <- mclapply(numLists,join_file_csvNames)
-mclapply(csv_list, FUN=function(x) write_subset_csv(fil=x[[1]], name=x[[2]]))
+mclapply(All3, write_csvs)
 
 source("sp500.R")
