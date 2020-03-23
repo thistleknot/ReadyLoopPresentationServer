@@ -242,9 +242,7 @@ All2 = c(list(iter1), list(iter2))
 mclapply(All2, put_to_file_bind_dates)
 #wDates1 <- dget(All2[[1]][[3]],keep.source = TRUE)
 
-mclapply(list_sp500_Sample_200_names,function (x) {
-  cbind("Date"=list_sp500_Sample_200[[x]][,]$Date,adjusted_list_sp500_Sample_200[[x]][,])
-})
+#x=marketNames[1]
 
 csvNames=list("200NasdaqSymbols2Years.csv","200MFundsSymbols2Years.csv")
 csv_list <- mclapply(numLists,join_file_csvNames)
